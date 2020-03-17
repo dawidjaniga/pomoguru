@@ -1,0 +1,30 @@
+{
+  "name": "pomoguru",
+  "version": "1.0.0",
+  "description": "Pomoguru hackaton app",
+  "main": "main.js",
+  "scripts": {
+    "start": "yarn install; while read LINE; do export \"$LINE\"; done < ./.env; electron .",
+    "test-slack": "yarn install; while read LINE; do export \"$LINE\"; done < ./.env; node slack.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netguru-hackathon/pomoguru.git"
+  },
+  "keywords": [
+    "pomodoro"
+  ],
+  "author": "Robert Raimann Dawid Janiga Robert Kostrzewski",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^7.1.4"
+  },
+  "homepage": "https://github.com/netguru-hackathon/pomoguru#readme",
+  "dependencies": {
+    "@slack/client": "^5.0.2",
+    "@types/qs": "^6.9.1",
+    "axios": "^0.19.2",
+    "node-notifier": "^6.0.0",
+    "qs": "^6.9.1"
+  }
+}
