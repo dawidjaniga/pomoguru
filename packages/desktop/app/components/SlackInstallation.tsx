@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from './Home.css';
 import {
   shell,
 
@@ -61,7 +60,7 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.container} data-tid="container">
+    <div data-tid="container">
       <h2>Slack Installation</h2>
       <SlackTokenChecker state={state} shouldCheck={slackButtonClicked} />
       <img onClick={openSlack} alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" />
