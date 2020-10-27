@@ -1,8 +1,10 @@
 {
   "name": "app",
-  "main": "main.js",
+  "main": "public/electron.js",
   "homepage": "./",
   "version": "0.1.0",
+  "author": "Robert Kostrzewski Robert Raimann Dawid Janiga",
+  "description": "Pomoguru gives you focus",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
@@ -12,25 +14,44 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "electron-is-dev": "^1.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.0",
+    "styled-components": "^5.2.0",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && yarn electron-builder -c.extraMetadata.main=build/electron.js",
     "test": "react-scripts test",
-    "preelectron-pack": "yarn build",
-    "electron-pack": "build -c.extraMetadata.main=build/Main.js"
+    "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "build": {
     "appId": "com.netguru.pomoguru.staging",
-    "files": ["build/**/*", "node_modules/**/*"],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "dmg": {
+      "sign": false
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
     "directories": {
       "buildResources": "assets"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netguru-hackathon/pomoguru.git"
   },
   "eslintConfig": {
     "extends": [
@@ -51,6 +72,10 @@
     ]
   },
   "devDependencies": {
-    "electron": "^10.1.5"
+    "concurrently": "^5.3.0",
+    "electron": "^10.1.5",
+    "electron-builder": "^22.9.1",
+    "electron-reloader": "^1.0.1",
+    "wait-on": "^5.2.0"
   }
 }
