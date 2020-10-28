@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { shell } from 'electron'
 import shortid from 'shortid'
-import localStore from './../services/localStore'
+import localStore from './../api/localStore'
 
 const slackUserScopes = ['chat:write', 'dnd:write', 'users.profile:write'].join(
   ','
@@ -56,7 +56,7 @@ class SlackTokenChecker extends React.Component<{
   }
 }
 
-export default function Home () {
+export default function SlackInstalationPage () {
   const [slackButtonClicked, setSlackButtonClicked] = useState(false)
   const state = shortid.generate()
   function openSlack () {

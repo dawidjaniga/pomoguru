@@ -1,6 +1,8 @@
 const path = require('path')
 const { app, BrowserWindow, Menu, Tray } = require('electron')
 const isDev = require('electron-is-dev')
+const { ipcMain } = require('electron')
+const format = require('date-fns/format')
 let tray = undefined
 let win
 
@@ -10,19 +12,31 @@ try {
 
 app.dock.hide()
 
+ipcMain.on('set-timer', (event, timeLeft) => {
+  tray.setTitle(format(new Date(timeLeft * 1000), 'mm:ss'))
+})
+
 function createWindow () {
   win = new BrowserWindow({
     width: 400,
-    height: 500,
-    show: false,
+    height: 260,
+    show: true,
     frame: false,
     fullscreenable: false,
     resizable: false,
     transparent: true,
     webPreferences: {
-      backgroundThrottling: false
+      nodeIntegration: true,
+      enableRemoteModule: true
     }
   })
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Quit',
+      role: 'quit'
+    }
+  ])
 
   win.on('blur', () => {
     if (!win.webContents.isDevToolsOpened()) {
@@ -35,22 +49,22 @@ function createWindow () {
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`
   )
-  // win.webContents.openDevTools()
 
-  tray = new Tray(path.join(__dirname, '../public/icon.png'))
+  tray = new Tray(path.join(__dirname, '../public/icon-small.png'))
   tray.setTitle('25:00')
+  // tray.setContextMenu(contextMenu)
+
   tray.on('right-click', toggleWindow)
   tray.on('double-click', toggleWindow)
   tray.on('click', function (event) {
     toggleWindow()
 
-    // Show devtools when command clicked
-    if (win.isVisible() && process.defaultApp && event.metaKey) {
+    if (win && win.isVisible() && process.defaultApp && event.metaKey) {
       win.openDevTools({ mode: 'detach' })
     }
   })
 
-  tray.setToolTip('This is my application.')
+  tray.setToolTip('PomoGuru')
 
   win.on('closed', () => (win = null))
 }
@@ -66,12 +80,9 @@ const getWindowPosition = () => {
   const windowBounds = win.getBounds()
   const trayBounds = tray.getBounds()
 
-  // Center window horizontally below the tray icon
   const x = Math.round(
     trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2
   )
-
-  // Position window 4 pixels vertically below the tray icon
   const y = Math.round(trayBounds.y + trayBounds.height + 4)
 
   return { x: x, y: y }
