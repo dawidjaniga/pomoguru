@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
+
+import { Link } from 'react-router-dom'
+import WindowContent from 'core/components/WindowContent'
+import WindowTitle from 'core/components/WindowTitle'
 import axios from 'axios'
-import { shell } from 'electron'
-import shortid from 'shortid'
-import localStore from './../api/localStore'
+import slack from 'api/slack'
+
+const { shell } = window.require('electron')
 
 const slackUserScopes = ['chat:write', 'dnd:write', 'users.profile:write'].join(
   ','
@@ -12,6 +16,7 @@ const slackClientId = '866674528645.977369566150'
 class SlackTokenChecker extends React.Component<{
   state: string
   shouldCheck: boolean
+  onInstall: () => void
 }> {
   timerId = 0
   intervalInMs = 4000
@@ -47,7 +52,8 @@ class SlackTokenChecker extends React.Component<{
 
     if (data) {
       this.stopChecking()
-      localStore.set('slack-token', data.token)
+      slack.setToken(data.token)
+      this.props.onInstall()
     }
   }
 
@@ -58,7 +64,8 @@ class SlackTokenChecker extends React.Component<{
 
 export default function SlackInstalationPage () {
   const [slackButtonClicked, setSlackButtonClicked] = useState(false)
-  const state = shortid.generate()
+  const [, forceRender] = useState(false)
+  const state = slack.getId()
   function openSlack () {
     setSlackButtonClicked(true)
     shell.openExternal(
@@ -66,20 +73,38 @@ export default function SlackInstalationPage () {
     )
   }
 
+  function onInstall () {
+    forceRender(true)
+  }
+
   return (
-    <div data-tid='container'>
-      <h2>Slack Installation</h2>
-      <SlackTokenChecker state={state} shouldCheck={slackButtonClicked} />
-      <img
-        onClick={openSlack}
-        alt='Add to Slack'
-        height='40'
-        width='139'
-        src='https://platform.slack-edge.com/img/add_to_slack.png'
-      />
-      {/* <a href={`https://slack.com/oauth/v2/authorize?scope=${slackScopes.join(',')}&client_id=${slackClientId}`}>
-        <img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" />
-      </a> */}
-    </div>
+    <>
+      <WindowTitle>Slack Installation</WindowTitle>
+      <WindowContent>
+        {slack.isInstalled() ? (
+          <>
+            ✅ &nbsp;&nbsp;Slack Authorized
+            <Link to='/'>Open timer</Link>
+          </>
+        ) : (
+          <>
+            {state && (
+              <SlackTokenChecker
+                state={state}
+                shouldCheck={slackButtonClicked}
+                onInstall={onInstall}
+              />
+            )}
+            <img
+              onClick={openSlack}
+              alt='Add to Slack'
+              height='40'
+              width='139'
+              src='https://platform.slack-edge.com/img/add_to_slack.png'
+            />
+          </>
+        )}
+      </WindowContent>
+    </>
   )
 }

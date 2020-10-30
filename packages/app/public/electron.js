@@ -3,6 +3,7 @@ const { app, BrowserWindow, Menu, Tray } = require('electron')
 const isDev = require('electron-is-dev')
 const { ipcMain } = require('electron')
 const format = require('date-fns/format')
+const notifier = require('node-notifier')
 let tray = undefined
 let win
 
@@ -16,6 +17,14 @@ ipcMain.on('set-timer', (event, timeLeft) => {
   tray.setTitle(format(new Date(timeLeft * 1000), 'mm:ss'))
 })
 
+ipcMain.on('notify', (event, message) => {
+  notifier.notify({
+    message,
+    title: 'Pomoguru',
+    icon: path.join(__dirname, 'icon.png')
+  })
+})
+
 function createWindow () {
   win = new BrowserWindow({
     width: 400,
@@ -26,6 +35,7 @@ function createWindow () {
     resizable: false,
     transparent: true,
     webPreferences: {
+      webSecurity: false,
       nodeIntegration: true,
       enableRemoteModule: true
     }
@@ -59,7 +69,13 @@ function createWindow () {
   tray.on('click', function (event) {
     toggleWindow()
 
-    if (win && win.isVisible() && process.defaultApp && event.metaKey) {
+    if (
+      win &&
+      win.isVisible &&
+      win.isVisible() &&
+      process.defaultApp &&
+      event.metaKey
+    ) {
       win.openDevTools({ mode: 'detach' })
     }
   })

@@ -1,30 +1,46 @@
-
-import localStore from './localStore'
+import Slack from 'slack'
 import addMinutes from 'date-fns/addMinutes'
 import format from 'date-fns/format'
 import getUnixTime from 'date-fns/getUnixTime'
-// import Slack from 'slack'
-// @ts-ignore
-// const slack = new Slack({useElectronNet:true, token: localStore.get('slack-token')})
-// const slack = new Slack({ token: localStore.get('slack-token') })
+import shortid from 'shortid'
+
+const token = localStorage.getItem('slack-token')
+const id = localStorage.getItem('slack-id')
+let slack: any
+
+if (token) {
+  initSlackClient(token)
+} else {
+  console.log('init: no slack token')
+}
+
+if (!id) {
+  localStorage.setItem('slack-id', shortid.generate())
+} 
 
 const focusTimeInMin = 25
 const pomodoroEmoji = ':tomato:'
 
 interface Status {
-    text: string; emoji: string; expireTime: Date | number 
+  text: string; emoji: string; expireTime: Date | number 
+}
+
+function initSlackClient(token: string) {
+  console.log('init Slack client')
+  // @ts-ignore
+  slack = new Slack({ token})
 }
 
 async function changeStatus ({ text, emoji, expireTime }: Status) {
   try {
-    // const result = await slack.users.profile.set({
-    //   profile: JSON.stringify({
-    //     status_text: text,
-    //     status_emoji: emoji,
-    //     status_expiration: getUnixTime(expireTime)
-    //   })
-    // })
-    // console.log(result)
+    const result = await slack.users.profile.set({
+      profile: JSON.stringify({
+        status_text: text,
+        status_emoji: emoji,
+        status_expiration: getUnixTime(expireTime)
+      })
+    })
+    console.log(result)
   } catch (error) {
     console.error(error)
   }
@@ -57,4 +73,19 @@ async function endFocus () {
   }
 }
 
-export default { goIntoFocus, endFocus }
+function setToken(token: string) {
+  localStorage.setItem('slack-token', token)
+  // @ts-ignore
+  slack = new Slack({useElectronNet:true, token})
+}
+
+function isInstalled() {
+  return Boolean(localStorage.getItem('slack-token'))
+}
+
+function getId() {
+  return localStorage.getItem('slack-id')
+}
+
+const api = { goIntoFocus, endFocus, setToken, isInstalled, getId }
+export default api

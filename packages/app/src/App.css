@@ -11,3 +11,11 @@
   --title-border-color: var(--dark-grey);
   --button-background: var(--black);
 }
+
+body {
+  color: var(--text-color);
+}
+
+a {
+  color: var(--text-color);
+}
