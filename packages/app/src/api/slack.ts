@@ -16,19 +16,21 @@ if (token) {
 
 if (!id) {
   localStorage.setItem('slack-id', shortid.generate())
-} 
+}
 
 const focusTimeInMin = 25
 const pomodoroEmoji = ':tomato:'
 
 interface Status {
-  text: string; emoji: string; expireTime: Date | number 
+  text: string
+  emoji: string
+  expireTime: Date | number
 }
 
-function initSlackClient(token: string) {
+function initSlackClient (token: string) {
   console.log('init Slack client')
   // @ts-ignore
-  slack = new Slack({ token})
+  slack = new Slack({ token })
 }
 
 async function changeStatus ({ text, emoji, expireTime }: Status) {
@@ -49,12 +51,12 @@ async function changeStatus ({ text, emoji, expireTime }: Status) {
 async function goIntoFocus () {
   try {
     const pomodoroEndTime = addMinutes(new Date(), focusTimeInMin)
+    await slack.dnd.setSnooze({ num_minutes: focusTimeInMin })
     await changeStatus({
       text: `Focusing till ${format(pomodoroEndTime, 'HH:mm')}`,
       emoji: pomodoroEmoji,
       expireTime: pomodoroEndTime
     })
-
   } catch (error) {
     console.error(error)
   }
@@ -62,28 +64,28 @@ async function goIntoFocus () {
 
 async function endFocus () {
   try {
+    await slack.dnd.endSnooze()
     await changeStatus({
       text: '',
       emoji: '',
       expireTime: 0
     })
-
   } catch (error) {
     console.error(error)
   }
 }
 
-function setToken(token: string) {
+function setToken (token: string) {
   localStorage.setItem('slack-token', token)
   // @ts-ignore
-  slack = new Slack({useElectronNet:true, token})
+  slack = new Slack({ useElectronNet: true, token })
 }
 
-function isInstalled() {
+function isInstalled () {
   return Boolean(localStorage.getItem('slack-token'))
 }
 
-function getId() {
+function getId () {
   return localStorage.getItem('slack-id')
 }
 
