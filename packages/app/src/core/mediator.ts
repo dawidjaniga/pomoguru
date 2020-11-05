@@ -1,4 +1,5 @@
 import React from 'react'
+import settings from 'api/settings'
 import slack from 'api/slack'
 import { useEffect } from 'react'
 import { useTimer } from 'core/timer'
@@ -13,16 +14,25 @@ let phase: Phase
 
 export function useMediator () {
   const [{ timeLeft }, { start, pause, stop, setTimeLeft }] = useTimer()
-  const focusPhaseDurationSeconds = 20
-  const breakPhaseDurationSeconds = 5
+  const focusPhaseDurationSeconds = settings.get(
+    'focus-time-duration-in-seconds'
+  )
+  const breakPhaseDurationSeconds = settings.get(
+    'break-time-duration-in-seconds'
+  )
 
+  const dndMinutes = timeLeft / 60
+  const focusTimeLeftMinutes = dndMinutes === 0 ? 1 : dndMinutes
   const api = React.useMemo(() => {
     return {
+      onInit () {
+        setTimeLeft(focusPhaseDurationSeconds)
+      },
       onStartClick () {
         phase = Phase.focus
 
         start()
-        slack.goIntoFocus()
+        slack.goIntoFocus(focusTimeLeftMinutes)
         ipcRenderer.send('notify', 'All set! Focus time is on')
       },
       onPauseClick () {
@@ -39,13 +49,12 @@ export function useMediator () {
       },
       onBreakPhaseEnd () {
         phase = Phase.focus
-        slack.goIntoFocus()
+        slack.goIntoFocus(focusTimeLeftMinutes)
         setTimeLeft(focusPhaseDurationSeconds)
         ipcRenderer.send('notify', 'All set! Focus time is on')
       },
       onFocusPhaseEnd () {
         phase = Phase.break
-        slack.endFocus()
         setTimeLeft(breakPhaseDurationSeconds)
         ipcRenderer.send('notify', 'Great job! Now take a break :)')
       },

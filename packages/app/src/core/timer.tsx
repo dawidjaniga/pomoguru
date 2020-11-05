@@ -46,7 +46,7 @@ const actions = {
 
 const Store = createStore({
   initialState: {
-    timeLeft: 20,
+    timeLeft: 0,
     isActive: false
   },
   actions,

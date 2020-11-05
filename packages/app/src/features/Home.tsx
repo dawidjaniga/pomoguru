@@ -1,6 +1,7 @@
+import React, { useEffect } from 'react'
+
 import Button from 'core/components/Button'
 import { Link } from 'react-router-dom'
-import React from 'react'
 import WindowContent from 'core/components/WindowContent'
 import WindowTitle from 'core/components/WindowTitle'
 import format from 'date-fns/format'
@@ -28,8 +29,12 @@ const Timer = styled.div`
 `
 
 export default function Home () {
-  const { onStartClick, onPauseClick, onStopClick } = useMediator()
+  const { onInit, onStartClick, onPauseClick, onStopClick } = useMediator()
   const [{ timeLeft, isActive }] = useTimer()
+
+  useEffect(() => {
+    onInit()
+  }, [])
 
   return (
     <>
