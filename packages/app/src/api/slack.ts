@@ -18,7 +18,6 @@ if (!id) {
   localStorage.setItem('slack-id', shortid.generate())
 }
 
-const focusTimeInMin = 25
 const pomodoroEmoji = ':tomato:'
 
 interface Status {
@@ -48,10 +47,10 @@ async function changeStatus ({ text, emoji, expireTime }: Status) {
   }
 }
 
-async function goIntoFocus () {
+async function goIntoFocus (focusPhaseDurationInMinutes: number) {
   try {
-    const pomodoroEndTime = addMinutes(new Date(), focusTimeInMin)
-    await slack.dnd.setSnooze({ num_minutes: focusTimeInMin })
+    const pomodoroEndTime = addMinutes(new Date(), focusPhaseDurationInMinutes)
+    await slack.dnd.setSnooze({ num_minutes: focusPhaseDurationInMinutes })
     await changeStatus({
       text: `Focusing till ${format(pomodoroEndTime, 'HH:mm')}`,
       emoji: pomodoroEmoji,
