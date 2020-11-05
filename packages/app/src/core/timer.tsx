@@ -1,4 +1,4 @@
-import { createStore, createHook, StoreActionApi } from 'react-sweet-state'
+import { StoreActionApi, createHook, createStore } from 'react-sweet-state'
 type State = { timeLeft: number; isActive: boolean }
 type StoreApi = StoreActionApi<State>
 
@@ -36,16 +36,17 @@ const actions = {
     setState({
       isActive: false
     })
-
+  },
+  setTimeLeft: (timeLeft: number) => ({ setState }: StoreApi) => {
     setState({
-      timeLeft: 1500
+      timeLeft
     })
   }
 }
 
 const Store = createStore({
   initialState: {
-    timeLeft: 1500,
+    timeLeft: 20,
     isActive: false
   },
   actions,
