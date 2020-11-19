@@ -4,17 +4,19 @@ const isDev = require('electron-is-dev')
 const { ipcMain } = require('electron')
 const format = require('date-fns/format')
 const notifier = require('node-notifier')
-let tray = undefined
-let win
+let tray = null
+let win = null
 
 try {
   require('electron-reloader')(module)
 } catch (_) {}
 
-app.dock.hide()
+// app.dock.hide()
 
 ipcMain.on('set-timer', (event, timeLeft) => {
-  tray.setTitle(format(new Date(timeLeft * 1000), 'mm:ss'))
+  if (tray) {
+    tray.setTitle(format(new Date(timeLeft * 1000), 'mm:ss'))
+  }
 })
 
 ipcMain.on('notify', (event, message) => {
@@ -56,12 +58,11 @@ function createWindow () {
 
   win.loadURL(
     isDev
-      ? 'http://localhost:3000'
+      ? 'http://localhost:3007'
       : `file://${path.join(__dirname, '../build/index.html')}`
   )
 
   tray = new Tray(path.join(__dirname, '../public/icon-small.png'))
-  tray.setTitle('25:00')
   // tray.setContextMenu(contextMenu)
 
   tray.on('right-click', toggleWindow)
@@ -111,8 +112,6 @@ const showWindow = () => {
   win.focus()
 }
 
-app.whenReady().then(createWindow)
-
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -124,3 +123,5 @@ app.on('active', () => {
     createWindow()
   }
 })
+
+app.whenReady().then(createWindow)

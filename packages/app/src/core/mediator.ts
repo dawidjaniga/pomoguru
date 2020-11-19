@@ -23,15 +23,18 @@ export function useMediator () {
 
   const dndMinutes = timeLeft / 60
   const focusTimeLeftMinutes = dndMinutes === 0 ? 1 : dndMinutes
+
   const api = React.useMemo(() => {
     return {
       onInit () {
         setTimeLeft(focusPhaseDurationSeconds)
+        ipcRenderer.send('set-timer', focusPhaseDurationSeconds)
       },
       onStartClick () {
         phase = Phase.focus
 
         start()
+        
         slack.goIntoFocus(focusTimeLeftMinutes)
         ipcRenderer.send('notify', 'All set! Focus time is on')
       },
@@ -74,7 +77,7 @@ export function useMediator () {
         }
       }
     }
-  }, [start, pause, stop])
+  }, [start, pause, stop, focusTimeLeftMinutes, timeLeft])
 
   useEffect(() => {
     api.onTimerUpdate(timeLeft)
