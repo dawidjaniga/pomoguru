@@ -2,7 +2,7 @@
   "name": "pomoguru",
   "main": "public/electron.js",
   "homepage": "./",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Robert Kostrzewski Robert Raimann Dawid Janiga",
   "description": "Pomoguru gives you focus",
   "private": true,
@@ -41,17 +41,9 @@
     "dev": "concurrently \"BROWSER=none PORT=3007 yarn start\" \"wait-on http://localhost:3007 && electron .\""
   },
   "build": {
-    "appId": "com.netguru.pomoguru",
+    "appId": "com.dawidjaniga.pomoguru",
     "mac": {
-      "category": "public.app-category.productivity",
-      "type": "distribution",
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist",
-      "target": [
-        "dmg"
-      ]
+      "category": "public.app-category.productivity"
     },
     "dmg": {
       "sign": false
