@@ -19,7 +19,9 @@
     "axios": "^0.21.0",
     "date-fns": "^2.16.1",
     "debug": "^4.2.0",
+    "dotenv": "8.2.0",
     "electron-is-dev": "^1.2.0",
+    "electron-notarize": "1.0.0",
     "electron-store": "^6.0.1",
     "node-notifier": "^8.0.0",
     "react": "^17.0.1",
@@ -36,7 +38,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "rimraf dist && react-scripts build && yarn electron-builder -c.extraMetadata.main=build/electron.js",
+    "build": "rimraf dist && react-scripts build && NOTARIZE=true NODE_ENV=production yarn electron-builder -c.extraMetadata.main=build/electron.js",
     "test": "react-scripts test",
     "dev": "concurrently \"BROWSER=none PORT=3007 yarn start\" \"wait-on http://localhost:3007 && electron .\""
   },
@@ -45,33 +47,21 @@
     "mac": {
       "category": "public.app-category.productivity"
     },
-    "dmg": {
-      "sign": false
-    },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
+    "files": ["build/**/*", "node_modules/**/*"],
     "directories": {
       "buildResources": "build"
-    }
+    },
+    "afterSign": "./afterSignHook.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/netguru-hackathon/pomoguru.git"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
