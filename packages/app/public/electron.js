@@ -62,7 +62,10 @@ function createWindow () {
       : `file://${path.join(__dirname, '../build/index.html')}`
   )
 
-  tray = new Tray(path.join(__dirname, '../public/icon-small.png'))
+  // tray = new Tray(
+  //   '/Users/janiga/Documents/atelier/pomoguru/packages/app/public/icon-small.png'
+  // )
+  tray = new Tray(path.join(__dirname, '../build/icon-small.png'))
   // tray.setContextMenu(contextMenu)
 
   tray.on('right-click', toggleWindow)

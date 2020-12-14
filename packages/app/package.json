@@ -38,7 +38,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "rimraf dist && react-scripts build && NOTARIZE=true NODE_ENV=production yarn electron-builder -c.extraMetadata.main=build/electron.js",
+    "build": "rimraf dist && react-scripts build && NOTARIZE=true NODE_ENV=production yarn build:app",
+    "build:app": "yarn electron-builder -c.extraMetadata.main=build/electron.js",
     "test": "react-scripts test",
     "dev": "concurrently \"BROWSER=none PORT=3007 yarn start\" \"wait-on http://localhost:3007 && electron .\""
   },
