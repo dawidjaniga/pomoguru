@@ -19,7 +19,7 @@ class SlackTokenChecker extends React.Component<{
   onInstall: () => void
 }> {
   timerId = 0
-  intervalInMs = 4000
+  intervalInMs = 1000
 
   startChecking = () => {
     this.stopChecking()
