@@ -43,13 +43,6 @@ function createWindow () {
     }
   })
 
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Quit',
-      role: 'quit'
-    }
-  ])
-
   win.on('blur', () => {
     if (!win.webContents.isDevToolsOpened()) {
       win.hide()
@@ -62,11 +55,7 @@ function createWindow () {
       : `file://${path.join(__dirname, '../build/index.html')}`
   )
 
-  // tray = new Tray(
-  //   '/Users/janiga/Documents/atelier/pomoguru/packages/app/public/icon-small.png'
-  // )
   tray = new Tray(path.join(__dirname, '../build/icon-small.png'))
-  // tray.setContextMenu(contextMenu)
 
   tray.on('right-click', toggleWindow)
   tray.on('double-click', toggleWindow)
