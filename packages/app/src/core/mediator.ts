@@ -1,8 +1,8 @@
 import React from 'react'
-import settings from 'api/settings'
-import slack from 'api/slack'
+import settings from '#api/settings'
+import slack from '#api/slack'
 import { useEffect } from 'react'
-import { useTimer } from 'core/timer'
+import { useTimer } from '#core/timer'
 
 const { ipcRenderer } = window.require('electron')
 
