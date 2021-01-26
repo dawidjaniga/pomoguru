@@ -5,6 +5,7 @@
   "version": "0.1.1",
   "author": "Robert Kostrzewski Robert Raimann Dawid Janiga",
   "description": "Pomoguru gives you focus",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
@@ -23,12 +24,11 @@
     "electron-is-dev": "^1.2.0",
     "electron-notarize": "1.0.0",
     "electron-store": "^6.0.1",
-    "jest": "26.6.3",
     "node-notifier": "^8.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.0",
+    "react-scripts": "4.0.1",
     "react-sweet-state": "^2.4.1",
     "rimraf": "^3.0.2",
     "shortid": "^2.2.16",
@@ -51,10 +51,7 @@
     "mac": {
       "category": "public.app-category.productivity"
     },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
+    "files": ["build/**/*", "node_modules/**/*"],
     "directories": {
       "buildResources": "build"
     },
@@ -65,17 +62,10 @@
     "url": "git+https://github.com/netguru-hackathon/pomoguru.git"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",

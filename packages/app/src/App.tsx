@@ -1,11 +1,11 @@
 import './App.css'
 
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+import React from 'react'
+import styled from 'styled-components'
 
 import Home from 'features/Home'
-import React from 'react'
 import SlackInstalation from 'features/SlackInstalation'
-import styled from 'styled-components'
 
 const Window = styled.main`
   background: var(--window-background);

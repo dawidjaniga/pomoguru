@@ -17,7 +17,7 @@ const actions = {
     })
 
     if (!timerIntervalId) {
-      timerIntervalId = setInterval(() => {
+      timerIntervalId = window.setInterval(() => {
         dispatch(actions.decrement())
       }, 1000)
     }
