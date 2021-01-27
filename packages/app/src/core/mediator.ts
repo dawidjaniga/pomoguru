@@ -34,7 +34,7 @@ export function useMediator () {
         phase = Phase.focus
 
         start()
-        
+
         slack.goIntoFocus(focusTimeLeftMinutes)
         ipcRenderer.send('notify', 'All set! Focus time is on')
       },
@@ -58,6 +58,7 @@ export function useMediator () {
       },
       onFocusPhaseEnd () {
         phase = Phase.break
+        slack.endFocus()
         setTimeLeft(breakPhaseDurationSeconds)
         ipcRenderer.send('notify', 'Great job! Now take a break :)')
       },

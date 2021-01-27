@@ -34,7 +34,8 @@ const actions = {
     clearInterval(timerIntervalId)
     timerIntervalId = 0
     setState({
-      isActive: false
+      isActive: false,
+      timeLeft: 0
     })
   },
   setTimeLeft: (timeLeft: number) => ({ setState }: StoreApi) => {
