@@ -88,5 +88,9 @@ function getId () {
   return localStorage.getItem('slack-id')
 }
 
-const api = { goIntoFocus, endFocus, setToken, isInstalled, getId }
+function getClient() {
+  return slack
+}
+
+const api = { goIntoFocus, endFocus, setToken, isInstalled, getId, getClient }
 export default api
