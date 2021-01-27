@@ -2,6 +2,7 @@ import { StoreActionApi, createHook, createStore } from 'react-sweet-state'
 type State = { timeLeft: number; isActive: boolean }
 type StoreApi = StoreActionApi<State>
 
+const intervalInMs = 1000
 let timerIntervalId = 0
 
 const actions = {
@@ -19,7 +20,7 @@ const actions = {
     if (!timerIntervalId) {
       timerIntervalId = window.setInterval(() => {
         dispatch(actions.decrement())
-      }, 1000)
+      }, intervalInMs)
     }
   },
   pause: () => ({ setState }: StoreApi) => {

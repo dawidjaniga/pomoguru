@@ -10,10 +10,6 @@ import styled from 'styled-components'
 import { useMediator } from 'core/mediator'
 import { useTimer } from 'core/timer'
 
-const CloseLink = styled.a`
-  color: var(--text-color);
-`
-
 const Buttons = styled.div`
   display: flex;
   justify-content: center;
@@ -39,10 +35,7 @@ export default function Home () {
   return (
     <>
       <WindowTitle>
-        <div>
-          PomoGuru <img src='icon-small.png' alt='PomoGuru icon' />
-        </div>
-        <CloseLink>x</CloseLink>
+        PomoGuru <img src='icon-small.png' alt='PomoGuru icon' />
       </WindowTitle>
       <WindowContent>
         {slack.isInstalled() ? (
