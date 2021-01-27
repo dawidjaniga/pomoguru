@@ -45,19 +45,32 @@ export default function Home () {
         <CloseLink>x</CloseLink>
       </WindowTitle>
       <WindowContent>
-        <Timer>{format(new Date(timeLeft * 1000), 'mm:ss')}</Timer>
-        <Buttons>
-          {isActive ? (
-            <>
-              <Button onClick={onPauseClick}>Pause</Button>
-              <Button onClick={onStopClick}>Stop</Button>
-            </>
-          ) : (
-            <Button onClick={onStartClick}>Start</Button>
-          )}
-        </Buttons>
-        {!slack.isInstalled() && (
-          <Link to='/slack-installation'>Connect to Slack</Link>
+        {slack.isInstalled() ? (
+          <>
+            <Timer data-testid='timer'>
+              {format(new Date(timeLeft * 1000), 'mm:ss')}
+            </Timer>
+            <Buttons>
+              {isActive ? (
+                <>
+                  <Button onClick={onPauseClick} data-testid='pause'>
+                    Pause
+                  </Button>
+                  <Button onClick={onStopClick} data-testid='stop'>
+                    Stop
+                  </Button>
+                </>
+              ) : (
+                <Button onClick={onStartClick} data-testid='start'>
+                  Start
+                </Button>
+              )}
+            </Buttons>
+          </>
+        ) : (
+          <Link to='/slack-installation' data-testid='connect-to-slack'>
+            Connect to Slack
+          </Link>
         )}
       </WindowContent>
     </>

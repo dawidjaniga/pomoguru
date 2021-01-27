@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home View when Slack is not initialized should show "Connect to Slack" button 1`] = `
+<div>
+  <div
+    class="sc-dlfnbm lnEtAU"
+  >
+    <div>
+      PomoGuru 
+      <img
+        alt="PomoGuru icon"
+        src="icon-small.png"
+      />
+    </div>
+    <a
+      class="sc-hKgILt dXmNWo"
+    >
+      x
+    </a>
+  </div>
+  <div
+    class="sc-gsTCUz imZhzo"
+  >
+    <a
+      data-testid="connect-to-slack"
+      href="/slack-installation"
+    >
+      Connect to Slack
+    </a>
+  </div>
+</div>
+`;
