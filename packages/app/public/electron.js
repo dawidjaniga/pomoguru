@@ -74,6 +74,7 @@ function createWindow () {
   })
 
   tray.setToolTip('PomoGuru')
+  showWindow()
 
   win.on('closed', () => (win = null))
 }
