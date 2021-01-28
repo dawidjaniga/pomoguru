@@ -76,8 +76,7 @@ async function endFocus () {
 
 function setToken (token: string) {
   localStorage.setItem('slack-token', token)
-  // @ts-ignore
-  slack = new Slack({ useElectronNet: true, token })
+  initSlackClient(token)
 }
 
 function isInstalled () {
@@ -88,7 +87,7 @@ function getId () {
   return localStorage.getItem('slack-id')
 }
 
-function getClient() {
+function getClient () {
   return slack
 }
 
