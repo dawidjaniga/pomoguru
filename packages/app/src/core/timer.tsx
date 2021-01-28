@@ -1,5 +1,6 @@
 import { StoreActionApi, createHook, createStore } from 'react-sweet-state'
-type State = { timeLeft: number; isActive: boolean }
+import { Phase } from 'types/timer'
+type State = { timeLeft: number; isActive: boolean; phase: Phase }
 type StoreApi = StoreActionApi<State>
 
 const intervalInMs = 1000
@@ -43,13 +44,19 @@ const actions = {
     setState({
       timeLeft
     })
+  },
+  setPhase: (phase: Phase) => ({ setState }: StoreApi) => {
+    setState({
+      phase
+    })
   }
 }
 
 const Store = createStore({
   initialState: {
     timeLeft: 0,
-    isActive: false
+    isActive: false,
+    phase: Phase.idle
   },
   actions,
   name: 'timeLefter'

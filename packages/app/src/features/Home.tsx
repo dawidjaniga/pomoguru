@@ -9,6 +9,7 @@ import slack from 'api/slack'
 import styled from 'styled-components'
 import { useMediator } from 'core/mediator'
 import { useTimer } from 'core/timer'
+import { Phase } from 'types/timer'
 
 const Buttons = styled.div`
   display: flex;
@@ -26,7 +27,7 @@ const Timer = styled.div`
 
 export default function Home () {
   const { onInit, onStartClick, onPauseClick, onStopClick } = useMediator()
-  const [{ timeLeft, isActive }] = useTimer()
+  const [{ timeLeft, isActive, phase }] = useTimer()
 
   useEffect(() => {
     onInit()
@@ -40,6 +41,8 @@ export default function Home () {
       <WindowContent>
         {slack.isInstalled() ? (
           <>
+            {phase === Phase.focus && 'Focus time'}
+            {phase === Phase.break && 'Break time'}
             <Timer data-testid='timer'>
               {format(new Date(timeLeft * 1000), 'mm:ss')}
             </Timer>

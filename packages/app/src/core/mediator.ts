@@ -1,3 +1,4 @@
+import { Phase } from 'types/timer'
 import React from 'react'
 import settings from 'api/settings'
 import slack from 'api/slack'
@@ -6,14 +7,13 @@ import { useTimer } from 'core/timer'
 
 const { ipcRenderer } = window.require('electron')
 
-enum Phase {
-  focus,
-  break
-}
 let phase: Phase
 
 export function useMediator () {
-  const [{ timeLeft }, { start, pause, stop, setTimeLeft }] = useTimer()
+  const [
+    { timeLeft },
+    { start, pause, stop, setTimeLeft, setPhase }
+  ] = useTimer()
   const focusPhaseDurationSeconds = settings.get(
     'focus-time-duration-in-seconds'
   )
@@ -34,6 +34,7 @@ export function useMediator () {
         phase = Phase.focus
 
         start()
+        setPhase(Phase.focus)
 
         slack.goIntoFocus(focusTimeLeftMinutes)
         ipcRenderer.send('notify', 'All set! Focus time is on')
@@ -41,24 +42,28 @@ export function useMediator () {
       onPauseClick () {
         phase = Phase.break
         pause()
+        setPhase(Phase.idle)
         ipcRenderer.send('notify', 'Notifications turned on')
         slack.endFocus()
       },
       onStopClick () {
         phase = Phase.break
         stop()
+        setPhase(Phase.idle)
         ipcRenderer.send('notify', 'Notifications turned on')
         slack.endFocus()
       },
       onBreakPhaseEnd () {
         phase = Phase.focus
         slack.goIntoFocus(focusTimeLeftMinutes)
+        setPhase(Phase.focus)
         setTimeLeft(focusPhaseDurationSeconds)
         ipcRenderer.send('notify', 'All set! Focus time is on')
       },
       onFocusPhaseEnd () {
         phase = Phase.break
         slack.endFocus()
+        setPhase(Phase.break)
         setTimeLeft(breakPhaseDurationSeconds)
         ipcRenderer.send('notify', 'Great job! Now take a break :)')
       },
