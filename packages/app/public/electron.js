@@ -5,13 +5,13 @@ const { ipcMain } = require('electron')
 const format = require('date-fns/format')
 const notifier = require('node-notifier')
 let tray = null
-let win = null
+let mainWindow = null
 
 try {
   require('electron-reloader')(module)
 } catch (_) {}
 
-// app.dock.hide()
+app.dock.hide()
 
 ipcMain.on('set-timer', (event, timeLeft) => {
   if (tray) {
@@ -28,7 +28,7 @@ ipcMain.on('notify', (event, message) => {
 })
 
 function createWindow () {
-  win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 400,
     height: 260,
     show: true,
@@ -42,14 +42,15 @@ function createWindow () {
       enableRemoteModule: true
     }
   })
+  mainWindow.webContents.setBackgroundThrottling(false)
 
-  win.on('blur', () => {
-    if (!win.webContents.isDevToolsOpened()) {
-      win.hide()
+  mainWindow.on('blur', () => {
+    if (!mainWindow.webContents.isDevToolsOpened()) {
+      mainWindow.hide()
     }
   })
 
-  win.loadURL(
+  mainWindow.loadURL(
     isDev
       ? 'http://localhost:3007'
       : `file://${path.join(__dirname, '../build/index.html')}`
@@ -63,31 +64,31 @@ function createWindow () {
     toggleWindow()
 
     if (
-      win &&
-      win.isVisible &&
-      win.isVisible() &&
+      mainWindow &&
+      mainWindow.isVisible &&
+      mainWindow.isVisible() &&
       process.defaultApp &&
       event.metaKey
     ) {
-      win.openDevTools({ mode: 'detach' })
+      mainWindow.openDevTools({ mode: 'detach' })
     }
   })
 
   tray.setToolTip('PomoGuru')
   showWindow()
 
-  win.on('closed', () => (win = null))
+  mainWindow.on('closed', () => (mainWindow = null))
 }
 
 const toggleWindow = () => {
-  if (win.isVisible()) {
-    win.hide()
+  if (mainWindow.isVisible()) {
+    mainWindow.hide()
   } else {
     showWindow()
   }
 }
 const getWindowPosition = () => {
-  const windowBounds = win.getBounds()
+  const windowBounds = mainWindow.getBounds()
   const trayBounds = tray.getBounds()
 
   const x = Math.round(
@@ -100,9 +101,9 @@ const getWindowPosition = () => {
 
 const showWindow = () => {
   const position = getWindowPosition()
-  win.setPosition(position.x, position.y, false)
-  win.show()
-  win.focus()
+  mainWindow.setPosition(position.x, position.y, false)
+  mainWindow.show()
+  mainWindow.focus()
 }
 
 app.on('window-all-closed', () => {
