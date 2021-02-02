@@ -3,7 +3,7 @@ const { app, BrowserWindow, Menu, Tray } = require('electron')
 const isDev = require('electron-is-dev')
 const { ipcMain } = require('electron')
 const format = require('date-fns/format')
-const notifier = require('node-notifier')
+
 let tray = null
 let mainWindow = null
 
@@ -19,18 +19,11 @@ ipcMain.on('set-timer', (event, timeLeft) => {
   }
 })
 
-ipcMain.on('notify', (event, message) => {
-  notifier.notify({
-    message,
-    title: 'Pomoguru',
-    icon: path.join(__dirname, 'icon.png')
-  })
-})
-
 function createWindow () {
   mainWindow = new BrowserWindow({
     width: 400,
     height: 260,
+    icon: path.join(__dirname, '../build/icon.png'),
     show: true,
     frame: false,
     fullscreenable: false,
