@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import { version } from '../../package.json'
 import Button from 'core/components/Button'
 import { Link } from 'react-router-dom'
 import WindowContent from 'core/components/WindowContent'
@@ -37,6 +38,7 @@ export default function Home () {
     <>
       <WindowTitle>
         PomoGuru <img src='icon-small.png' alt='PomoGuru icon' />
+        {version}
       </WindowTitle>
       <WindowContent>
         {slack.isInstalled() ? (
