@@ -1,3 +1,5 @@
+require('update-electron-app')()
+
 const path = require('path')
 const { app, BrowserWindow, Menu, Tray } = require('electron')
 const isDev = require('electron-is-dev')
