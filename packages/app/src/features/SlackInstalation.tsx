@@ -11,6 +11,15 @@ const { shell } = window.require('electron')
 const slackUserScopes = ['chat:write', 'dnd:write', 'users.profile:write'].join(
   ','
 )
+
+// @TODO: Plan in advance needed scopes, because on every scope change
+// Slack App have to be authorized
+// const slackUserScopes = [
+//   'chat:write',
+//   'dnd:write',
+//   'users.profile:write',
+//   'users.profile:read'
+// ].join(',')
 const slackClientId = '866674528645.977369566150'
 
 class SlackTokenChecker extends React.Component<{

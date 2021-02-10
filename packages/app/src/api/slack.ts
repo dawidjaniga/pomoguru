@@ -47,6 +47,10 @@ async function changeStatus ({ text, emoji, expireTime }: Status) {
   }
 }
 
+async function getStatus (): Promise<string> {
+  return slack.users.profile.get()
+}
+
 async function goIntoFocus (focusPhaseDurationInMinutes: number) {
   try {
     const pomodoroEndTime = addMinutes(new Date(), focusPhaseDurationInMinutes)
@@ -91,5 +95,13 @@ function getClient () {
   return slack
 }
 
-const api = { goIntoFocus, endFocus, setToken, isInstalled, getId, getClient }
+const api = {
+  goIntoFocus,
+  endFocus,
+  getStatus,
+  setToken,
+  isInstalled,
+  getId,
+  getClient
+}
 export default api
