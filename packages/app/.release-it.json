@@ -4,5 +4,9 @@
       "preset": "angular",
       "infile": "CHANGELOG.md"
     }
+  },
+  "github": {
+    "release": true,
+    "assets": ["dist/*.zip"]
   }
 }
