@@ -45,6 +45,7 @@
     "build:app": "yarn electron-builder -c.extraMetadata.main=build/electron.js",
     "test": "jest --watch",
     "test:ci": "jest",
+    "release": "release-it",
     "dev": "concurrently \"BROWSER=none PORT=3007 yarn start\" \"wait-on http://localhost:3007 && electron .\""
   },
   "build": {
@@ -82,6 +83,7 @@
     "electron-builder": "^22.9.1",
     "electron-reloader": "^1.0.1",
     "jest-localstorage-mock": "2.4.6",
+    "release-it": "14.4.1",
     "wait-on": "^5.2.0"
   }
 }
