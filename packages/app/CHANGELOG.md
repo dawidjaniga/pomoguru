@@ -1,3 +1,5 @@
+## [0.2.1](https://github.com/dawidjaniga/pomoguru/compare/0.2.0...0.2.1) (2021-02-24)
+
 # 0.2.0 (2021-02-24)
 
 
