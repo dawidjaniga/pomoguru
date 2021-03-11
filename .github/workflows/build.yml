@@ -1,4 +1,7 @@
 name: Build/release
+defaults:
+  run:
+    working-directory: ./packages/app
 
 on: push
 
