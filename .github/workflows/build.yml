@@ -31,8 +31,8 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: packages/app
+          install-command: yarn install --prefer-offline --frozen-lockfile
 
-      - run: yarn install --prefer-offline --frozen-lockfile
       - run: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
