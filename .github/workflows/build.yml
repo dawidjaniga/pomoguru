@@ -1,7 +1,7 @@
 name: Build/release
 defaults:
   run:
-    working-directory: ./packages/app
+    working-directory: packages/app
 
 on: push
 
@@ -18,7 +18,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: c-hive/gha-yarn-cache@v1
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: packages/app
+          useLockFile: false
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
