@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/dawidjaniga/pomoguru/compare/0.2.3...0.3.0) (2021-03-18)
+
+
+### Features
+
+* ignore deps array ([06acdb2](https://github.com/dawidjaniga/pomoguru/commit/06acdb247fc9642e5b4e97a50550a7098aded94b))
+
 ## [0.2.3](https://github.com/dawidjaniga/pomoguru/compare/0.2.2...0.2.3) (2021-02-24)
 
 ## [0.2.2](https://github.com/dawidjaniga/pomoguru/compare/0.2.1...0.2.2) (2021-02-24)
