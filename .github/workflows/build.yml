@@ -33,9 +33,10 @@ jobs:
           working-directory: packages/app
           install-command: yarn install --prefer-offline --frozen-lockfile
 
-      - run: yarn release
+      # - run: yarn release
+      - run: yarn build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          DEBUG: electron-builder
+          DEBUG: electron-builder*
