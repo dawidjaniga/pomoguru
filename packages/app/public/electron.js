@@ -1,10 +1,15 @@
-require('update-electron-app')()
-
+const { autoUpdater } = require('electron-updater')
 const path = require('path')
-const { app, BrowserWindow, Menu, Tray } = require('electron')
+const { app, BrowserWindow, Tray } = require('electron')
 const isDev = require('electron-is-dev')
 const { ipcMain } = require('electron')
 const format = require('date-fns/format')
+
+try {
+  autoUpdater.checkForUpdatesAndNotify()
+} catch (e) {
+  console.error('AutoUpdate error ', e)
+}
 
 let tray = null
 let mainWindow = null
@@ -18,6 +23,14 @@ app.dock.hide()
 ipcMain.on('set-timer', (event, timeLeft) => {
   if (tray) {
     tray.setTitle(format(new Date(timeLeft * 1000), 'mm:ss'))
+  }
+})
+
+ipcMain.on('checkUpdateClicked', () => {
+  if (isDev) {
+    autoUpdater.checkForUpdates()
+  } else {
+    autoUpdater.checkForUpdatesAndNotify()
   }
 })
 
@@ -51,7 +64,7 @@ function createWindow () {
       : `file://${path.join(__dirname, '../build/index.html')}`
   )
 
-  tray = new Tray(path.join(__dirname, '../build/icon-small.png'))
+  tray = new Tray(path.join(__dirname, getAppIconPath()))
 
   tray.on('right-click', toggleWindow)
   tray.on('double-click', toggleWindow)
@@ -114,3 +127,11 @@ app.on('active', () => {
 })
 
 app.whenReady().then(createWindow)
+
+function getAppIconPath () {
+  if (isDev) {
+    return '../public/icon-small.png'
+  } else {
+    return '../build/icon-small.png'
+  }
+}

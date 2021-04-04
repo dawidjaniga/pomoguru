@@ -12,6 +12,8 @@ import { useMediator } from 'core/mediator'
 import { useTimer } from 'core/timer'
 import { Phase } from 'types/timer'
 
+const { ipcRenderer } = window.require('electron')
+
 const Buttons = styled.div`
   display: flex;
   justify-content: center;
@@ -34,11 +36,16 @@ export default function Home () {
     onInit()
   }, []) // eslint-disable-line
 
+  function handleUpdateClick() {
+    ipcRenderer.send('checkUpdateClicked')
+  }
+
   return (
     <>
       <WindowTitle>
         PomoGuru <img src='icon-small.png' alt='PomoGuru icon' />
         {version}
+        <button onClick={handleUpdateClick}>Check update</button>
       </WindowTitle>
       <WindowContent>
         {slack.isInstalled() ? (
