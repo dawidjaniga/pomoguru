@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/dawidjaniga/pomoguru/compare/0.3.0...0.4.0) (2021-04-04)
+
+
+### Features
+
+* check for updates automatically ([f4afbeb](https://github.com/dawidjaniga/pomoguru/commit/f4afbeb223075558c69aa317489b02b75adec2b4))
+
 # [0.3.0](https://github.com/dawidjaniga/pomoguru/compare/0.2.3...0.3.0) (2021-03-18)
 
 
