@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/dawidjaniga/pomoguru/compare/0.4.0...0.5.0) (2021-04-04)
+
+
+### Features
+
+* **slack:** add reading status ([5a69a10](https://github.com/dawidjaniga/pomoguru/commit/5a69a10f9c5e38e8678077b5b9087ea07c37ca06))
+
 # [0.4.0](https://github.com/dawidjaniga/pomoguru/compare/0.3.0...0.4.0) (2021-04-04)
 
 
