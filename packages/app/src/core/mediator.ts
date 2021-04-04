@@ -100,6 +100,7 @@ export function useMediator () {
         }
       }
     }
+    // eslint-disable-next-line
   }, [start, pause, stop, focusTimeLeftMinutes, timeLeft])
 
   useEffect(() => {

@@ -2,7 +2,7 @@
   "name": "pomoguru",
   "main": "public/electron.js",
   "homepage": "./",
-  "version": "0.1.6",
+  "version": "0.4.0",
   "author": "Robert Kostrzewski Robert Raimann Dawid Janiga",
   "description": "Pomoguru gives you focus",
   "license": "MIT",
@@ -45,15 +45,21 @@
     "build:app": "yarn electron-builder -c.extraMetadata.main=build/electron.js",
     "test": "jest --watch",
     "test:ci": "jest",
+    "release": "dotenv release-it -VV",
     "dev": "concurrently \"BROWSER=none PORT=3007 yarn start\" \"wait-on http://localhost:3007 && electron .\""
   },
   "build": {
     "appId": "com.dawidjaniga.pomoguru",
     "mac": {
       "category": "public.app-category.productivity",
-      "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     },
-    "files": ["build/**/*", "node_modules/**/*"],
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
     "directories": {
       "buildResources": "build"
     },
@@ -64,10 +70,17 @@
     "url": "git+https://github.com/dawidjaniga/pomoguru.git"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -75,13 +88,16 @@
     ]
   },
   "devDependencies": {
+    "@release-it/conventional-changelog": "2.0.1",
     "@types/react-router-dom": "^5.1.6",
     "concurrently": "^5.3.0",
     "devtron": "^1.4.0",
+    "dotenv-cli": "4.0.0",
     "electron": "^10.1.5",
     "electron-builder": "^22.9.1",
     "electron-reloader": "^1.0.1",
     "jest-localstorage-mock": "2.4.6",
+    "release-it": "14.4.1",
     "wait-on": "^5.2.0"
   }
 }

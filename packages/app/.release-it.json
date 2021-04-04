@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "after:bump": "yarn build",
+    "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
+  },
+  "github": {
+    "release": true,
+    "assets": ["dist/*.zip"]
+  }
+}
