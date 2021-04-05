@@ -11,6 +11,6 @@
   },
   "github": {
     "release": true,
-    "assets": ["dist/*.zip"]
+    "assets": ["dist/*.zip", "*.yml", "*.dmg"]
   }
 }
