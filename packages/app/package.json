@@ -52,14 +52,12 @@
     "appId": "com.dawidjaniga.pomoguru",
     "mac": {
       "category": "public.app-category.productivity",
-      "publish": [
-        "github"
-      ]
+      "publish": {
+        "provider": "github",
+        "vPrefixedTagName": false
+      }
     },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
+    "files": ["build/**/*", "node_modules/**/*"],
     "directories": {
       "buildResources": "build"
     },
@@ -70,17 +68,10 @@
     "url": "git+https://github.com/dawidjaniga/pomoguru.git"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
