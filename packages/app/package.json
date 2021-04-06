@@ -2,7 +2,7 @@
   "name": "pomoguru",
   "main": "public/electron.js",
   "homepage": "./",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "author": "Robert Kostrzewski Robert Raimann Dawid Janiga",
   "description": "Pomoguru gives you focus",
   "license": "MIT",
