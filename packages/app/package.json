@@ -2,7 +2,7 @@
   "name": "pomoguru",
   "main": "public/electron.js",
   "homepage": "./",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": "Robert Kostrzewski Robert Raimann Dawid Janiga",
   "description": "Pomoguru gives you focus",
   "license": "MIT",
@@ -57,7 +57,10 @@
     "mac": {
       "category": "public.app-category.productivity"
     },
-    "files": ["build/**/*", "node_modules/**/*"],
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
     "directories": {
       "buildResources": "build"
     },
@@ -68,10 +71,17 @@
     "url": "git+https://github.com/dawidjaniga/pomoguru.git"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
