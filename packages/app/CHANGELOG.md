@@ -1,3 +1,5 @@
+## [0.5.4](https://github.com/dawidjaniga/pomoguru/compare/0.5.3...0.5.4) (2021-04-06)
+
 ## [0.5.3](https://github.com/dawidjaniga/pomoguru/compare/0.5.2...0.5.3) (2021-04-05)
 
 ## [0.5.2](https://github.com/dawidjaniga/pomoguru/compare/0.5.1...0.5.2) (2021-04-05)
