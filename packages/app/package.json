@@ -46,16 +46,16 @@
     "test": "jest --watch",
     "test:ci": "jest",
     "release": "dotenv release-it -VV",
-    "dev": "concurrently \"BROWSER=none PORT=3007 yarn start\" \"wait-on http://localhost:3007 && electron .\""
+    "dev": "concurrently \"BROWSER=none PORT=3007 yarn start\" \"wait-on http://localhost:3007 && electron . --inspect-brk\""
   },
   "build": {
     "appId": "com.dawidjaniga.pomoguru",
+    "publish": {
+      "provider": "github",
+      "vPrefixedTagName": false
+    },
     "mac": {
-      "category": "public.app-category.productivity",
-      "publish": {
-        "provider": "github",
-        "vPrefixedTagName": false
-      }
+      "category": "public.app-category.productivity"
     },
     "files": ["build/**/*", "node_modules/**/*"],
     "directories": {
