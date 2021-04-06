@@ -82,7 +82,7 @@ function createWindow () {
     }
   })
 
-  tray.setToolTip('PomoGuru')
+  tray.setToolTip('Pomoguru')
   showWindow()
 
   mainWindow.on('closed', () => (mainWindow = null))

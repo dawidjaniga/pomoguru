@@ -6,9 +6,9 @@ exports[`Home View when Slack is not initialized should show "Connect to Slack" 
     class="sc-dlfnbm lnEtAU"
   >
     <div>
-      PomoGuru 
+      Pomoguru 
       <img
-        alt="PomoGuru icon"
+        alt="Pomoguru icon"
         src="icon-small.png"
       />
     </div>
