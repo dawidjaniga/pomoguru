@@ -1,3 +1,15 @@
+# [0.6.0](https://github.com/dawidjaniga/pomoguru/compare/0.5.6...0.6.0) (2021-04-21)
+
+
+### Bug Fixes
+
+* use 512px square icon ([a422ecc](https://github.com/dawidjaniga/pomoguru/commit/a422ecc1901f1ad3b1b48288980e97169b95b373))
+
+
+### Features
+
+* **icon:** add green icon on break ([ac5c574](https://github.com/dawidjaniga/pomoguru/commit/ac5c57455283824674cbf8e7afb4d220f91d130e))
+
 ## [0.5.6](https://github.com/dawidjaniga/pomoguru/compare/0.5.5...0.5.6) (2021-04-06)
 
 ## [0.5.5](https://github.com/dawidjaniga/pomoguru/compare/0.5.4...0.5.5) (2021-04-06)
