@@ -43,7 +43,7 @@ export default function Home () {
   return (
     <>
       <WindowTitle>
-        Pomoguru <img src='icon-small.png' alt='Pomoguru icon' />
+        Pomoguru <img src='icon-red-small.png' alt='Pomoguru icon' />
         {version}
         <button onClick={handleUpdateClick}>Check update</button>
       </WindowTitle>

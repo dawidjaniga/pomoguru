@@ -33,17 +33,20 @@ export function useMediator () {
       },
       onStartClick () {
         phase = Phase.focus
+        slack.goIntoFocus(focusTimeLeftMinutes)
+        ipcRenderer.send('set-icon', 'icon-red-small.png')
 
         start()
         setPhase(Phase.focus)
 
-        slack.goIntoFocus(focusTimeLeftMinutes)
         notifications.notify({
           body: 'All set! Focus time is on'
         })
       },
       onPauseClick () {
         phase = Phase.break
+        ipcRenderer.send('set-icon', 'icon-green-small.png')
+        
         pause()
         setPhase(Phase.idle)
 
@@ -55,6 +58,8 @@ export function useMediator () {
       },
       onStopClick () {
         phase = Phase.break
+        ipcRenderer.send('set-icon', 'icon-green-small.png')
+        
         stop()
         setPhase(Phase.idle)
 
@@ -66,9 +71,11 @@ export function useMediator () {
       },
       onBreakPhaseEnd () {
         phase = Phase.focus
-        setTimeLeft(focusPhaseDurationSeconds)
-        slack.goIntoFocus(focusTimeLeftMinutes)
         setPhase(Phase.focus)
+        slack.goIntoFocus(focusTimeLeftMinutes)
+
+        setTimeLeft(focusPhaseDurationSeconds)
+        ipcRenderer.send('set-icon', 'icon-red-small.png')
 
         notifications.notify({
           body: 'All set! Focus time is on'
@@ -76,9 +83,10 @@ export function useMediator () {
       },
       onFocusPhaseEnd () {
         phase = Phase.break
-        slack.endFocus()
         setPhase(Phase.break)
+        slack.endFocus()
         setTimeLeft(breakPhaseDurationSeconds)
+        ipcRenderer.send('set-icon', 'icon-green-small.png')
 
         notifications.notify({
           body: 'Great job! Break time'

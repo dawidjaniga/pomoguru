@@ -26,6 +26,14 @@ ipcMain.on('set-timer', (event, timeLeft) => {
   }
 })
 
+ipcMain.on('set-icon', (event, icon) => {
+  if (tray) {
+    const iconPath = getIconPath(icon)
+    console.log('Setting icon: ', iconPath)
+    tray.setImage(iconPath)
+  }
+})
+
 ipcMain.on('checkUpdateClicked', () => {
   if (isDev) {
     autoUpdater.checkForUpdates()
@@ -64,7 +72,7 @@ function createWindow () {
       : `file://${path.join(__dirname, '../build/index.html')}`
   )
 
-  tray = new Tray(path.join(__dirname, getAppIconPath()))
+  tray = new Tray(getIconPath('icon-red-small.png'))
 
   tray.on('right-click', toggleWindow)
   tray.on('double-click', toggleWindow)
@@ -121,17 +129,21 @@ app.on('window-all-closed', () => {
 })
 
 app.on('active', () => {
-  if (BrowserWin.getAllWindows().length === 0) {
+  if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
 })
 
 app.whenReady().then(createWindow)
 
-function getAppIconPath () {
+function getIconPath (icon) {
+  let iconPath
+  
   if (isDev) {
-    return '../public/icon-small.png'
+    iconPath = '../public/' + icon
   } else {
-    return '../build/icon-small.png'
+    iconPath = '../build/' + icon
   }
+
+  return path.join(__dirname, iconPath)
 }
