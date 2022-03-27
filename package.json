@@ -2,7 +2,9 @@
   "name": "pomoguru",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx serve server"
+  },
   "private": true,
   "dependencies": {
     "airtable": "^0.11.2",
