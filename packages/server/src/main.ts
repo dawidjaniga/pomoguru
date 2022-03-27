@@ -239,7 +239,7 @@ const start = async () => {
       })
     })
 
-    await server.listen(4000)
+    await server.listen(process.env.PORT)
   } catch (err) {
     server.log.error(err)
     process.exit(1)
