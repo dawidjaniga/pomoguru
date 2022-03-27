@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
+    "next": "packages/next",
+    "next-e2e": "packages/next-e2e",
     "server": "packages/server"
   }
 }
