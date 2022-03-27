@@ -8,7 +8,8 @@
   "private": true,
   "dependencies": {
     "airtable": "^0.11.2",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "nx": "13.9.5"
   },
   "devDependencies": {
     "@nrwl/cli": "13.9.5",
@@ -40,7 +41,6 @@
     "mongoose": "^6.2.8",
     "nanoid": "^3.1.30",
     "nodemon": "^2.0.15",
-    "nx": "13.9.5",
     "pino-pretty": "^7.5.1",
     "pm2": "^5.1.2",
     "prettier": "^2.5.1",
