@@ -16,8 +16,6 @@ import fastify from 'fastify'
 import fastifyIO from 'fastify-socket.io'
 import fastifyCors from 'fastify-cors'
 
-const DEFAULT_PORT = 4000
-
 const server = fastify({
   // logger: {
   //   prettyPrint: true,
@@ -242,10 +240,13 @@ const start = async () => {
       })
     })
 
+    const DEFAULT_HOST = '0.0.0.0'
+    const DEFAULT_PORT = 4000
+    const host = process.env.HOST || DEFAULT_HOST
     const port = process.env.PORT || DEFAULT_PORT
-    console.log('Starting server on port: ', port)
+    console.log(`Starting server on ${host}:${port}`)
 
-    await server.listen(port)
+    await server.listen(port, host)
   } catch (err) {
     console.log('Server start error', err)
     server.log.error(err)
