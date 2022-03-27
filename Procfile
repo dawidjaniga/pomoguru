@@ -1,0 +1,1 @@
+web: node dist/packages/server/main.js
