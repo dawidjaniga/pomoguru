@@ -16,6 +16,8 @@ import fastify from 'fastify'
 import fastifyIO from 'fastify-socket.io'
 import fastifyCors from 'fastify-cors'
 
+const DEFAULT_PORT = 4000
+
 const server = fastify({
   // logger: {
   //   prettyPrint: true,
@@ -31,6 +33,7 @@ server.register(fastifyIO, {
 
 server.get('/', (req, reply) => {
   server.io.emit('hello')
+  reply.send('Pomoguru API')
 })
 
 // @TODO: divide between developemnt and prod
@@ -239,7 +242,10 @@ const start = async () => {
       })
     })
 
-    await server.listen(process.env.PORT)
+    const port = process.env.PORT || DEFAULT_PORT
+    console.log('Starting server on port: ', port)
+
+    await server.listen(port)
   } catch (err) {
     server.log.error(err)
     process.exit(1)
