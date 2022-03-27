@@ -5,7 +5,7 @@
     "defaultBase": "main"
   },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/node"
   },
   "tasksRunnerOptions": {
     "default": {
@@ -20,5 +20,6 @@
         "accessToken": "ZGFmNmUzYjAtNmFmMy00Y2NiLTllYTItNGZhMzk0YjM2MTcyfHJlYWQtd3JpdGU="
       }
     }
-  }
+  },
+  "defaultProject": "server"
 }
