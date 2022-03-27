@@ -3,7 +3,7 @@ import Menu from './Menu'
 import { Layout } from 'antd'
 import User from './User'
 import Link from 'next/link'
-import { useUser } from '../pomoguru/pomoguru-react'
+import { useUser } from '@pomoguru/client/react'
 import styled from 'styled-components'
 
 const Wrapper = styled(Layout.Header)`

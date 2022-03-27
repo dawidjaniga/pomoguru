@@ -1,10 +1,10 @@
 import React from 'react'
-import { model, useTimeLeft } from '../../../pomoguru/pomoguru-react'
+import { model, useTimeLeft } from '@pomoguru/client/react'
 
 import { Progress } from 'antd'
 
 import { ProgressProps } from 'antd/lib/progress'
-import { Phase } from '../../../pomoguru/objects/model'
+import { Phase } from '@pomoguru/client/objects/model'
 
 const phaseMap: Record<Phase, ProgressProps['status']> = {
   idle: 'exception',

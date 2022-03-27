@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { Phase } from '../pomoguru/objects/model'
-import { model } from '../pomoguru/pomoguru-react'
+import { Phase } from '@pomoguru/client/objects/model'
+import { model } from '@pomoguru/client/react'
 
 const phaseMap: Record<Phase, string> = {
   idle: 'start',

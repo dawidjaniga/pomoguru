@@ -3,9 +3,9 @@ import Button from '../../components/Button'
 import Header from './components/Header'
 import Layout from '../../components/Layout'
 
-import { actions, usePhase } from '../../pomoguru/pomoguru-react'
+import { actions, usePhase } from '@pomoguru/client/react'
+import { Phase } from '@pomoguru/client/objects/model'
 import TimeLeft from './components/TimeLeft'
-import { Phase } from '../../pomoguru/objects/model'
 
 const Content = styled.div`
   text-align: center;
