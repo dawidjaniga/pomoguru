@@ -247,6 +247,7 @@ const start = async () => {
 
     await server.listen(port)
   } catch (err) {
+    console.log('Server start error', err)
     server.log.error(err)
     process.exit(1)
   }
