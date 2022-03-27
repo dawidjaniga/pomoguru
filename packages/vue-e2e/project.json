@@ -1,0 +1,34 @@
+{
+  "root": "packages/vue-e2e",
+  "sourceRoot": "packages/vue-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "packages/vue-e2e/cypress.json",
+        "devServerTarget": "vue:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "vue:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/vue-e2e/**/*.{js,ts}"
+        ]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": [
+    "vue"
+  ]
+}

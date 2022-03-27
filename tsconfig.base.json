@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@pomoguru/client/*": ["packages/client/src/*"],
+      "@pomoguru/client": ["packages/client/src"],
       "@server/*": ["packages/server/src/*"]
     }
   },

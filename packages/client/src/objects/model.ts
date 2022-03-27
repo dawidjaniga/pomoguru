@@ -3,8 +3,15 @@ import format from 'date-fns/format'
 
 export type Phase = 'idle' | 'work' | 'paused' | 'break'
 
+export type TimeLeft = {
+  phase: Phase
+  formattedSeconds: string
+  secondsLeft: number
+  percentCompleted: number
+}
+
 export class Model extends Publisher {
-  private _data = {}
+  private _data: Record<string, any> = {}
 
   constructor () {
     super()

@@ -1,0 +1,60 @@
+{
+  "root": "packages/vue",
+  "projectType": "application",
+  "sourceRoot": "packages/vue/src",
+  "targets": {
+    "build": {
+      "executor": "@nx-plus/vue:browser",
+      "options": {
+        "dest": "dist/packages/vue",
+        "index": "packages/vue/public/index.html",
+        "main": "packages/vue/src/main.ts",
+        "tsConfig": "packages/vue/tsconfig.app.json"
+      },
+      "configurations": {
+        "production": {
+          "mode": "production",
+          "filenameHashing": true,
+          "productionSourceMap": true,
+          "css": {
+            "extract": true,
+            "sourceMap": false
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx-plus/vue:dev-server",
+      "options": {
+        "browserTarget": "vue:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "vue:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/vue/**/*.{ts,tsx,vue}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/packages/vue"
+      ],
+      "options": {
+        "jestConfig": "packages/vue/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

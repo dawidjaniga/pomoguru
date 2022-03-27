@@ -1,19 +1,5 @@
-import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
-import { MainController } from './mainController'
+import { controller, model } from './index'
 import { useEffect, useState } from 'react'
-
-import Interval from './interval'
-import Timer from './timer'
-import { Model } from './objects/model'
-
-export const controller = new MainController(
-  new Interval(),
-  new Timer(),
-  new Model(),
-  new SocketIoRealTimeProvider()
-)
-
-export const model = controller.model
 
 export const actions = {
   startWork () {

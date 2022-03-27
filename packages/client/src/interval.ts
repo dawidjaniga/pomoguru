@@ -1,8 +1,8 @@
 import { Publisher } from './objects/subscriber'
 
 export default class Interval extends Publisher {
-  public durationMs: number = 1000
-  private handler: NodeJS.Timer = null
+  public durationMs = 1000
+  private handler: number | null = null
 
   constructor () {
     super()
@@ -10,6 +10,7 @@ export default class Interval extends Publisher {
 
   start () {
     if (!this.handler) {
+      // @ts-ignore
       this.handler = setInterval(
         () => this.publish('intervalTicked'),
         this.durationMs
