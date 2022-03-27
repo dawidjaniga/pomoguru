@@ -13,7 +13,7 @@ const Content = styled.div`
 `
 
 const Timer = styled.div`
-  padding-bottom: 40px;
+  padding-bottom: 50px;
 `
 
 type DisplayProps = {
