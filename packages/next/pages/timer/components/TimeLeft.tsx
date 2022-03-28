@@ -1,5 +1,5 @@
 import React from 'react'
-import { model, useTimeLeft } from '@pomoguru/client/react'
+import { model, useTimeLeft } from '@pomoguru/client'
 
 import { Progress } from 'antd'
 

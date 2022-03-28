@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
-import { Phase } from '@pomoguru/client/objects/model'
-import { model } from '@pomoguru/client/react'
+import { model, Phase } from '@pomoguru/client'
 
 const phaseMap: Record<Phase, string> = {
   idle: 'start',

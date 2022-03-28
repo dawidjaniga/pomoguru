@@ -1,6 +1,6 @@
 import Interval from './interval'
 import Timer from './timer'
-import { Model, TimeLeft } from './objects/model'
+import { Model } from './objects/model'
 import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
 import { MainController } from './mainController'
 
@@ -13,4 +13,5 @@ export const controller = new MainController(
 
 export const model = controller.model
 
-export { TimeLeft }
+export { TimeLeft, Phase } from './objects/model'
+export * from './react'
