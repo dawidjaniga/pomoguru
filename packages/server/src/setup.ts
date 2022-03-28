@@ -18,7 +18,7 @@ async function setup () {
   Container.set('authService', new AuthService(privateKey))
   Container.set(
     'googleAuthService',
-    new GoogleAuthService(process.env.GOOGLE_CLIENT_ID as string)
+    new GoogleAuthService(process.env.NX_GOOGLE_CLIENT_ID as string)
   )
   console.log('Server setup ended.')
 }
