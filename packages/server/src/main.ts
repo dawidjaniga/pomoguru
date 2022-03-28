@@ -25,7 +25,7 @@ const server = fastify({
   }
 })
 
-const allowerdOrigins = ['http://pomoguru.app']
+const allowerdOrigins = ['https://pomoguru.app']
 
 if (isDevelopment) {
   allowerdOrigins.push('http://localhost:4200')

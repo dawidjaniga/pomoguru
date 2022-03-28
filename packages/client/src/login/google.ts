@@ -22,8 +22,6 @@ export function renderLoginButton (selector: string) {
       throw Error(`Google Login container for selector ${selector} not found`)
     }
 
-    console.log('clientId', clientId)
-
     google.accounts.id.initialize({
       client_id: clientId,
       callback: handleCredentialResponse
