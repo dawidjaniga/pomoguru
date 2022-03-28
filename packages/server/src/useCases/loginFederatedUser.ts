@@ -40,11 +40,10 @@ export class LoginFederatedUserUseCase
         const payload = await googleAuthService.verify(jwtToken)
 
         if (payload?.email) {
-          const user = await userRepo.get({ email: payload.email })
-
-          if (user) {
+          try {
+            const user = await userRepo.get({ email: payload.email })
             return authService.createJwtToken(user.id)
-          } else {
+          } catch (_) {
             const newUser = new User({
               email: payload.email,
               avatarUrl: payload.picture
