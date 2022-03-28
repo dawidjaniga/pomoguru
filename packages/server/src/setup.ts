@@ -1,6 +1,3 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
-
 import Container from 'typedi'
 import { AirtableWorkRepo } from '@server/repositories/AirtableWorkRepo'
 import { AuthService } from '@server/app/services/Auth'

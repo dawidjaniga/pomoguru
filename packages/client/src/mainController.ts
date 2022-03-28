@@ -17,6 +17,9 @@ type UserResponse = {
     }
   }
 }
+
+const apiUrl = process.env['NX_POMOGURU_API_URL']
+
 export class MainController extends Subject {
   constructor (
     public interval: Interval,
@@ -41,18 +44,28 @@ export class MainController extends Subject {
     this.getUser()
   }
 
+  async loginGoogle (jwtToken: string) {
+    await fetch(apiUrl + '/login/google', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        jwtToken
+      })
+    })
+  }
+
   async getUser () {
     try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_POMOGORU_API_URL + '/user',
-        {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          }
+      const response = await fetch(apiUrl + '/user', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
         }
-      )
+      })
       const body = (await response.json()) as UserResponse
 
       if (body.data) {

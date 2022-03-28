@@ -13,5 +13,6 @@ export const controller = new MainController(
 
 export const model = controller.model
 
-export { TimeLeft, Phase } from './objects/model'
+export type { TimeLeft, Phase } from './objects/model'
 export * from './react'
+export * from './login/google'

@@ -4,7 +4,7 @@ import Header from './components/Header'
 import Layout from '../../components/Layout'
 
 import { actions, usePhase } from '@pomoguru/client'
-import { Phase } from '@pomoguru/client/objects/model'
+import { Phase } from '@pomoguru/client'
 import TimeLeft from './components/TimeLeft'
 
 const Content = styled.div`

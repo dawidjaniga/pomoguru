@@ -4,7 +4,7 @@ import { model, useTimeLeft } from '@pomoguru/client'
 import { Progress } from 'antd'
 
 import { ProgressProps } from 'antd/lib/progress'
-import { Phase } from '@pomoguru/client/objects/model'
+import { Phase } from '@pomoguru/client'
 
 const phaseMap: Record<Phase, ProgressProps['status']> = {
   idle: 'exception',
