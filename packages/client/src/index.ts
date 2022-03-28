@@ -13,6 +13,7 @@ export const controller = new MainController(
 
 export const model = controller.model
 
+// prettier-ignore
 export type { TimeLeft, Phase } from './objects/model'
 export * from './react'
 export * from './login/google'
