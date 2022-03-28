@@ -16,27 +16,35 @@ import fastify from 'fastify'
 import fastifyIO from 'fastify-socket.io'
 import fastifyCors from 'fastify-cors'
 
+const isDevelopment = process.env.NODE_ENV === 'development'
+
 const server = fastify({
-  // logger: {
-  //   prettyPrint: true,
-  //   level: 'trace'
-  // }
+  logger: {
+    prettyPrint: true,
+    level: 'trace'
+  }
 })
+
+const allowerdOrigins = ['http://pomoguru.app']
+
+if (isDevelopment) {
+  allowerdOrigins.push('http://localhost:4200')
+}
+
 server.register(fastifyIO, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: allowerdOrigins,
     credentials: true
   }
 })
 
-server.get('/', (req, reply) => {
+server.get('/', (_, reply) => {
   server.io.emit('hello')
   reply.send('Pomoguru API')
 })
 
-// @TODO: divide between developemnt and prod
 server.register(fastifyCors, {
-  origin: 'http://localhost:3000',
+  origin: allowerdOrigins,
   credentials: true
 })
 
