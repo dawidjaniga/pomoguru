@@ -1,4 +1,4 @@
-import { SystemNotificationService } from '../interfaces/NotificationService'
+import { SystemNotificationService } from '../interfaces/SystemNotificationService'
 
 export class BrowserNotificationService implements SystemNotificationService {
   showNotification (title: string, options: NotificationOptions) {

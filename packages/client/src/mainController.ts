@@ -3,7 +3,8 @@ import Interval from './interval'
 import { Subject } from './objects/observer'
 import Timer from './timer'
 import { Model } from './objects/model'
-import { SystemNotificationService } from './interfaces/NotificationService'
+import { SystemNotificationService } from './interfaces/SystemNotificationService'
+import { SoundSerivce } from './interfaces/SoundService'
 
 // @TODO: Extract to Settings Object
 const workDuration = 25 * 60
@@ -27,7 +28,8 @@ export class MainController extends Subject {
     public timer: Timer,
     public model: Model,
     public realTimeProvider: SocketIoRealTimeProvider,
-    public notificationService: SystemNotificationService
+    public notificationService: SystemNotificationService,
+    public soundService: SoundSerivce
   ) {
     super()
 
@@ -169,12 +171,14 @@ export class MainController extends Subject {
     this.timer.reset()
 
     if (phase === 'work') {
+      this.soundService.playWorkEndSound()
       this.notificationService.showNotification('Break Time')
       this.model.set('phase', 'break')
       this.timer.secondsDuration = breakDuration
     }
 
     if (phase === 'break') {
+      this.soundService.playBreakEndSound()
       this.notificationService.showNotification('Focus time')
       this.model.set('phase', 'work')
       this.timer.secondsDuration = workDuration

@@ -17,6 +17,7 @@
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "13.9.5",
     "@types/google-one-tap": "^1.1.0",
+    "@types/howler": "^2.2.7",
     "@types/styled-components": "^5.1.22",
     "airtable": "^0.11.2",
     "antd": "4.3.0",
