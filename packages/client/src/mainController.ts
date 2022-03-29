@@ -3,7 +3,7 @@ import Interval from './interval'
 import { Subject } from './objects/observer'
 import Timer from './timer'
 import { Model } from './objects/model'
-import { NotificationService } from './interfaces/NotificationService'
+import { SystemNotificationService } from './interfaces/NotificationService'
 
 // @TODO: Extract to Settings Object
 const workDuration = 25 * 60
@@ -27,7 +27,7 @@ export class MainController extends Subject {
     public timer: Timer,
     public model: Model,
     public realTimeProvider: SocketIoRealTimeProvider,
-    public notificationService: NotificationService
+    public notificationService: SystemNotificationService
   ) {
     super()
 

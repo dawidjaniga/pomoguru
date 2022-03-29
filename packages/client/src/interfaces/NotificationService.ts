@@ -1,3 +1,3 @@
-export interface NotificationService {
+export interface SystemNotificationService {
   showNotification(title: string, options?: NotificationOptions): void
 }
