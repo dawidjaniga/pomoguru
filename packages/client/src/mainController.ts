@@ -46,8 +46,6 @@ export class MainController extends Subject {
     this.getUser()
 
     if (typeof window !== 'undefined') {
-      console.log('Notification.permission', Notification.permission)
-
       this.model.set(
         'notificationsAllowed',
         Notification.permission === 'granted'
