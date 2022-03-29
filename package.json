@@ -28,6 +28,7 @@
     "fastify-socket.io": "^3.0.0",
     "fastify-websocket": "^4.0.0",
     "google-auth-library": "^7.12.0",
+    "howler": "^2.2.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.8",
     "nanoid": "^3.1.30",
