@@ -41,8 +41,8 @@ export class SocketIoRealTimeProvider {
     // this.userChannel.bind(event, listener)
   }
 
-  userStartWork () {
-    this.socket.emit('main-channel', {})
+  startUserWork () {
+    this.socket.emit('startUserWork', {})
   }
 
   userPauseWork () {

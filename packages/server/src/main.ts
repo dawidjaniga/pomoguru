@@ -243,8 +243,19 @@ const start = async () => {
   try {
     await server.ready()
     server.io.on('connection', socket => {
-      socket.on('main-channel', (...args) => {
-        console.log('main channel message', args)
+      socket.on('startUserWork', async () => {
+        try {
+          const userId = 'rQXR3uwPSUNVQx4ATcxCx' as UserId
+          const useCase = new StartWorkUseCase()
+
+          await useCase.execute({ userId })
+
+          console.log({
+            message: 'Timer started'
+          })
+        } catch (e) {
+          console.error('Start Timer error: ' + e)
+        }
       })
     })
 

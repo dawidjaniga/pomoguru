@@ -120,7 +120,7 @@ export class MainController extends Subject {
   async startWork () {
     this.model.set('phase', 'work')
     this.interval.start()
-    this.realTimeProvider.userStartWork()
+    this.realTimeProvider.startUserWork()
   }
 
   async pauseWork () {
