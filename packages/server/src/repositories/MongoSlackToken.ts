@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { ApplicationError } from '@server/types/errors'
 const { Schema } = mongoose
 
@@ -14,7 +14,7 @@ const SlackTokenSchema = new Schema({
   createdAt: Date
 })
 
-export class MongoSlackToken implements ISlackTokenRepository {
+export class MongoSlackTokenRepo implements ISlackTokenRepository {
   private model: mongoose.Model<typeof SlackTokenSchema>
 
   constructor (connection: mongoose.Connection) {

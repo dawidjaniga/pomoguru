@@ -2,7 +2,7 @@ import { SlackTokenRepoSpy } from './../testObjects/slackTokenRepoSpy'
 import Container from 'typedi'
 import { UserId } from '@server/types'
 import { AuthorizeSlackUserUseCase } from './authorizeSlackUser'
-import * as slack from 'slack'
+import slack from 'slack'
 
 jest.mock('slack')
 

@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { ApplicationError } from '@server/types/errors'
 const { Schema } = mongoose
 
@@ -11,6 +11,7 @@ const WorkSchema = new Schema({
   startDate: String,
   elapsedTime: Number,
   status: String
+  // @TODO: Check validation for allowed values
   // status: 'active' | 'finished' | 'paused'
 })
 

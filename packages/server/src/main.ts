@@ -15,6 +15,7 @@ import { AuthService } from './app/services/Auth'
 import fastify from 'fastify'
 import fastifyIO from 'fastify-socket.io'
 import fastifyCors from 'fastify-cors'
+import { AuthorizeSlackUserUseCase } from './useCases/authorizeSlackUser'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
@@ -28,7 +29,7 @@ const server = fastify({
 const allowerdOrigins = ['https://pomoguru.app']
 
 if (isDevelopment) {
-  allowerdOrigins.push('http://localhost:4200')
+  allowerdOrigins.push('https://localhost:4200')
 }
 
 server.register(fastifyIO, {
@@ -69,6 +70,10 @@ interface PusherAuthBody {
 }
 
 server.decorateRequest('userId', '')
+
+interface AuthorizeSlackRequest {
+  code: string
+}
 
 server.register((instance, _, done) => {
   instance.addHook('onRequest', (req, reply, done) => {
@@ -111,11 +116,11 @@ server.register((instance, _, done) => {
       })
     } catch (e) {
       if (e instanceof ApplicationError) {
-        reply.code(400).send(e.message)
+        reply.code(400).send({ error: e.message })
       }
 
       if (e instanceof Error) {
-        reply.code(500).send(e.message)
+        reply.code(500).send({ error: e.message })
       }
     }
   })
@@ -143,11 +148,11 @@ server.register((instance, _, done) => {
         console.error(e)
 
         if (e instanceof ApplicationError) {
-          reply.code(400).send(e.message)
+          reply.code(400).send({ error: e.message })
         }
 
         if (e instanceof Error) {
-          reply.code(500).send(e.message)
+          reply.code(500).send({ error: e.message })
         }
       }
     }
@@ -170,7 +175,7 @@ server.register((instance, _, done) => {
       }
 
       if (e instanceof Error) {
-        reply.code(500).send(e.message)
+        reply.code(500).send({ error: e.message })
       }
 
       console.error(e)
@@ -178,7 +183,7 @@ server.register((instance, _, done) => {
     }
   })
 
-  server.post('/timer/pause', async (req, reply) => {
+  instance.post('/timer/pause', async (req, reply) => {
     try {
       const { userId } = req.body as TimerStartBody
       const useCase = new PauseWorkUseCase()
@@ -188,17 +193,69 @@ server.register((instance, _, done) => {
       reply.code(200).send()
     } catch (e) {
       if (e instanceof ApplicationError) {
-        reply.code(400).send(e.message)
+        reply.code(400).send({ error: e.message })
       }
 
       if (e instanceof Error) {
-        reply.code(500).send(e.message)
+        reply.code(500).send({ error: e.message })
       }
     }
   })
 
+  // instance.post<{ Body: AuthorizeSlackRequest }>(
+  //   '/slack/authorize',
+  //   async (req, reply) => {
+  //     try {
+  //       // @ts-ignore
+  //       const { userId } = req
+  //       const { code } = req.body
+  //       const useCase = new AuthorizeSlackUserUseCase()
+  //       await useCase.execute({ userId, code })
+
+  //       reply.code(200)
+  //     } catch (e) {
+  //       if (e instanceof ApplicationError) {
+  //         reply.code(400).send({error: e.message})
+  //       }
+
+  //       if (e instanceof Error) {
+  //         reply.code(500).send({error: e.message})
+  //       }
+
+  //       console.error(e)
+  //       reply.code(500).send('Unexpected error: ' + e)
+  //     }
+  //   }
+  // )
+
   done()
 })
+
+server.post<{ Body: AuthorizeSlackRequest }>(
+  '/slack/authorize',
+  async (req, reply) => {
+    try {
+      // @ts-ignore
+      const { userId } = req
+      const { code } = req.body
+      const useCase = new AuthorizeSlackUserUseCase()
+      await useCase.execute({ userId: 'qwe' as UserId, code })
+
+      reply.code(200)
+    } catch (e) {
+      if (e instanceof ApplicationError) {
+        reply.code(400).send({ error: e.message })
+      }
+
+      if (e instanceof Error) {
+        reply.code(500).send({ error: e.message })
+      }
+
+      console.error(e)
+      reply.code(500).send('Unexpected error: ' + e)
+    }
+  }
+)
 
 interface GoogleLoginRequest {
   jwtToken: string
@@ -225,11 +282,11 @@ server.post<{ Body: GoogleLoginRequest }>(
       }
     } catch (e) {
       if (e instanceof ApplicationError) {
-        reply.code(400).send(e.message)
+        reply.code(400).send({ error: e.message })
       }
 
       if (e instanceof Error) {
-        reply.code(500).send(e.message)
+        reply.code(500).send({ error: e.message })
       }
 
       console.error(e)

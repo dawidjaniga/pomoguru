@@ -68,6 +68,19 @@ export class MainController extends Subject {
     })
   }
 
+  async authorizeSlack (code: string) {
+    await fetch(apiUrl + '/slack/authorize', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        code
+      })
+    })
+  }
+
   async getUser () {
     try {
       const response = await fetch(apiUrl + '/user', {

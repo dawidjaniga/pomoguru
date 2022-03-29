@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { ApplicationError } from '@server/types/errors'
 const { Schema } = mongoose
 

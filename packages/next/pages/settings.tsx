@@ -10,6 +10,8 @@ const Content = styled.div`
 
 export default function SettingsPage () {
   const notificationsAllowed = useNotificationsAllowed()
+  // @TODO: Extract to client
+  const redirectUri = 'https://localhost:4200/slack'
 
   return (
     <Layout>
@@ -21,6 +23,17 @@ export default function SettingsPage () {
             Allow notifications
           </Button>
         )}
+        <a
+          href={`https://slack.com/oauth/v2/authorize?client_id=866674528645.977369566150&scope=&user_scope=dnd:write,users.profile:write,chat:write&redirect_uri=${redirectUri}`}
+        >
+          <img
+            alt='Add to Slack'
+            height='40'
+            width='139'
+            src='https://platform.slack-edge.com/img/add_to_slack.png'
+            srcSet='https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x'
+          />
+        </a>
       </Content>
     </Layout>
   )
