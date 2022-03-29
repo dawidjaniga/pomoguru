@@ -3,11 +3,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "types": [
-      "webpack-env",
-      "node"
-    ],
+    "types": ["webpack-env", "node"],
     "strict": true
   },
   "include": [],

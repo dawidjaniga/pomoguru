@@ -43,6 +43,7 @@
     "react-is": "17.0.2",
     "regenerator-runtime": "0.13.7",
     "sass-loader": "^10",
+    "slack": "^11.0.2",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "styled-components": "5.3.3",
