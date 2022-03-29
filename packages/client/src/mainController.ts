@@ -3,6 +3,7 @@ import Interval from './interval'
 import { Subject } from './objects/observer'
 import Timer from './timer'
 import { Model } from './objects/model'
+import { NotificationService } from './interfaces/NotificationService'
 
 // @TODO: Extract to Settings Object
 const workDuration = 25 * 60
@@ -25,7 +26,8 @@ export class MainController extends Subject {
     public interval: Interval,
     public timer: Timer,
     public model: Model,
-    public realTimeProvider: SocketIoRealTimeProvider
+    public realTimeProvider: SocketIoRealTimeProvider,
+    public notificationService: NotificationService
   ) {
     super()
 
@@ -42,6 +44,15 @@ export class MainController extends Subject {
     this.timer.subscribe('timerFinished', () => this.onTimerFinished())
 
     this.getUser()
+
+    if (typeof window !== 'undefined') {
+      console.log('Notification.permission', Notification.permission)
+
+      this.model.set(
+        'notificationsAllowed',
+        Notification.permission === 'granted'
+      )
+    }
   }
 
   async loginGoogle (jwtToken: string) {
@@ -132,17 +143,41 @@ export class MainController extends Subject {
     this.realTimeProvider.userCancelWork()
   }
 
+  async allowNotifications () {
+    if ('Notification' in window) {
+      if (Notification.permission === 'granted') {
+        this.notificationService.showNotification(
+          'Notifications already turned on'
+        )
+      } else {
+        const permission = await Notification.requestPermission()
+
+        if (permission === 'granted') {
+          this.notificationService.showNotification('Notifications turned on')
+        }
+
+        if (permission === 'denied') {
+          console.warn('Notifications denied')
+        }
+      }
+    } else {
+      console.error('Your browser does not support notifications')
+    }
+  }
+
   onTimerFinished () {
     const phase = this.model.get('phase')
     this.interval.stop()
     this.timer.reset()
 
     if (phase === 'work') {
+      this.notificationService.showNotification('Break Time')
       this.model.set('phase', 'break')
       this.timer.secondsDuration = breakDuration
     }
 
     if (phase === 'break') {
+      this.notificationService.showNotification('Focus time')
       this.model.set('phase', 'work')
       this.timer.secondsDuration = workDuration
     }

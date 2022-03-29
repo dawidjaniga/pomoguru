@@ -52,3 +52,17 @@ export function useUser () {
 
   return user
 }
+
+export function useNotificationsAllowed () {
+  const [notificationsAllowed, setNotificationsAllowed] = useState(
+    model.get('notificationsAllowed')
+  )
+
+  useEffect(() => {
+    model.subscribe('notificationsAllowed:changed', (value: boolean) => {
+      setNotificationsAllowed(value)
+    })
+  }, [])
+
+  return notificationsAllowed
+}

@@ -1,3 +1,4 @@
+import { BrowserNotificationService } from './services/browserNotification'
 import Interval from './interval'
 import Timer from './timer'
 import { Model } from './objects/model'
@@ -8,7 +9,8 @@ export const controller = new MainController(
   new Interval(),
   new Timer(),
   new Model(),
-  new SocketIoRealTimeProvider()
+  new SocketIoRealTimeProvider(),
+  new BrowserNotificationService()
 )
 
 export const model = controller.model

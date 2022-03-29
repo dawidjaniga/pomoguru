@@ -1,11 +1,19 @@
 import styled from 'styled-components'
 import Button from '../../components/Button'
-import Header from './components/Header'
 import Layout from '../../components/Layout'
 
 import { actions, usePhase } from '@pomoguru/client'
 import { Phase } from '@pomoguru/client'
 import TimeLeft from './components/TimeLeft'
+
+const AppName = styled.h1`
+  font-size: 48px;
+  text-align: center;
+  font-family: Helvetica;
+  font-weight: 800;
+  padding: 40px;
+  margin: 0;
+`
 
 const Content = styled.div`
   text-align: center;
@@ -34,7 +42,7 @@ function Phase () {
 export default function TimerPage () {
   return (
     <Layout>
-      <Header />
+      <AppName>Pomoguru</AppName>
       <Content>
         <Timer>
           <TimeLeft />
