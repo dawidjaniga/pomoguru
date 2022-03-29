@@ -3,7 +3,8 @@ import { AuthService } from '@server/app/services/Auth'
 import { GoogleAuthService } from '@server/app/services/GoogleAuth'
 import { MongoUserRepo } from '@server/repositories/MongoUserRepo'
 import { MongoConnectionFactory } from '@server/infra/mongo'
-import { MongoWorkRepo } from './repositories/MongoWorkRepo'
+import { MongoWorkRepo } from '@server/repositories/MongoWorkRepo'
+import { MongoSlackToken } from '@server/repositories/MongoSlackToken'
 
 const privateKey = (process.env.PRIVATE_KEY as string).replace(/\\n/g, '\n')
 
@@ -17,6 +18,7 @@ async function setup () {
 
   Container.set('workRepo', new MongoWorkRepo(mongoConnection))
   Container.set('userRepo', new MongoUserRepo(mongoConnection))
+  Container.set('slackTokenRepo', new MongoSlackToken(mongoConnection))
   Container.set('authService', new AuthService(privateKey))
   Container.set(
     'googleAuthService',
