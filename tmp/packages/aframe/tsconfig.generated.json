@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@pomoguru/client": [
+        "dist/packages/client"
+      ],
+      "@server/*": [
+        "packages/server/src/*"
+      ]
+    }
+  },
+  "extends": "../../../packages/aframe/tsconfig.app.json"
+}
