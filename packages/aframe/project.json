@@ -1,0 +1,80 @@
+{
+  "projectType": "application",
+  "root": "packages/aframe",
+  "sourceRoot": "packages/aframe/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/packages/aframe",
+        "compiler": "babel",
+        "index": "packages/aframe/src/index.html",
+        "baseHref": "/",
+        "main": "packages/aframe/src/main.ts",
+        "polyfills": "packages/aframe/src/polyfills.ts",
+        "tsConfig": "packages/aframe/tsconfig.app.json",
+        "assets": [
+          "packages/aframe/src/favicon.ico",
+          "packages/aframe/src/assets"
+        ],
+        "styles": [
+          "packages/aframe/src/styles.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "packages/aframe/src/environments/environment.ts",
+              "with": "packages/aframe/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "aframe:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "aframe:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/aframe/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/packages/aframe"
+      ],
+      "options": {
+        "jestConfig": "packages/aframe/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
