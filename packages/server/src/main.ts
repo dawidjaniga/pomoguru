@@ -202,60 +202,36 @@ server.register((instance, _, done) => {
     }
   })
 
-  // instance.post<{ Body: AuthorizeSlackRequest }>(
-  //   '/slack/authorize',
-  //   async (req, reply) => {
-  //     try {
-  //       // @ts-ignore
-  //       const { userId } = req
-  //       const { code } = req.body
-  //       const useCase = new AuthorizeSlackUserUseCase()
-  //       await useCase.execute({ userId, code })
+  // resotre state use case (the last working interval for the user)
 
-  //       reply.code(200)
-  //     } catch (e) {
-  //       if (e instanceof ApplicationError) {
-  //         reply.code(400).send({error: e.message})
-  //       }
+  instance.post<{ Body: AuthorizeSlackRequest }>(
+    '/slack/authorize',
+    async (req, reply) => {
+      try {
+        // @ts-ignore
+        const { userId } = req
+        const { code } = req.body
+        const useCase = new AuthorizeSlackUserUseCase()
+        await useCase.execute({ userId, code })
 
-  //       if (e instanceof Error) {
-  //         reply.code(500).send({error: e.message})
-  //       }
+        reply.code(200).send({ message: 'Authorized Slack user' })
+      } catch (e) {
+        if (e instanceof ApplicationError) {
+          reply.code(400).send({ error: e.message })
+        }
 
-  //       console.error(e)
-  //       reply.code(500).send('Unexpected error: ' + e)
-  //     }
-  //   }
-  // )
+        if (e instanceof Error) {
+          reply.code(500).send({ error: e.message })
+        }
+
+        console.error(e)
+        reply.code(500).send('Unexpected error: ' + e)
+      }
+    }
+  )
 
   done()
 })
-
-server.post<{ Body: AuthorizeSlackRequest }>(
-  '/slack/authorize',
-  async (req, reply) => {
-    try {
-      // @ts-ignore
-      const { userId } = req
-      const { code } = req.body
-      const useCase = new AuthorizeSlackUserUseCase()
-      await useCase.execute({ userId: 'qwe' as UserId, code })
-
-      reply.code(200)
-    } catch (e) {
-      if (e instanceof ApplicationError) {
-        reply.code(400).send({ error: e.message })
-      }
-
-      if (e instanceof Error) {
-        reply.code(500).send({ error: e.message })
-      }
-
-      console.error(e)
-      reply.code(500).send('Unexpected error: ' + e)
-    }
-  }
-)
 
 interface GoogleLoginRequest {
   jwtToken: string

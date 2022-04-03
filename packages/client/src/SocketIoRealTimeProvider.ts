@@ -14,7 +14,9 @@ export class SocketIoRealTimeProvider {
       throw new Error('NX_POMOGURU_API_URL is not defined')
     }
 
-    this.socket = io(apiUrl)
+    this.socket = io(apiUrl, {
+      withCredentials: true
+    })
 
     this.attachEvents()
   }

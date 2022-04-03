@@ -3,8 +3,8 @@ import { UseCase } from '../interfaces/UseCase'
 import { UserId } from '@server/types'
 import { ApplicationError } from '../types/errors'
 import { ISlackTokenRepository } from '@server/interfaces/slackToken'
-import slack from 'slack'
 import { SlackToken } from '@server/entities/slackToken'
+import { Slack } from '@server/app/services/Slack'
 
 export type AuthorizeSlackUserInput = {
   userId: UserId
@@ -29,18 +29,7 @@ export class AuthorizeSlackUserUseCase
       throw new ApplicationError('Code is not specified')
     }
 
-    const response = await slack.oauth.access({
-      client_id: 'client_id',
-      client_secret: 'client_secret',
-      code
-    })
-
-    if (response.ok && response.access_token) {
-      await slackTokenRepo.save(
-        new SlackToken({ userId, token: response.access_token })
-      )
-    } else {
-      throw new ApplicationError('Slack access_token is not found')
-    }
+    const userToken = await Slack.authorize(code)
+    await slackTokenRepo.save(new SlackToken({ userId, token: userToken }))
   }
 }

@@ -45,9 +45,8 @@ export class MainController extends Subject {
     this.timer.secondsDuration = workDuration
     this.timer.subscribe('timerFinished', () => this.onTimerFinished())
 
-    this.getUser()
-
     if (typeof window !== 'undefined') {
+      this.getUser()
       this.model.set(
         'notificationsAllowed',
         Notification.permission === 'granted'
