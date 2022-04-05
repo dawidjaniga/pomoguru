@@ -5,19 +5,18 @@ import Timer from './timer'
 import { Model } from './objects/model'
 import { SystemNotificationService } from './interfaces/SystemNotificationService'
 import { SoundSerivce } from './interfaces/SoundService'
+import debugModule from 'debug'
+
+const debug = debugModule('pomoguru:client:mainController')
 
 // @TODO: Extract to Settings Object
 const workDuration = 25 * 60
 const breakDuration = 5 * 60
 
-type UserResponse = {
-  data: {
-    user: {
-      userId: string
-      fullName: string
-      avatarUrl: string
-    }
-  }
+export type UserResponse = {
+  id: string
+  email: string
+  avatarUrl: string
 }
 
 const apiUrl = process.env['NX_POMOGURU_API_URL']
@@ -82,44 +81,35 @@ export class MainController extends Subject {
 
   async getUser () {
     try {
-      const response = await fetch(apiUrl + '/user', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      const body = (await response.json()) as UserResponse
-
-      if (body.data) {
-        const { user } = body.data
+      this.realTimeProvider.subscribe('user:authorized', user => {
+        debug('user authorized', user)
 
         this.model.set('user', {
-          fullName: user.fullName,
-          avatarUrl: user.avatarUrl,
-          userId: user.userId
+          userId: user.id,
+          email: user.email,
+          avatarUrl: user.avatarUrl
         })
-        this.realTimeProvider.subscribeToUserChannel('user-' + user.userId)
-      }
+      })
 
-      this.realTimeProvider.onUserChannelEvent('client-start-work', () => {
+      this.realTimeProvider.subscribe('timerStarted', () => {
         if (this.model.get('phase') !== 'work') {
           this.startWork()
         }
       })
 
-      this.realTimeProvider.onUserChannelEvent('client-pause-work', () => {
+      this.realTimeProvider.subscribe('timerPaused', () => {
         if (this.model.get('phase') !== 'paused') {
           this.pauseWork()
         }
       })
 
-      this.realTimeProvider.onUserChannelEvent('client-skip-break', () => {
+      this.realTimeProvider.subscribe('breakSkipped', () => {
         if (this.model.get('phase') !== 'break') {
           this.skipBreak()
         }
       })
-      this.realTimeProvider.onUserChannelEvent('client-cancel-work', () => {
+
+      this.realTimeProvider.subscribe('workCanceled', () => {
         if (this.model.get('phase') === 'paused') {
           this.cancelWork()
         }
@@ -129,13 +119,13 @@ export class MainController extends Subject {
     }
   }
 
-  async startWork () {
+  startWork () {
     this.model.set('phase', 'work')
     this.interval.start()
     this.realTimeProvider.startUserWork()
   }
 
-  async pauseWork () {
+  pauseWork () {
     this.model.set('phase', 'paused')
     this.interval.stop()
     this.realTimeProvider.userPauseWork()

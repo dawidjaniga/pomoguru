@@ -1,20 +1,26 @@
 import { io, Socket } from 'socket.io-client'
+import { Publisher } from './objects/subscriber'
+import debugModule from 'debug'
+import { UserResponse } from './mainController'
 
+const debug = debugModule('pomoguru:client:socket.io')
 const apiUrl = process.env['NX_POMOGURU_API_URL']
 
 if (!apiUrl) {
   throw new Error('NX_POMOGURU_API_URL is not defined')
 }
-export class SocketIoRealTimeProvider {
-  private socket: Socket
-  // private userChannel: Channel
+export class SocketIoRealTimeProvider extends Publisher {
+  private mainSocket: Socket
+  private userSocket: Socket
 
   constructor () {
+    super()
+
     if (!apiUrl) {
       throw new Error('NX_POMOGURU_API_URL is not defined')
     }
 
-    this.socket = io(apiUrl, {
+    this.mainSocket = io(apiUrl, {
       withCredentials: true
     })
 
@@ -22,38 +28,56 @@ export class SocketIoRealTimeProvider {
   }
 
   attachEvents () {
-    this.socket.on('connect', () => {
-      console.log('socket connected', this.socket.id) // x8WIv7-mJelg7on_ALbx
+    this.mainSocket.on('connect', () => {
+      debug('socket connected', this.mainSocket)
     })
 
-    this.socket.on('disconnect', () => {
-      console.log('socket disconncted', this.socket.id) // undefined
+    this.mainSocket.on('user:authorized', user => {
+      if (!apiUrl) {
+        throw new Error('NX_POMOGURU_API_URL is not defined')
+      }
+
+      // this.userSocket = io(apiUrl + `/u-${user.id}`, {
+      this.userSocket = io(apiUrl + `/u-test`, {
+        withCredentials: true
+      })
+
+      this.userSocket.on('connect', () => {
+        debug('user connected', this.userSocket)
+      })
+
+      this.userSocket.on('timerStarted', () => {
+        this.publish('timerStarted')
+      })
+      this.userSocket.on('timerPaused', () => {
+        this.publish('timerPaused')
+      })
+      this.userSocket.on('breakSkipped', () => {
+        this.publish('breakSkipped')
+      })
+      this.userSocket.on('workCanceled', () => {
+        this.publish('workCanceled')
+      })
+
+      this.publish('user:authorized', user)
     })
-  }
 
-  subscribeToUserChannel (channelName: string) {
-    // this.userChannel = this.client.subscribe(
-    //   'private-user-5ZFoq2blOss5el_gmH9iX'
-    // )
-    // this.userChannel = this.client.subscribe(channelName)
-    // this.userChannel = this.client.subscribe('private-' + channelName)
-  }
-
-  onUserChannelEvent (event: string, listener: () => void) {
-    // this.userChannel.bind(event, listener)
+    this.mainSocket.on('disconnect', () => {
+      debug('socket disconncted', this.mainSocket.id)
+    })
   }
 
   startUserWork () {
-    this.socket.emit('startUserWork', {})
+    this.userSocket.emit('user:start-work', {})
   }
 
   userPauseWork () {
-    // this.userChannel.trigger('client-pause-work', {})
+    this.userSocket.emit('pauseWork', {})
   }
   userSkipBreak () {
-    // this.userChannel.trigger('client-skip-break', {})
+    this.userSocket.emit('skipBreak', {})
   }
   userCancelWork () {
-    // this.userChannel.trigger('client-cancel-work', {})
+    this.userSocket.emit('cancelWork', {})
   }
 }

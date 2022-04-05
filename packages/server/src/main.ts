@@ -17,6 +17,10 @@ import fastifyIO from 'fastify-socket.io'
 import fastifyCors from 'fastify-cors'
 import { AuthorizeSlackUserUseCase } from './useCases/authorizeSlackUser'
 
+import debugModule from 'debug'
+
+const debug = debugModule('pomoguru:server')
+
 const isDevelopment = process.env.NODE_ENV === 'development'
 
 const server = fastify({
@@ -31,18 +35,6 @@ const allowerdOrigins = ['https://pomoguru.app']
 if (isDevelopment) {
   allowerdOrigins.push('https://localhost:4200', 'https://localhost:4202')
 }
-
-server.register(fastifyIO, {
-  cors: {
-    origin: allowerdOrigins,
-    credentials: true
-  }
-})
-
-server.get('/', (_, reply) => {
-  server.io.emit('hello')
-  reply.send('Pomoguru API')
-})
 
 server.register(fastifyCors, {
   origin: allowerdOrigins,
@@ -60,13 +52,20 @@ server.register(cookie, {
   }
 })
 
+server.register(fastifyIO, {
+  cors: {
+    origin: allowerdOrigins,
+    credentials: true
+  }
+})
+
+server.get('/', (_, reply) => {
+  server.io.emit('hello')
+  reply.send('Pomoguru API')
+})
+
 interface TimerStartBody {
   userId: UserId
-}
-interface PusherAuthBody {
-  socket_id: string
-  channel_name: string
-  callback: string
 }
 
 server.decorateRequest('userId', '')
@@ -101,62 +100,6 @@ server.register((instance, _, done) => {
       })
     }
   })
-
-  instance.get('/user', async (req, reply) => {
-    try {
-      const userRepo = Container.get<IUserRepository>('userRepo')
-      // @ts-ignore
-      const { userId } = req
-      const user = await userRepo.get({ id: userId })
-
-      reply.code(200).send({
-        data: {
-          user: user?.toJSON()
-        }
-      })
-    } catch (e) {
-      if (e instanceof ApplicationError) {
-        reply.code(400).send({ error: e.message })
-      }
-
-      if (e instanceof Error) {
-        reply.code(500).send({ error: e.message })
-      }
-    }
-  })
-
-  instance.get<{ Querystring: PusherAuthBody }>(
-    '/websockets/auth',
-    async (req, reply) => {
-      try {
-        // @ts-ignore
-        const { userId } = req
-        // const userRepo = Container.get<IUserRepository>('userRepo')
-        // const user = await userRepo.get({ userId })
-        const channelName = req.query.channel_name
-
-        if (channelName.includes(userId)) {
-          reply.code(200).send({
-            data: 'some auth confirmation or token'
-          })
-        } else {
-          reply.code(403).send({
-            message: 'Forbidden'
-          })
-        }
-      } catch (e) {
-        console.error(e)
-
-        if (e instanceof ApplicationError) {
-          reply.code(400).send({ error: e.message })
-        }
-
-        if (e instanceof Error) {
-          reply.code(500).send({ error: e.message })
-        }
-      }
-    }
-  )
 
   instance.post('/timer/start', async (req, reply) => {
     try {
@@ -271,25 +214,120 @@ server.post<{ Body: GoogleLoginRequest }>(
   }
 )
 
+function getUserId (socket) {
+  const authService = Container.get<AuthService>('authService')
+  const authTokenCookie = server.unsignCookie(
+    server.parseCookie(socket.handshake.headers.cookie).authToken
+  )
+
+  return authService.verifyJwt(authTokenCookie.value)
+}
+
 // Run the server!
 const start = async () => {
   try {
     await server.ready()
-    server.io.on('connection', socket => {
-      socket.on('startUserWork', async () => {
-        try {
-          const userId = 'rQXR3uwPSUNVQx4ATcxCx' as UserId
-          const useCase = new StartWorkUseCase()
+    debug('server ready')
 
-          await useCase.execute({ userId })
+    server.io.use((socket, next) => {
+      debug('socket.io auth middleware', socket.id)
 
-          console.log({
-            message: 'Timer started'
-          })
-        } catch (e) {
-          console.error('Start Timer error: ' + e)
+      try {
+        const user = getUserId(socket)
+
+        if (user) {
+          debug('authorized user', user)
+          socket.data.userId = user.userId
+          next()
+        } else {
+          debug('not authorized user')
+          next(new Error('Unauthorized'))
         }
+      } catch (e) {
+        if (e instanceof Error) {
+          debug('auth error', e)
+          next(e)
+        }
+      }
+    })
+
+    // const userNamespace = server.io.of(/^\/u-.+/)
+    const userNamespace = server.io.of('/u-test')
+    userNamespace.on('connection', async socket => {
+      debug('user socket connected', socket.id)
+    })
+
+    server.io.on('connection', async socket => {
+      debug('socket connected', socket.id, socket.data)
+      const userRepo = Container.get<IUserRepository>('userRepo')
+      const user = (await userRepo.get({ id: socket.data.userId })).toJSON()
+
+      debug('user', user)
+
+      socket.emit('user:authorized', {
+        id: user.id,
+        email: user.email,
+        avatarUrl: user.avatarUrl
       })
+      socket.join(`u-${socket.data.userId}`)
+      // socket.join(`u-${socket.data.userId}`)
+    })
+
+    userNamespace.on('startUserWork', async socket => {
+      debug('startUserWork')
+
+      try {
+        const userId = 'rQXR3uwPSUNVQx4ATcxCx' as UserId
+        const useCase = new StartWorkUseCase()
+
+        await useCase.execute({ userId })
+
+        console.log({
+          message: 'Timer started'
+        })
+
+        userNamespace
+          .to(`u-${socket.data.userId}`)
+          .emit('timerStarted', 'Timer started')
+      } catch (e) {
+        console.error('Start Timer error: ' + e)
+      }
+    })
+
+    userNamespace.on('pauseTimer', async socket => {
+      try {
+        console.log({
+          message: 'Timer paused'
+        })
+
+        socket.emit('timerPaused', 'timerPaused')
+      } catch (e) {
+        console.error('Pause Timer error: ' + e)
+      }
+    })
+
+    userNamespace.on('skipBreak', async socket => {
+      try {
+        console.log({
+          message: 'Break skipped'
+        })
+
+        socket.emit('breakSkipped', 'Break skipped')
+      } catch (e) {
+        console.error('Skip break error: ' + e)
+      }
+    })
+
+    userNamespace.on('cancelWork', async socket => {
+      try {
+        console.log({
+          message: 'Work canceled'
+        })
+
+        socket.emit('workCanceled', 'Work canceled')
+      } catch (e) {
+        console.error('Cancel work error: ' + e)
+      }
     })
 
     const DEFAULT_HOST = '0.0.0.0'
