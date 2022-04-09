@@ -25,10 +25,23 @@
         }
       }
     },
-    "serve": {
+    "serve-original": {
       "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "server:build"
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "nx serve-original server"
+          },
+          {
+            "command": "local-ssl-proxy --source 4000 --target 3999"
+          }
+        ]
       }
     },
     "lint": {

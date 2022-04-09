@@ -15,7 +15,7 @@
         "production": {}
       }
     },
-    "serve": {
+    "serve-original": {
       "executor": "@nrwl/next:server",
       "options": {
         "buildTarget": "next:build",
@@ -27,6 +27,19 @@
           "buildTarget": "next:build:production",
           "dev": false
         }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "nx serve-original next"
+          },
+          {
+            "command": "local-ssl-proxy --source 4200 --target 4199"
+          }
+        ]
       }
     },
     "export": {
