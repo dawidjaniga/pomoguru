@@ -1,7 +1,6 @@
 import { io, Socket } from 'socket.io-client'
 import { Publisher } from './objects/subscriber'
 import debugModule from 'debug'
-import { UserResponse } from './mainController'
 
 const debug = debugModule('pomoguru:client:socket.io')
 const apiUrl = process.env['NX_POMOGURU_API_URL']
@@ -11,7 +10,7 @@ if (!apiUrl) {
 }
 export class SocketIoRealTimeProvider extends Publisher {
   private mainSocket: Socket
-  private userSocket: Socket
+  private userSocket: Socket | null= null
 
   constructor () {
     super()
@@ -75,16 +74,18 @@ export class SocketIoRealTimeProvider extends Publisher {
   }
 
   startUserWork () {
-    this.userSocket.emit('startWork', {})
+    this.userSocket?.emit('startWork', {})
   }
 
   pauseWork () {
-    this.userSocket.emit('pauseWork', {})
+    this.userSocket?.emit('pauseWork', {})
   }
+
   userSkipBreak () {
-    this.userSocket.emit('skipBreak', {})
+    this.userSocket?.emit('skipBreak', {})
   }
+
   userCancelWork () {
-    this.userSocket.emit('cancelWork', {})
+    this.userSocket?.emit('cancelWork', {})
   }
 }
