@@ -24,6 +24,10 @@ export class SocketIoRealTimeProvider extends Publisher {
       withCredentials: true
     })
 
+    this.mainSocket.onAny((event, ...args) => {
+      console.log('main socket', event, args)
+    })
+
     this.attachEvents()
   }
 
@@ -37,9 +41,12 @@ export class SocketIoRealTimeProvider extends Publisher {
         throw new Error('NX_POMOGURU_API_URL is not defined')
       }
 
-      // this.userSocket = io(apiUrl + `/u-${user.id}`, {
-      this.userSocket = io(apiUrl + `/u-test`, {
+      this.userSocket = io(apiUrl + `/users`, {
         withCredentials: true
+      })
+
+      this.userSocket.onAny((event, ...args) => {
+        console.log('user socket', event, args)
       })
 
       this.userSocket.on('connect', () => {
@@ -68,10 +75,10 @@ export class SocketIoRealTimeProvider extends Publisher {
   }
 
   startUserWork () {
-    this.userSocket.emit('user:start-work', {})
+    this.userSocket.emit('startWork', {})
   }
 
-  userPauseWork () {
+  pauseWork () {
     this.userSocket.emit('pauseWork', {})
   }
   userSkipBreak () {

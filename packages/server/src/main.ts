@@ -251,16 +251,81 @@ const start = async () => {
       }
     })
 
-    // const userNamespace = server.io.of(/^\/u-.+/)
-    const userNamespace = server.io.of('/u-test')
+    const userNamespace = server.io.of('/users')
+
     userNamespace.on('connection', async socket => {
-      debug('user socket connected', socket.id)
+      debug('user namespace connected', socket.id)
+
+      socket.join('room1')
+
+      socket.onAny((event, ...args) => {
+        console.log('user namespace any', event, args)
+      })
+
+      socket.on('startWork', async () => {
+        debug('startUserWork')
+
+        try {
+          const userId = 'rQXR3uwPSUNVQx4ATcxCx' as UserId
+          const useCase = new StartWorkUseCase()
+
+          await useCase.execute({ userId })
+
+          console.log({
+            message: 'Timer started'
+          })
+
+          userNamespace.to('room1').emit('timerStarted', 'Timer started')
+        } catch (e) {
+          console.error('Start Timer error: ' + e)
+        }
+      })
+
+      socket.on('pauseTimer', async () => {
+        try {
+          console.log({
+            message: 'Timer paused'
+          })
+
+          userNamespace.to('room1').emit('timerPaused', 'timerPaused')
+        } catch (e) {
+          console.error('Pause Timer error: ' + e)
+        }
+      })
+
+      socket.on('skipBreak', async () => {
+        try {
+          console.log({
+            message: 'Break skipped'
+          })
+
+          userNamespace.to('room1').emit('breakSkipped', 'Break skipped')
+        } catch (e) {
+          console.error('Skip break error: ' + e)
+        }
+      })
+
+      socket.on('cancelWork', async () => {
+        try {
+          console.log({
+            message: 'Work canceled'
+          })
+
+          userNamespace.to('room1').emit('workCanceled', 'Work canceled')
+        } catch (e) {
+          console.error('Cancel work error: ' + e)
+        }
+      })
     })
 
     server.io.on('connection', async socket => {
       debug('socket connected', socket.id, socket.data)
       const userRepo = Container.get<IUserRepository>('userRepo')
       const user = (await userRepo.get({ id: socket.data.userId })).toJSON()
+
+      socket.onAny((event, ...args) => {
+        console.log('socket any', event, args)
+      })
 
       debug('user', user)
 
@@ -269,65 +334,6 @@ const start = async () => {
         email: user.email,
         avatarUrl: user.avatarUrl
       })
-      socket.join(`u-${socket.data.userId}`)
-      // socket.join(`u-${socket.data.userId}`)
-    })
-
-    userNamespace.on('startUserWork', async socket => {
-      debug('startUserWork')
-
-      try {
-        const userId = 'rQXR3uwPSUNVQx4ATcxCx' as UserId
-        const useCase = new StartWorkUseCase()
-
-        await useCase.execute({ userId })
-
-        console.log({
-          message: 'Timer started'
-        })
-
-        userNamespace
-          .to(`u-${socket.data.userId}`)
-          .emit('timerStarted', 'Timer started')
-      } catch (e) {
-        console.error('Start Timer error: ' + e)
-      }
-    })
-
-    userNamespace.on('pauseTimer', async socket => {
-      try {
-        console.log({
-          message: 'Timer paused'
-        })
-
-        socket.emit('timerPaused', 'timerPaused')
-      } catch (e) {
-        console.error('Pause Timer error: ' + e)
-      }
-    })
-
-    userNamespace.on('skipBreak', async socket => {
-      try {
-        console.log({
-          message: 'Break skipped'
-        })
-
-        socket.emit('breakSkipped', 'Break skipped')
-      } catch (e) {
-        console.error('Skip break error: ' + e)
-      }
-    })
-
-    userNamespace.on('cancelWork', async socket => {
-      try {
-        console.log({
-          message: 'Work canceled'
-        })
-
-        socket.emit('workCanceled', 'Work canceled')
-      } catch (e) {
-        console.error('Cancel work error: ' + e)
-      }
     })
 
     const DEFAULT_HOST = '0.0.0.0'
@@ -343,4 +349,9 @@ const start = async () => {
     process.exit(1)
   }
 }
-start()
+
+try {
+  start()
+} catch (e) {
+  console.error('Server error', e)
+}

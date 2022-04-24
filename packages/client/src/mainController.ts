@@ -128,7 +128,7 @@ export class MainController extends Subject {
   pauseWork () {
     this.model.set('phase', 'paused')
     this.interval.stop()
-    this.realTimeProvider.userPauseWork()
+    this.realTimeProvider.pauseWork()
   }
 
   skipBreak () {
