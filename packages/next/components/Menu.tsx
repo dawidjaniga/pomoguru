@@ -8,6 +8,9 @@ export default function MenuComponent () {
 
   return (
     <Menu theme='dark' mode='horizontal' selectedKeys={['/' + pathname]}>
+      <Menu.Item key='/'>
+        <Link href='/'>Home</Link>
+      </Menu.Item>
       <Menu.Item key='/timer'>
         <Link href='/timer'>Timer</Link>
       </Menu.Item>
