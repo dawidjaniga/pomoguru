@@ -7,7 +7,7 @@ export const actions = {
     controller.startWork()
   },
   pauseWork () {
-    controller.pauseWork()
+    controller.pausePomodoro()
   },
   skipBreak () {
     controller.skipBreak()

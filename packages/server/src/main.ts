@@ -18,6 +18,8 @@ import fastifyCors from 'fastify-cors'
 import { AuthorizeSlackUserUseCase } from './useCases/authorizeSlackUser'
 
 import debugModule from 'debug'
+import { Socket } from 'socket.io'
+import { ExtendedError } from 'socket.io/dist/namespace'
 
 const debug = debugModule('pomoguru:server')
 
@@ -223,73 +225,74 @@ function getUserId (socket) {
   return authService.verifyJwt(authTokenCookie.value)
 }
 
+type NextMiddleware = (err?: ExtendedError) => void
+
+function authMiddleware (socket: Socket, next: NextMiddleware) {
+  debug('socket.io auth middleware socket.id=', socket.id)
+
+  try {
+    const user = getUserId(socket)
+
+    if (user) {
+      socket.data.userId = user.userId
+      debug('authorized socket.data.userId', socket.data.userId)
+      next()
+    } else {
+      debug('not authorized user')
+      next(new Error('Unauthorized'))
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      debug('auth error', e)
+      next(e)
+    }
+  }
+}
+
 // Run the server!
 const start = async () => {
   try {
     await server.ready()
     debug('server ready')
 
-    server.io.use((socket, next) => {
-      debug('socket.io auth middleware', socket.id)
-
-      try {
-        const user = getUserId(socket)
-
-        if (user) {
-          debug('authorized user', user)
-          socket.data.userId = user.userId
-          next()
-        } else {
-          debug('not authorized user')
-          next(new Error('Unauthorized'))
-        }
-      } catch (e) {
-        if (e instanceof Error) {
-          debug('auth error', e)
-          next(e)
-        }
-      }
-    })
+    server.io.use(authMiddleware)
 
     const userNamespace = server.io.of('/users')
+    userNamespace.use(authMiddleware)
 
     userNamespace.on('connection', async socket => {
       debug('user namespace connected', socket.id)
+      const userRoom = 'u-' + socket.data.userId
 
-      socket.join('room1')
+      socket.join(userRoom)
 
       socket.onAny((event, ...args) => {
-        console.log('user namespace any', event, args)
+        debug('received event on user namespace', event, args)
       })
 
-      socket.on('startWork', async () => {
-        debug('startUserWork')
-
+      socket.on('startWork', async (occuredAt: number) => {
         try {
-          const userId = 'rQXR3uwPSUNVQx4ATcxCx' as UserId
+          const userId = socket.data.userId
+          debug('socket user', socket.data)
           const useCase = new StartWorkUseCase()
 
           await useCase.execute({ userId })
 
-          console.log({
-            message: 'Timer started'
-          })
+          debug('Timer started')
 
-          userNamespace.to('room1').emit('timerStarted', 'Timer started')
+          userNamespace.to(userRoom).emit('remoteStartedTimer', occuredAt)
         } catch (e) {
           console.error('Start Timer error: ' + e)
         }
       })
 
-      socket.on('pauseTimer', async () => {
+      socket.on('pausePomodoro', async () => {
         try {
-          console.log({
-            message: 'Timer paused'
-          })
+          debug('pause pomodoro')
 
-          userNamespace.to('room1').emit('timerPaused', 'timerPaused')
+          userNamespace.to(userRoom).emit('pomodoroPaused', 'pomodoroPaused')
         } catch (e) {
-          console.error('Pause Timer error: ' + e)
+          console.error('Pause Pomodoro error: ' + e)
         }
       })
 
@@ -299,7 +302,7 @@ const start = async () => {
             message: 'Break skipped'
           })
 
-          userNamespace.to('room1').emit('breakSkipped', 'Break skipped')
+          userNamespace.to(userRoom).emit('breakSkipped', 'Break skipped')
         } catch (e) {
           console.error('Skip break error: ' + e)
         }
@@ -311,7 +314,7 @@ const start = async () => {
             message: 'Work canceled'
           })
 
-          userNamespace.to('room1').emit('workCanceled', 'Work canceled')
+          userNamespace.to(userRoom).emit('workCanceled', 'Work canceled')
         } catch (e) {
           console.error('Cancel work error: ' + e)
         }

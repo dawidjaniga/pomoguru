@@ -10,7 +10,7 @@ if (!apiUrl) {
 }
 export class SocketIoRealTimeProvider extends Publisher {
   private mainSocket: Socket
-  private userSocket: Socket | null= null
+  private userSocket: Socket | null = null
 
   constructor () {
     super()
@@ -24,7 +24,7 @@ export class SocketIoRealTimeProvider extends Publisher {
     })
 
     this.mainSocket.onAny((event, ...args) => {
-      console.log('main socket', event, args)
+      debug('received event on main socket', event, args)
     })
 
     this.attachEvents()
@@ -45,18 +45,19 @@ export class SocketIoRealTimeProvider extends Publisher {
       })
 
       this.userSocket.onAny((event, ...args) => {
-        console.log('user socket', event, args)
+        debug('received event on user socket', event, args)
       })
 
       this.userSocket.on('connect', () => {
         debug('user connected', this.userSocket)
       })
 
-      this.userSocket.on('timerStarted', () => {
-        this.publish('timerStarted')
+      this.userSocket.on('remoteStartedTimer', (occuredAt: number) => {
+        this.publish('remoteStartedTimer', occuredAt)
       })
-      this.userSocket.on('timerPaused', () => {
-        this.publish('timerPaused')
+      this.userSocket.on('pomodoroPaused', () => {
+        debug('pomodoroPaused')
+        this.publish('pomodoroPaused')
       })
       this.userSocket.on('breakSkipped', () => {
         this.publish('breakSkipped')
@@ -74,11 +75,11 @@ export class SocketIoRealTimeProvider extends Publisher {
   }
 
   startUserWork () {
-    this.userSocket?.emit('startWork', {})
+    this.userSocket?.emit('startWork', Date.now())
   }
 
-  pauseWork () {
-    this.userSocket?.emit('pauseWork', {})
+  pausePomodoro () {
+    this.userSocket?.emit('pausePomodoro', {})
   }
 
   userSkipBreak () {
