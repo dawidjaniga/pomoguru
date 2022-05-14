@@ -1,4 +1,5 @@
 import { Howl } from 'howler'
+import { Service } from 'typedi'
 import { SoundSerivce } from '../interfaces/SoundService'
 
 // @TODO: How to properly host sound files?
@@ -11,6 +12,7 @@ const workEndSound = new Howl({
     'https://assets.mixkit.co/sfx/preview/mixkit-bubble-pop-up-alert-notification-2357.mp3'
 })
 
+@Service()
 export class BrowserSoundService implements SoundSerivce {
   playWorkEndSound () {
     workEndSound.play()

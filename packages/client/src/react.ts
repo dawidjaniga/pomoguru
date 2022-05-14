@@ -1,28 +1,11 @@
 import { PausePomodoroUseCase } from './domain/timer/useCase/PausePomodoro'
-import { GetTimerOutput } from './domain/timer/useCase/GetTimer'
-import { controller, model } from './index'
+import { model } from './index'
 import { useCallback, useEffect, useState } from 'react'
-import { GetTimerUseCase } from './domain/timer/useCase/GetTimer'
+import { GetTimersUseCase } from './domain/timer/useCase/GetTimers'
 import { StartPomodoroUseCase } from './domain/timer/useCase/StartPomodoro'
 import { SkipPomodoroUseCase } from './domain/timer/useCase/SkipPomodoro'
+import { SkipBreakUseCase } from './domain/timer/useCase/SkipBreak'
 
-// @TODO: Possible to remove this?
-export const actions = {
-  startWork () {
-    controller.startWork()
-  },
-  pauseWork () {
-    controller.pausePomodoro()
-  },
-  skipBreak () {
-    controller.skipBreak()
-  },
-  cancelWork () {
-    controller.cancelWork()
-  }
-}
-
-//@TODO: Remove
 export function usePhase () {
   const [phase, setPhase] = useState(model.get('phase'))
 
@@ -65,7 +48,8 @@ const useCasesMap = {
   'timer.startPomodoro': StartPomodoroUseCase,
   'timer.pausePomodoro': PausePomodoroUseCase,
   'timer.skipPomodoro': SkipPomodoroUseCase,
-  'timer.getTimer': GetTimerUseCase
+  'timer.skipBreak': SkipBreakUseCase,
+  'timer.getTimers': GetTimersUseCase
 }
 
 type UseCases = keyof typeof useCasesMap

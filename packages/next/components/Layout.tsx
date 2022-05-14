@@ -27,7 +27,9 @@ const ContentWrapper = styled(Content)`
 `
 
 // @TODO: Ensure Error Boundary works as intended on production
-export default function LayoutComponent (props: React.PropsWithChildren<void>) {
+export default function LayoutComponent (
+  props: React.PropsWithChildren<unknown>
+) {
   return (
     <ErrorBoundary>
       <Main>

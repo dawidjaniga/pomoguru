@@ -1,19 +1,14 @@
-import { StartPomodoroUseCase } from './domain/timer/useCase/StartPomodoro'
 import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
 import Interval from './interval'
 import { Subject } from './objects/observer'
 import { Model } from './objects/model'
 import { SystemNotificationService } from './interfaces/SystemNotificationService'
-import { SoundSerivce } from './interfaces/SoundService'
 import Timer from './valueObjects/timer'
-import Container from 'typedi'
 import debugModule from 'debug'
 
-const debug = debugModule('pomoguru:client:mainController')
+import { TimerDomain } from './domain/timer/setup'
 
-// @TODO: Extract to Settings Object
-const pomodoroDuration = 25 * 60
-const breakDuration = 5 * 60
+const debug = debugModule('pomoguru:client:mainController')
 
 export type UserResponse = {
   id: string
@@ -24,30 +19,16 @@ export type UserResponse = {
 const apiUrl = process.env['NX_POMOGURU_API_URL']
 
 export class MainController extends Subject {
-  private pomodoro: Timer | null = null
-
   constructor (
     public interval: Interval,
     public timer: Timer,
     public model: Model,
     public realTimeProvider: SocketIoRealTimeProvider,
-    public notificationService: SystemNotificationService,
-    public soundService: SoundSerivce
+    public notificationService: SystemNotificationService
   ) {
     super()
 
-    const pomodoro = new Timer()
-    pomodoro.duration = pomodoroDuration
-    Container.set('pomodoro', pomodoro)
-
-    const breakTimer = new Timer()
-    breakTimer.duration = breakDuration
-    Container.set('breakTimer', breakTimer)
-
-    // @TODO: 1
-    this.model.set('phase', 'idle')
-    this.model.set('workDuration', pomodoroDuration)
-    this.model.set('breakDuration', breakDuration)
+    new TimerDomain()
 
     if (typeof window !== 'undefined') {
       this.getUser()
@@ -125,25 +106,6 @@ export class MainController extends Subject {
     }
   }
 
-  startWork () {
-    this.model.set('phase', 'work')
-
-    this.pomodoro = Container.get<Timer>('pomodoro')
-    this.pomodoro.duration = pomodoroDuration
-    // this.pomodoro.onFinish = () => {
-    //   this.soundService.playWorkEndSound()
-    //   this.notificationService.showNotification('Break Time')
-    //   this.model.set('phase', 'break')
-    //   this.timer.secondsDuration = breakDuration
-
-    //   // start break
-    // }
-
-    this.pomodoro.start()
-
-    // this.realTimeProvider.startUserWork()
-  }
-
   // remoteStartWork (occuredAt: number) {
   //   if (this.model.get('phase') === 'work') {
   //     return
@@ -177,25 +139,6 @@ export class MainController extends Subject {
   //   }, waitFor)
   // }
 
-  pausePomodoro () {
-    this.model.set('phase', 'paused')
-    this.pomodoro = Container.get<Timer>('pomodoro')
-  }
-
-  skipBreak () {
-    // this.timer.reset()
-    // this.model.set('phase', 'work')
-    // this.timer.secondsDuration = pomodoroDuration
-    // this.realTimeProvider.userSkipBreak()
-  }
-
-  cancelWork () {
-    // this.timer.reset()
-    // this.model.set('phase', 'idle')
-    // this.model.setTimeLeft(this.timer.elapsedSeconds)
-    // this.realTimeProvider.userCancelWork()
-  }
-
   async allowNotifications () {
     if ('Notification' in window) {
       if (Notification.permission === 'granted') {
@@ -217,26 +160,4 @@ export class MainController extends Subject {
       console.error('Your browser does not support notifications')
     }
   }
-
-  // onTimerFinished () {
-  //   const phase = this.model.get('phase')
-  //   this.interval.stop()
-  //   this.timer.reset()
-
-  //   if (phase === 'work') {
-  //     this.soundService.playWorkEndSound()
-  //     this.notificationService.showNotification('Break Time')
-  //     this.model.set('phase', 'break')
-  //     this.timer.secondsDuration = breakDuration
-  //   }
-
-  //   if (phase === 'break') {
-  //     this.soundService.playBreakEndSound()
-  //     this.notificationService.showNotification('Focus time')
-  //     this.model.set('phase', 'work')
-  //     this.timer.secondsDuration = pomodoroDuration
-  //   }
-
-  //   this.interval.start()
-  // }
 }

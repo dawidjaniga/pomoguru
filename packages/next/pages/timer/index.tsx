@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Button from '../../components/Button'
 import Layout from '../../components/Layout'
 
-import { actions, getUseCase, useCase } from '@pomoguru/client'
+import { getUseCase, useCase } from '@pomoguru/client'
 import { Phase } from '@pomoguru/client'
 import TimeLeft from './components/TimeLeft'
 
@@ -20,6 +20,11 @@ const pomoguru = {
     },
     skipPomodoro: async () => {
       const useCase = getUseCase('timer.skipPomodoro')
+
+      await useCase.execute()
+    },
+    skipBreak: async () => {
+      const useCase = getUseCase('timer.skipBreak')
 
       await useCase.execute()
     }
@@ -49,7 +54,7 @@ type DisplayProps = {
 }
 
 function DisplayPhase (props: React.PropsWithChildren<DisplayProps>) {
-  const { loaded, data, error } = useCase('timer.getTimer')
+  const { loaded, data, error } = useCase('timer.getTimers')
 
   console.log('data', data)
 
@@ -87,7 +92,7 @@ export default function TimerPage () {
           <Button onClick={pomoguru.timer.skipPomodoro}>Skip pomodoro</Button>
         </DisplayPhase>
         <DisplayPhase phase='break'>
-          <Button onClick={actions.skipBreak}>Skip break</Button>
+          <Button onClick={pomoguru.timer.skipBreak}>Skip break</Button>
         </DisplayPhase>
       </Content>
     </Layout>

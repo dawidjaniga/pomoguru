@@ -22,11 +22,11 @@ export default class Timer extends Publisher {
     const minimalDuration = oneMinuteInS
     const maxiumDuration = oneMinuteInS * 120
 
-    if (durationInS < minimalDuration) {
-      throw new IllegalArgument(
-        `Duration has to be longer than ${minimalDuration} seconds`
-      )
-    }
+    // if (durationInS < minimalDuration) {
+    //   throw new IllegalArgument(
+    //     `Duration has to be longer than ${minimalDuration} seconds`
+    //   )
+    // }
 
     if (durationInS > maxiumDuration) {
       throw new IllegalArgument(

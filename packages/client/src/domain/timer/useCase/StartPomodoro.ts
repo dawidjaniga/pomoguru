@@ -1,13 +1,13 @@
+import { pomodoroToken } from './../setup'
 import Container from 'typedi'
 import { UseCase } from '@server/interfaces/UseCase'
-import Pomodoro from '../../../valueObjects/timer'
 
 export class StartPomodoroUseCase implements UseCase {
   async execute () {
-    console.log('execute start  pomodoro')
-    const pomodoro = Container.get<Pomodoro>('pomodoro')
+    const pomodoro = Container.get(pomodoroToken)
 
     pomodoro.start()
-    console.log('pomodoro', pomodoro)
+    // create pomodoro on BE / call PomoguruApi
+    // this.realTimeProvider.startUserWork()
   }
 }

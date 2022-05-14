@@ -22,13 +22,22 @@ const Wrapper = styled.div`
   }
 `
 
+// function useCombinedTimers () {
+//   const pomodoroTimer = useCase('timer.getTimer')
+//   const breakTimer = useCase('timer.getBreakTimer')
+
+//   return {
+//     ...pomodoroTimer,
+//     ...breakTimer
+//   }
+// }
 export default function TimeLeft () {
-  const { loaded, data, error } = useCase('timer.getTimer')
+  const { loaded, data, error } = useCase('timer.getTimers')
 
   if (loaded) {
-    // if (error) {
-    //   return <>Error occured: {error.toString()}</>
-    // }
+    if (error) {
+      return <>Error occured: {error.toString()}</>
+    }
 
     if (data) {
       const { timeLeft, progress, phase } = data

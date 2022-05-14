@@ -1,9 +1,10 @@
+import { pomodoroToken, breakTimerToken } from './../setup'
 import Container from 'typedi'
 import { UseCase } from '@server/interfaces/UseCase'
 import format from 'date-fns/format'
-import { Publisher } from './../../../objects/publisher'
+import { Publisher } from '../../../objects/publisher'
 import Timer from '../../../valueObjects/timer'
-import { Phase } from './../../../objects/model'
+import { Phase } from '../../../objects/model'
 
 export type GetTimerInput = void
 
@@ -13,7 +14,7 @@ export type GetTimerOutput = {
   phase: Phase
 }
 
-export class GetTimerUseCase extends Publisher
+export class GetTimersUseCase extends Publisher
   implements UseCase<GetTimerInput, GetTimerOutput> {
   public isReactive = true
   private pomodoro: Timer
@@ -22,8 +23,8 @@ export class GetTimerUseCase extends Publisher
   constructor () {
     super()
 
-    this.pomodoro = Container.get<Timer>('pomodoro')
-    this.breakTimer = Container.get<Timer>('breakTimer')
+    this.pomodoro = Container.get(pomodoroToken)
+    this.breakTimer = Container.get(breakTimerToken)
 
     this.pomodoro.subscribe('updated', () => {
       this.publish('updated')
@@ -35,9 +36,11 @@ export class GetTimerUseCase extends Publisher
   }
 
   async execute () {
+    const timer = this.pomodoro.active ? this.pomodoro : this.breakTimer
+
     return {
-      timeLeft: format(new Date(this.pomodoro.timeLeftMs), 'mm:ss'),
-      progress: this.pomodoro.progress,
+      timeLeft: format(new Date(timer.timeLeftMs), 'mm:ss'),
+      progress: timer.progress,
       phase: this.getPhase()
     }
   }
