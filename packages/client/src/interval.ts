@@ -1,4 +1,4 @@
-import { Publisher } from './objects/subscriber'
+import { Publisher } from './objects/publisher'
 
 export default class Interval extends Publisher {
   public durationMs = 1000

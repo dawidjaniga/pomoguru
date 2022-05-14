@@ -1,10 +1,10 @@
 import { BrowserNotificationService } from './services/browserNotification'
 import Interval from './interval'
-import Timer from './timer'
 import { Model } from './objects/model'
 import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
 import { MainController } from './mainController'
 import { BrowserSoundService } from './services/BrowserSoundService'
+import Timer from './valueObjects/timer'
 
 export const controller = new MainController(
   new Interval(),

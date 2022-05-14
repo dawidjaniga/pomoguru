@@ -2,9 +2,29 @@ import styled from 'styled-components'
 import Button from '../../components/Button'
 import Layout from '../../components/Layout'
 
-import { actions, usePhase } from '@pomoguru/client'
+import { actions, getUseCase, useCase } from '@pomoguru/client'
 import { Phase } from '@pomoguru/client'
 import TimeLeft from './components/TimeLeft'
+
+const pomoguru = {
+  timer: {
+    startPomodoro: async () => {
+      const useCase = getUseCase('timer.startPomodoro')
+
+      await useCase.execute()
+    },
+    pausePomodoro: async () => {
+      const useCase = getUseCase('timer.pausePomodoro')
+
+      await useCase.execute()
+    },
+    skipPomodoro: async () => {
+      const useCase = getUseCase('timer.skipPomodoro')
+
+      await useCase.execute()
+    }
+  }
+}
 
 const AppName = styled.h1`
   font-size: 48px;
@@ -29,14 +49,23 @@ type DisplayProps = {
 }
 
 function DisplayPhase (props: React.PropsWithChildren<DisplayProps>) {
-  const phase = usePhase()
+  const { loaded, data, error } = useCase('timer.getTimer')
 
-  return props.phase === phase ? <>{props.children}</> : null
-}
+  console.log('data', data)
 
-function Phase () {
-  const phase = usePhase()
-  return <>{phase}</>
+  if (loaded) {
+    if (error) {
+      return <>Error occured: {error.toString()}</>
+    }
+
+    if (data) {
+      const { phase } = data
+
+      return props.phase === phase ? <>{props.children}</> : null
+    }
+  }
+
+  return <>Loading...</>
 }
 
 export default function TimerPage () {
@@ -48,14 +77,14 @@ export default function TimerPage () {
           <TimeLeft />
         </Timer>
         <DisplayPhase phase='idle'>
-          <Button onClick={actions.startWork}>Start</Button>
+          <Button onClick={pomoguru.timer.startPomodoro}>Start</Button>
         </DisplayPhase>
         <DisplayPhase phase='work'>
-          <Button onClick={actions.pauseWork}>Pause</Button>
+          <Button onClick={pomoguru.timer.pausePomodoro}>Pause</Button>
         </DisplayPhase>
         <DisplayPhase phase='paused'>
-          <Button onClick={actions.startWork}>Start</Button>
-          <Button onClick={actions.cancelWork}>Cancel work</Button>
+          <Button onClick={pomoguru.timer.startPomodoro}>Start</Button>
+          <Button onClick={pomoguru.timer.skipPomodoro}>Skip pomodoro</Button>
         </DisplayPhase>
         <DisplayPhase phase='break'>
           <Button onClick={actions.skipBreak}>Skip break</Button>

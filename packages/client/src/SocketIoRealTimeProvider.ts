@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client'
-import { Publisher } from './objects/subscriber'
+import { Publisher } from './objects/publisher'
 import debugModule from 'debug'
 
 const debug = debugModule('pomoguru:client:socket.io')

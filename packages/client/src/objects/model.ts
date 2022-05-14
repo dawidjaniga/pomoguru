@@ -1,4 +1,4 @@
-import { Publisher } from './subscriber'
+import { Publisher } from './publisher'
 import format from 'date-fns/format'
 
 export type Phase = 'idle' | 'work' | 'paused' | 'break'

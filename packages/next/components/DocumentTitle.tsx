@@ -9,9 +9,8 @@ const phaseMap: Record<Phase, string> = {
 }
 
 function setTitle () {
-  const { phase, formattedSeconds } = model.get('timeLeft')
-
-  document.title = `${formattedSeconds} - time to ${phaseMap[phase]}`
+  // const { phase, formattedSeconds } = model.get('timeLeft')
+  // document.title = `${formattedSeconds} - time to ${phaseMap[phase]}`
 }
 
 export default function DocumentTitle () {
