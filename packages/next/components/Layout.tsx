@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import DocumentTitle from './DocumentTitle'
 import { Layout } from 'antd'
 import Header from './Header'
+import ErrorBoundary from './ErrorBoundary'
 
 const { Content, Footer } = Layout
 
@@ -25,22 +26,25 @@ const ContentWrapper = styled(Content)`
   flex: 1;
 `
 
-export default function LayoutComponent (props: React.PropsWithChildren<{}>) {
+// @TODO: Ensure Error Boundary works as intended on production
+export default function LayoutComponent (props: React.PropsWithChildren<void>) {
   return (
-    <Main>
-      <DocumentTitle />
-      <Inner>
-        <Header />
+    <ErrorBoundary>
+      <Main>
+        <DocumentTitle />
+        <Inner>
+          <Header />
 
-        <ContentWrapper>
-          <div>{props.children}</div>
-        </ContentWrapper>
+          <ContentWrapper>
+            <div>{props.children}</div>
+          </ContentWrapper>
 
-        <Footer style={{ textAlign: 'center' }}>
-          Pomoguru ©2022 Created by{' '}
-          <a href='https://www.dawidjaniga.pl'>Janigowski</a>
-        </Footer>
-      </Inner>
-    </Main>
+          <Footer style={{ textAlign: 'center' }}>
+            Pomoguru ©2022 Created by{' '}
+            <a href='https://www.dawidjaniga.pl'>Janigowski</a>
+          </Footer>
+        </Inner>
+      </Main>
+    </ErrorBoundary>
   )
 }
