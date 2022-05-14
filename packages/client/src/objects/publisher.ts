@@ -14,8 +14,6 @@ export class Publisher {
       this._subscribers[event] = []
     }
 
-    console.log('subscribing to event', event)
-
     this._subscribers[event].push(subscriber)
   }
 

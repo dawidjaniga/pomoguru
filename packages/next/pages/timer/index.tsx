@@ -56,8 +56,6 @@ type DisplayProps = {
 function DisplayPhase (props: React.PropsWithChildren<DisplayProps>) {
   const { loaded, data, error } = useCase('timer.getTimers')
 
-  console.log('data', data)
-
   if (loaded) {
     if (error) {
       return <>Error occured: {error.toString()}</>

@@ -1,7 +1,6 @@
 import { SystemNotificationService } from './interfaces/SystemNotificationService'
 import 'reflect-metadata'
 import { BrowserNotificationService } from './services/browserNotification'
-import Interval from './interval'
 import { Model } from './objects/model'
 import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
 import { MainController } from './mainController'
@@ -19,7 +18,6 @@ Container.set(soundServiceToken, new BrowserSoundService())
 Container.set(systemNotificationServiceToken, new BrowserNotificationService())
 
 export const controller = new MainController(
-  new Interval(),
   new Timer(),
   new Model(),
   new SocketIoRealTimeProvider(),

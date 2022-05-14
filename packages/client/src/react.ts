@@ -6,18 +6,6 @@ import { StartPomodoroUseCase } from './domain/timer/useCase/StartPomodoro'
 import { SkipPomodoroUseCase } from './domain/timer/useCase/SkipPomodoro'
 import { SkipBreakUseCase } from './domain/timer/useCase/SkipBreak'
 
-export function usePhase () {
-  const [phase, setPhase] = useState(model.get('phase'))
-
-  useEffect(() => {
-    model.subscribe('phase:changed', (value: string) => {
-      setPhase(value)
-    })
-  }, [])
-
-  return phase
-}
-
 export function useUser () {
   const [user, setUser] = useState(model.get('user'))
 

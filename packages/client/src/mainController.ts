@@ -1,5 +1,4 @@
 import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
-import Interval from './interval'
 import { Subject } from './objects/observer'
 import { Model } from './objects/model'
 import { SystemNotificationService } from './interfaces/SystemNotificationService'
@@ -20,7 +19,6 @@ const apiUrl = process.env['NX_POMOGURU_API_URL']
 
 export class MainController extends Subject {
   constructor (
-    public interval: Interval,
     public timer: Timer,
     public model: Model,
     public realTimeProvider: SocketIoRealTimeProvider,
