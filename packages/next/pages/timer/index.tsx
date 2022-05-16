@@ -5,10 +5,35 @@ import Layout from '../../components/Layout'
 import { getUseCase, useCase } from '@pomoguru/client'
 import { Phase } from '@pomoguru/client'
 import TimeLeft from './components/TimeLeft'
+import { GetTimersUseCase } from 'packages/client/src/domain/timer/useCase/GetTimers'
 
 const pomoguru = {
   timer: {
     startPomodoro: async () => {
+      /*
+      IDE Support
+      TypeScript Support
+      Singletons / Object Pool?
+
+      Allow direct import? No: fragile dependencies, expose public API via Facade
+        Import by ExampleUseCase class
+        Use file like a key for search in object pool
+
+      Treat like closed, outside dependency?
+
+      ---------
+      2 Actors
+
+        - React Hook - useCase(...)
+        - Imperative Code - Triggered by Events
+            Should be used directly? 
+          
+          <Button onClick={pomoguru.timer.startPomodoro}>Start</Button>
+
+
+
+      */
+
       const useCase = getUseCase('timer.startPomodoro')
 
       await useCase.execute()
@@ -81,6 +106,7 @@ export default function TimerPage () {
         </Timer>
         <DisplayPhase phase='idle'>
           <Button onClick={pomoguru.timer.startPomodoro}>Start</Button>
+          {/* <Button onClick={GetTimersUseCase}>Start</Button> */}
         </DisplayPhase>
         <DisplayPhase phase='work'>
           <Button onClick={pomoguru.timer.pausePomodoro}>Pause</Button>
