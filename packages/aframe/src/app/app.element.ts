@@ -35,7 +35,7 @@ class AframeApp {
 
     startPomodoroEl.addEventListener('click', function () {
       console.log('start timer clicked')
-      getUseCase('timer.startPomodoro')
+      getUseCase('timer.startPomodoro').execute()
     })
     this.sceneEl.appendChild(startPomodoroEl)
   }
@@ -70,8 +70,8 @@ class AframeApp {
     getTimersUseCase.subscribe('updated', async () => {
       // @ts-ignore
       const { timeLeft, progress } = await getTimersUseCase.execute()
-      console.log('time left changed', timeLeft)
-      timeLeftEl.setAttribute('value', timeLeft.formattedSeconds)
+
+      timeLeftEl.setAttribute('value', timeLeft)
 
       const timerWidth = maxTimerWidth * progress
       timerEl.object3D.scale.x = timerWidth
