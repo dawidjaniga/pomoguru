@@ -1,3 +1,4 @@
+import { GetUserUseCase } from './../domain/user/useCases/GetUser'
 import { ObjectPool } from './objectPool'
 import { SkipPomodoroUseCase } from './../domain/timer/useCase/SkipPomodoro'
 import { PausePomodoroUseCase } from './../domain/timer/useCase/PausePomodoro'
@@ -14,7 +15,8 @@ const useCasesMap = {
   'timer.skipPomodoro': SkipPomodoroUseCase,
   'timer.skipBreak': SkipBreakUseCase,
   'timer.finishPomodoro': FinishPomodoroUseCase,
-  'timer.finishBreak': FinishBreakUseCase
+  'timer.finishBreak': FinishBreakUseCase,
+  'user.getUser': GetUserUseCase
 }
 
 export type UseCaseNames = keyof typeof useCasesMap

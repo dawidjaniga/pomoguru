@@ -2,10 +2,7 @@ import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
 import { Subject } from './objects/observer'
 import { Model } from './objects/model'
 import { SystemNotificationService } from './interfaces/SystemNotificationService'
-import Timer from './valueObjects/timer'
 import debugModule from 'debug'
-
-import { TimerDomain } from './domain/timer/setup'
 
 const debug = debugModule('pomoguru:client:mainController')
 
@@ -19,14 +16,11 @@ const apiUrl = process.env['NX_POMOGURU_API_URL']
 
 export class MainController extends Subject {
   constructor (
-    public timer: Timer,
     public model: Model,
     public realTimeProvider: SocketIoRealTimeProvider,
     public notificationService: SystemNotificationService
   ) {
     super()
-
-    new TimerDomain()
 
     if (typeof window !== 'undefined') {
       this.getUser()
@@ -63,6 +57,7 @@ export class MainController extends Subject {
     })
   }
 
+  // @TODO: Remove
   async getUser () {
     try {
       this.realTimeProvider.subscribe('user:authorized', user => {

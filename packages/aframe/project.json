@@ -41,7 +41,7 @@
         }
       }
     },
-    "serve": {
+    "serve-original": {
       "executor": "@nrwl/web:dev-server",
       "options": {
         "buildTarget": "aframe:build",
@@ -51,6 +51,19 @@
         "production": {
           "buildTarget": "aframe:build:production"
         }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "nx serve-original aframe"
+          },
+          {
+            "command": "local-ssl-proxy --source 4202 --target 4201"
+          }
+        ]
       }
     },
     "lint": {

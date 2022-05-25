@@ -12,6 +12,7 @@ class AframeApp {
     this.createEnvironment()
     this.createButtons()
     this.createTimer()
+    this.createAvatar()
     this.createFloor()
 
     console.log('A-Frame Application initialized')
@@ -75,6 +76,20 @@ class AframeApp {
 
       const timerWidth = maxTimerWidth * progress
       timerEl.object3D.scale.x = timerWidth
+    })
+  }
+
+  createAvatar () {
+    const getUserUseCase = getUseCase('user.getUser')
+    const element = document.createElement('a-image')
+    element.setAttribute('position', '0 1 -10')
+    this.sceneEl.appendChild(element)
+
+    //@ts-ignore
+    getUserUseCase.subscribe('updated', async () => {
+      //@ts-ignore
+      const { avatarUrl } = await getUserUseCase.execute()
+      element.setAttribute('src', avatarUrl)
     })
   }
 
