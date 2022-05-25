@@ -3,7 +3,7 @@ import 'aframe'
 import { ANode } from 'aframe'
 import 'aframe-environment-component'
 import './mirror-component'
-import { controller, model, TimeLeft } from '@pomoguru/client'
+import { getUseCase } from '@pomoguru/client'
 class AframeApp {
   private sceneEl: ANode
 
@@ -24,23 +24,23 @@ class AframeApp {
   }
 
   createButtons () {
-    const startTimerEl = document.createElement('a-box')
-    startTimerEl.setAttribute('color', 'green')
-    startTimerEl.setAttribute('position', '-4 1 -10')
-    startTimerEl.setAttribute('scale', '2 2 2')
-    startTimerEl.setAttribute(
+    const startPomodoroEl = document.createElement('a-box')
+    startPomodoroEl.setAttribute('color', 'green')
+    startPomodoroEl.setAttribute('position', '-4 1 -10')
+    startPomodoroEl.setAttribute('scale', '2 2 2')
+    startPomodoroEl.setAttribute(
       'animation',
       'property: position; from: -4 -1 -10; to: -4 1 -10; dur: 2000; easing: easeInCirc'
     )
 
-    startTimerEl.addEventListener('click', function () {
+    startPomodoroEl.addEventListener('click', function () {
       console.log('start timer clicked')
-      controller.startWork()
+      getUseCase('timer.startPomodoro')
     })
-    this.sceneEl.appendChild(startTimerEl)
+    this.sceneEl.appendChild(startPomodoroEl)
   }
 
-  createTimer () {
+  async createTimer () {
     const timerEl = document.createElement('a-box')
     timerEl.setAttribute('color', 'red')
     timerEl.setAttribute('position', '0 1 -20')
@@ -51,9 +51,13 @@ class AframeApp {
     )
     this.sceneEl.appendChild(timerEl)
     const maxTimerWidth = 20
+    const getTimersUseCase = getUseCase('timer.getTimers')
+
+    // @ts-ignore
+    const { timeLeft } = await getTimersUseCase.execute()
 
     const timeLeftEl = document.createElement('a-text')
-    timeLeftEl.setAttribute('value', model.get('timeLeft').formattedSeconds)
+    timeLeftEl.setAttribute('value', timeLeft)
     timeLeftEl.setAttribute('scale', '11.61044 13.14882 11.61044')
     timeLeftEl.setAttribute('position', '-1.53731 4.9242 -24.16562')
     timeLeftEl.setAttribute(
@@ -62,11 +66,14 @@ class AframeApp {
     )
     this.sceneEl.appendChild(timeLeftEl)
 
-    model.subscribe('timeLeft:changed', (timeLeft: TimeLeft) => {
+    // @ts-ignore
+    getTimersUseCase.subscribe('updated', async () => {
+      // @ts-ignore
+      const { timeLeft, progress } = await getTimersUseCase.execute()
       console.log('time left changed', timeLeft)
       timeLeftEl.setAttribute('value', timeLeft.formattedSeconds)
 
-      const timerWidth = maxTimerWidth * timeLeft.percentCompleted
+      const timerWidth = maxTimerWidth * progress
       timerEl.object3D.scale.x = timerWidth
     })
   }

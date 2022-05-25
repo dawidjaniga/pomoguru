@@ -1,6 +1,6 @@
 import { breakTimerToken } from './../setup'
 import Container, { Service } from 'typedi'
-import { UseCase } from '@server/interfaces/UseCase'
+import { UseCase } from '../../../interfaces/UseCase'
 
 import {
   soundServiceToken,

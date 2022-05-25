@@ -1,6 +1,6 @@
 import { pomodoroToken } from './../setup'
 import Container from 'typedi'
-import { UseCase } from '@server/interfaces/UseCase'
+import { UseCase } from '../../../interfaces/UseCase'
 
 export type PausePomodoroInput = void
 export type PausePomodoroOutput = void

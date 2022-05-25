@@ -30,10 +30,12 @@ export class TimerDomain {
     const provider = Container.get(useCaseProviderToken)
 
     this.pomodoro.subscribe('finished', async () => {
+      // @ts-ignore
       await provider.get('timer.finishPomodoro').execute()
     })
 
     this.breakTimer.subscribe('finished', async () => {
+      // @ts-ignore
       await provider.get('timer.finishBreak').execute()
     })
   }

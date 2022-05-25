@@ -9,7 +9,7 @@ import Container, { Token } from 'typedi'
 import { SoundSerivce } from './interfaces/SoundService'
 import { BrowserSoundService } from './services/BrowserSoundService'
 import { UseCaseNames, useCaseProvider } from './core/useCasesMap'
-import { UseCase } from '@server/interfaces/UseCase'
+import { UseCase } from './interfaces/UseCase'
 
 export const useCaseProviderToken = new Token<typeof useCaseProvider>()
 export const soundServiceToken = new Token<SoundSerivce>()

@@ -1,6 +1,6 @@
 import { pomodoroToken, breakTimerToken } from './../setup'
 import Container from 'typedi'
-import { UseCase } from '@server/interfaces/UseCase'
+import { UseCase } from '../../../interfaces/UseCase'
 import format from 'date-fns/format'
 import { Publisher } from '../../../objects/publisher'
 import Timer from '../../../valueObjects/timer'

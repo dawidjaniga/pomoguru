@@ -58,6 +58,7 @@ export function useCase (
 
     // @ts-ignore
     if (concreteUseCase.isReactive) {
+      // @ts-ignore
       concreteUseCase.subscribe('updated', () => {
         getData()
       })
