@@ -1,5 +1,6 @@
 import { pomodoroToken } from './../setup'
 import Container from 'typedi'
+// @TOOD: Extract or move to Client
 import { UseCase } from '@server/interfaces/UseCase'
 
 export class StartPomodoroUseCase implements UseCase {

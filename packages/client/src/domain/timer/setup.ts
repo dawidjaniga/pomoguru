@@ -1,7 +1,6 @@
-import { FinishPomodoroUseCase } from './useCase/FinishPomodoro'
 import Container, { Token } from 'typedi'
+import { useCaseProviderToken } from '@pomoguru/client'
 import Timer from '../../valueObjects/timer'
-import { FinishBreakUseCase } from './useCase/FinishBreak'
 
 // @TODO: Extract to Settings Object
 // const pomodoroDuration = 25 * 60
@@ -28,14 +27,14 @@ export class TimerDomain {
   }
 
   attachEvents () {
+    const provider = Container.get(useCaseProviderToken)
+
     this.pomodoro.subscribe('finished', async () => {
-      const finishUseCase = new FinishPomodoroUseCase()
-      await finishUseCase.execute()
+      await provider.get('timer.finishPomodoro').execute()
     })
 
     this.breakTimer.subscribe('finished', async () => {
-      const finishUseCase = new FinishBreakUseCase()
-      await finishUseCase.execute()
+      await provider.get('timer.finishBreak').execute()
     })
   }
 }

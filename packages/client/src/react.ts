@@ -1,10 +1,6 @@
-import { PausePomodoroUseCase } from './domain/timer/useCase/PausePomodoro'
-import { model } from './index'
+import { getUseCase, model } from './index'
 import { useCallback, useEffect, useState } from 'react'
-import { GetTimersUseCase } from './domain/timer/useCase/GetTimers'
-import { StartPomodoroUseCase } from './domain/timer/useCase/StartPomodoro'
-import { SkipPomodoroUseCase } from './domain/timer/useCase/SkipPomodoro'
-import { SkipBreakUseCase } from './domain/timer/useCase/SkipBreak'
+import { UseCaseNames } from './core/useCasesMap'
 
 export function useUser () {
   const [user, setUser] = useState(model.get('user'))
@@ -32,32 +28,8 @@ export function useNotificationsAllowed () {
   return notificationsAllowed
 }
 
-const useCasesMap = {
-  'timer.startPomodoro': StartPomodoroUseCase,
-  'timer.pausePomodoro': PausePomodoroUseCase,
-  'timer.skipPomodoro': SkipPomodoroUseCase,
-  'timer.skipBreak': SkipBreakUseCase,
-  'timer.getTimers': GetTimersUseCase
-}
-
-type UseCases = keyof typeof useCasesMap
-
-const useCaseCache = {}
-// const useCaseCache: Record<UseCases, Function> = {}
-
-export function getUseCase (useCase: UseCases) {
-  // @ts-ignore
-  if (!useCaseCache[useCase]) {
-    // @ts-ignore
-    useCaseCache[useCase] = new useCasesMap[useCase]()
-  }
-
-  // @ts-ignore
-  return useCaseCache[useCase]
-}
-
 export function useCase (
-  useCase: UseCases
+  useCase: UseCaseNames
   // options?: typeof useCasesMap[typeof useCase]
 ) {
   const concreteUseCase = getUseCase(useCase)
@@ -84,6 +56,7 @@ export function useCase (
   useEffect(() => {
     getData()
 
+    // @ts-ignore
     if (concreteUseCase.isReactive) {
       concreteUseCase.subscribe('updated', () => {
         getData()

@@ -5,56 +5,6 @@ import Layout from '../../components/Layout'
 import { getUseCase, useCase } from '@pomoguru/client'
 import { Phase } from '@pomoguru/client'
 import TimeLeft from './components/TimeLeft'
-import { GetTimersUseCase } from 'packages/client/src/domain/timer/useCase/GetTimers'
-
-const pomoguru = {
-  timer: {
-    startPomodoro: async () => {
-      /*
-      IDE Support
-      TypeScript Support
-      Singletons / Object Pool?
-
-      Allow direct import? No: fragile dependencies, expose public API via Facade
-        Import by ExampleUseCase class
-        Use file like a key for search in object pool
-
-      Treat like closed, outside dependency?
-
-      ---------
-      2 Actors
-
-        - React Hook - useCase(...)
-        - Imperative Code - Triggered by Events
-            Should be used directly? 
-          
-          <Button onClick={pomoguru.timer.startPomodoro}>Start</Button>
-
-
-
-      */
-
-      const useCase = getUseCase('timer.startPomodoro')
-
-      await useCase.execute()
-    },
-    pausePomodoro: async () => {
-      const useCase = getUseCase('timer.pausePomodoro')
-
-      await useCase.execute()
-    },
-    skipPomodoro: async () => {
-      const useCase = getUseCase('timer.skipPomodoro')
-
-      await useCase.execute()
-    },
-    skipBreak: async () => {
-      const useCase = getUseCase('timer.skipBreak')
-
-      await useCase.execute()
-    }
-  }
-}
 
 const AppName = styled.h1`
   font-size: 48px;
@@ -105,18 +55,27 @@ export default function TimerPage () {
           <TimeLeft />
         </Timer>
         <DisplayPhase phase='idle'>
-          <Button onClick={pomoguru.timer.startPomodoro}>Start</Button>
-          {/* <Button onClick={GetTimersUseCase}>Start</Button> */}
+          <Button onClick={() => getUseCase('timer.startPomodoro').execute()}>
+            Start
+          </Button>
         </DisplayPhase>
         <DisplayPhase phase='work'>
-          <Button onClick={pomoguru.timer.pausePomodoro}>Pause</Button>
+          <Button onClick={() => getUseCase('timer.pausePomodoro').execute()}>
+            Pause
+          </Button>
         </DisplayPhase>
         <DisplayPhase phase='paused'>
-          <Button onClick={pomoguru.timer.startPomodoro}>Start</Button>
-          <Button onClick={pomoguru.timer.skipPomodoro}>Skip pomodoro</Button>
+          <Button onClick={() => getUseCase('timer.startPomodoro').execute()}>
+            Start
+          </Button>
+          <Button onClick={() => getUseCase('timer.skipPomodoro').execute()}>
+            Skip pomodoro
+          </Button>
         </DisplayPhase>
         <DisplayPhase phase='break'>
-          <Button onClick={pomoguru.timer.skipBreak}>Skip break</Button>
+          <Button onClick={() => getUseCase('timer.skipBreak').execute()}>
+            Skip break
+          </Button>
         </DisplayPhase>
       </Content>
     </Layout>
