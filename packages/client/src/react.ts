@@ -1,13 +1,27 @@
-import { useCaseProvider, UseCaseNames, model } from './index'
+import { useCaseProvider, UseCaseNames } from './index'
 import { useCallback, useEffect, useState } from 'react'
 import { Publisher } from './objects/publisher'
 import { UseCaseInput, UseCaseOutput } from './core/useCasesMap'
+
+/*
+    @TODO: #improvement
+    Reimplement User and Notification as Use Cases
+    */
+const model = {
+  get (name: string) {
+    console.log('implement model', name)
+  },
+  subscribe (event: string, callback: (value: any) => void) {
+    console.log('implement subscribe', event, callback)
+  }
+}
 
 export function useUser () {
   const [user, setUser] = useState(model.get('user'))
 
   useEffect(() => {
     model.subscribe('user:changed', (value: unknown) => {
+      // @ts-ignore
       setUser(value)
     })
   }, [])
@@ -22,6 +36,7 @@ export function useNotificationsAllowed () {
 
   useEffect(() => {
     model.subscribe('notificationsAllowed:changed', (value: boolean) => {
+      // @ts-ignore
       setNotificationsAllowed(value)
     })
   }, [])

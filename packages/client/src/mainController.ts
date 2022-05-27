@@ -31,19 +31,6 @@ export class MainController extends Subject {
     }
   }
 
-  async loginGoogle (jwtToken: string) {
-    await fetch(apiUrl + '/login/google', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        jwtToken
-      })
-    })
-  }
-
   async authorizeSlack (code: string) {
     await fetch(apiUrl + '/slack/authorize', {
       method: 'POST',

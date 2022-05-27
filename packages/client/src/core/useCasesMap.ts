@@ -6,6 +6,7 @@ import { FinishPomodoroUseCase } from './../domain/timer/useCase/FinishPomodoro'
 import { StartPomodoroUseCase } from './../domain/timer/useCase/StartPomodoro'
 import { GetTimersUseCase } from '../domain/timer/useCase/GetTimers'
 import { SkipBreakUseCase } from '../domain/timer/useCase/SkipBreak'
+import { LoginGoogleUseCase } from '../domain/user/useCases/LoginGoogle'
 
 const useCasesMap = {
   'timer.getTimers': new GetTimersUseCase(),
@@ -15,7 +16,8 @@ const useCasesMap = {
   'timer.skipBreak': new SkipBreakUseCase(),
   'timer.finishPomodoro': new FinishPomodoroUseCase(),
   'timer.finishBreak': new FinishBreakUseCase(),
-  'user.getUser': new GetUserUseCase()
+  'user.getUser': new GetUserUseCase(),
+  'user.loginGoogle': new LoginGoogleUseCase()
 } as const
 
 export type UseCaseNames = keyof typeof useCasesMap
@@ -32,5 +34,3 @@ export const useCaseProvider = {
     return useCasesMap[name]
   }
 }
-
-// export const ÷useCaseProvider = new ObjectPool<typeof useCasesMap>(useCasesMap)
