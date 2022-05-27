@@ -10,7 +10,6 @@ import Container, { Token } from 'typedi'
 import { SoundSerivce } from './interfaces/SoundService'
 import { BrowserSoundService } from './services/BrowserSoundService'
 import { UseCaseNames, useCaseProvider } from './core/useCasesMap'
-import { UseCase } from './interfaces/UseCase'
 import { TimerDomain } from './domain/timer/setup'
 
 export const useCaseProviderToken = new Token<typeof useCaseProvider>()
@@ -45,7 +44,5 @@ export type { TimeLeft, Phase } from './objects/model'
 export * from './react'
 export * from './login/google'
 
-export function getUseCase (name: UseCaseNames): UseCase {
-  // @ts-ignore
-  return useCaseProvider.get(name)
-}
+// Public API
+export { useCaseProvider, UseCaseNames }

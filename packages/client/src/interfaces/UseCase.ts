@@ -1,3 +1,3 @@
 export interface UseCase<Input = void, Output = void> {
-  execute(options: Input): Promise<Output>
+  execute(options?: Input): Promise<Output>
 }

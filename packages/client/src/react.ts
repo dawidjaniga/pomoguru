@@ -1,6 +1,7 @@
-import { getUseCase, model } from './index'
+import { useCaseProvider, UseCaseNames, model } from './index'
 import { useCallback, useEffect, useState } from 'react'
-import { UseCaseNames } from './core/useCasesMap'
+import { Publisher } from './objects/publisher'
+import { UseCaseInput, UseCaseOutput } from './core/useCasesMap'
 
 export function useUser () {
   const [user, setUser] = useState(model.get('user'))
@@ -28,19 +29,30 @@ export function useNotificationsAllowed () {
   return notificationsAllowed
 }
 
-export function useCase (
-  useCase: UseCaseNames
-  // options?: typeof useCasesMap[typeof useCase]
+export function useCase<Name extends UseCaseNames> (
+  useCase: Name,
+  options?: UseCaseInput<Name>
+  // @Improvement: Allow useCase to pass options with correct type
 ) {
-  const concreteUseCase = getUseCase(useCase)
+  const concreteUseCase = useCaseProvider.get(useCase)
   const [loaded, setIsLoaded] = useState<boolean>(false)
   const [error, setError] = useState<Error>()
-  const [data, setData] = useState<any>()
-  // const [data, setData] = useState<Awaited<ReturnType<GetTimerOutput>>>()
+  const [data, setData] = useState<UseCaseOutput<Name>>()
+  // @TODO: #improvement
+  // Return correct Output type
+  // const [data, setData] = useState<
+  //   Awaited<ReturnType<typeof concreteUseCase['execute']>>
+  // >()
 
   const getData = useCallback(async function () {
+    /*
+    @TODO: #improvement
+    Allow to pass options to UseCase. Altering behavior while executing or by setters?
+    */
+
     const data = await concreteUseCase.execute()
 
+    // @ts-ignore
     setData(data)
     setIsLoaded(true)
     // try {
@@ -56,9 +68,7 @@ export function useCase (
   useEffect(() => {
     getData()
 
-    // @ts-ignore
-    if (concreteUseCase.isReactive) {
-      // @ts-ignore
+    if (concreteUseCase instanceof Publisher) {
       concreteUseCase.subscribe('updated', () => {
         getData()
       })

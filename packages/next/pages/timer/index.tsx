@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Button from '../../components/Button'
 import Layout from '../../components/Layout'
 
-import { getUseCase, useCase } from '@pomoguru/client'
+import { useCase, useCaseProvider } from '@pomoguru/client'
 import { Phase } from '@pomoguru/client'
 import TimeLeft from './components/TimeLeft'
 
@@ -55,25 +55,35 @@ export default function TimerPage () {
           <TimeLeft />
         </Timer>
         <DisplayPhase phase='idle'>
-          <Button onClick={() => getUseCase('timer.startPomodoro').execute()}>
+          <Button
+            onClick={() => useCaseProvider.get('timer.startPomodoro').execute()}
+          >
             Start
           </Button>
         </DisplayPhase>
         <DisplayPhase phase='work'>
-          <Button onClick={() => getUseCase('timer.pausePomodoro').execute()}>
+          <Button
+            onClick={() => useCaseProvider.get('timer.pausePomodoro').execute()}
+          >
             Pause
           </Button>
         </DisplayPhase>
         <DisplayPhase phase='paused'>
-          <Button onClick={() => getUseCase('timer.startPomodoro').execute()}>
+          <Button
+            onClick={() => useCaseProvider.get('timer.startPomodoro').execute()}
+          >
             Start
           </Button>
-          <Button onClick={() => getUseCase('timer.skipPomodoro').execute()}>
+          <Button
+            onClick={() => useCaseProvider.get('timer.skipPomodoro').execute()}
+          >
             Skip pomodoro
           </Button>
         </DisplayPhase>
         <DisplayPhase phase='break'>
-          <Button onClick={() => getUseCase('timer.skipBreak').execute()}>
+          <Button
+            onClick={() => useCaseProvider.get('timer.skipBreak').execute()}
+          >
             Skip break
           </Button>
         </DisplayPhase>
