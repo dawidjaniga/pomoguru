@@ -132,6 +132,7 @@ export class MainController extends Subject {
   //   }, waitFor)
   // }
 
+  // @TODO: Move to Browser Notification Service
   async allowNotifications () {
     if ('Notification' in window) {
       if (Notification.permission === 'granted') {

@@ -58,6 +58,10 @@
       "options": {
         "commands": [
           {
+            "command": "npx nx build models --watch"
+          },
+
+          {
             "command": "nx serve-original aframe"
           },
           {

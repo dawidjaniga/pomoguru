@@ -1,9 +1,9 @@
+import { useCaseProvider } from '@pomoguru/client'
 import './app.element.scss'
 import 'aframe'
 import { ANode } from 'aframe'
 import 'aframe-environment-component'
 import './mirror-component'
-import { getUseCase } from '@pomoguru/client'
 class AframeApp {
   private sceneEl: ANode
 
@@ -36,7 +36,7 @@ class AframeApp {
 
     startPomodoroEl.addEventListener('click', function () {
       console.log('start timer clicked')
-      getUseCase('timer.startPomodoro').execute()
+      useCaseProvider.get('timer.startPomodoro').execute()
     })
     this.sceneEl.appendChild(startPomodoroEl)
   }
@@ -52,7 +52,7 @@ class AframeApp {
     )
     this.sceneEl.appendChild(timerEl)
     const maxTimerWidth = 20
-    const getTimersUseCase = getUseCase('timer.getTimers')
+    const getTimersUseCase = useCaseProvider.get('timer.getTimers')
 
     // @ts-ignore
     const { timeLeft } = await getTimersUseCase.execute()
@@ -80,7 +80,7 @@ class AframeApp {
   }
 
   createAvatar () {
-    const getUserUseCase = getUseCase('user.getUser')
+    const getUserUseCase = useCaseProvider.get('user.getUser')
     const element = document.createElement('a-image')
     element.setAttribute('position', '0 1 -10')
     this.sceneEl.appendChild(element)
