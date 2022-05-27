@@ -1,7 +1,7 @@
 import { UserDomain } from './domain/user/setup'
 import 'reflect-metadata'
 import { SystemNotificationService } from './interfaces/SystemNotificationService'
-import { BrowserNotificationService } from './services/browserNotification'
+import { BrowserNotificationService } from './services/BrowserNotification'
 import { Model } from './objects/model'
 import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
 import { MainController } from './mainController'
