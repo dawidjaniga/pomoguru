@@ -1,25 +1,26 @@
-import { UserDomain } from '../domain/user/setup'
-import 'reflect-metadata'
-import { SystemNotificationService } from '../interfaces/SystemNotificationService'
+import Container from 'typedi'
+
+import { createUseCases } from './useCasesMap'
+import setupDomains from '../core/setup/domains'
+
 import { BrowserNotificationService } from '../services/BrowserNotification'
-
 import { SocketIoRealTimeProvider } from '../SocketIoRealTimeProvider'
-
-import Container, { Token } from 'typedi'
-import { SoundSerivce } from '../interfaces/SoundService'
 import { BrowserSoundService } from '../services/BrowserSoundService'
-import { TimerDomain } from '../domain/timer/setup'
 
-export const realTimeProviderToken = new Token<SocketIoRealTimeProvider>()
-export const soundServiceToken = new Token<SoundSerivce>()
-export const systemNotificationServiceToken = new Token<
-  SystemNotificationService
->()
+import {
+  realTimeProviderToken,
+  soundServiceToken,
+  systemNotificationServiceToken,
+  useCaseProviderToken
+} from './tokens'
 
 function setup () {
-  new TimerDomain()
-  new UserDomain()
+  setupDependencies()
+  setupDomains()
+}
 
+function setupDependencies () {
+  Container.set(useCaseProviderToken, createUseCases())
   Container.set(realTimeProviderToken, new SocketIoRealTimeProvider())
   Container.set(soundServiceToken, new BrowserSoundService())
   Container.set(

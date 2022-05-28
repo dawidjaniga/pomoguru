@@ -1,7 +1,6 @@
 import { useCaseProvider, UseCaseNames } from './index'
 import { useCallback, useEffect, useState } from 'react'
 import { Publisher } from './objects/publisher'
-import { UseCaseInput, UseCaseOutput } from './core/useCasesMap'
 
 /*
     @TODO: #improvement
@@ -45,14 +44,14 @@ export function useNotificationsAllowed () {
 }
 
 export function useCase<Name extends UseCaseNames> (
-  useCase: Name,
-  options?: UseCaseInput<Name>
+  useCase: Name
+  // options?: UseCaseInput<Name>
   // @Improvement: Allow useCase to pass options with correct type
 ) {
-  const concreteUseCase = useCaseProvider.get(useCase)
+  const concreteUseCase = useCaseProvider[useCase]
   const [loaded, setIsLoaded] = useState<boolean>(false)
   const [error, setError] = useState<Error>()
-  const [data, setData] = useState<UseCaseOutput<Name>>()
+  const [data, setData] = useState<unknown>()
   // @TODO: #improvement
   // Return correct Output type
   // const [data, setData] = useState<
@@ -67,7 +66,6 @@ export function useCase<Name extends UseCaseNames> (
 
     const data = await concreteUseCase.execute()
 
-    // @ts-ignore
     setData(data)
     setIsLoaded(true)
     // try {

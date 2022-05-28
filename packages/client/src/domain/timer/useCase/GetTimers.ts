@@ -16,7 +16,10 @@ export type GetTimerOutput = {
 
 export class GetTimersUseCase extends Publisher
   implements UseCase<GetTimerInput, GetTimerOutput> {
+  name = 'timer.getTimers'
+
   public isReactive = true
+
   private pomodoro: Timer
   private breakTimer: Timer
 
