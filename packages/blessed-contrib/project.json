@@ -1,0 +1,62 @@
+{
+  "root": "packages/blessed-contrib",
+  "sourceRoot": "packages/blessed-contrib/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/packages/blessed-contrib",
+        "main": "packages/blessed-contrib/src/main.ts",
+        "tsConfig": "packages/blessed-contrib/tsconfig.app.json",
+        "assets": [
+          "packages/blessed-contrib/src/assets"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/blessed-contrib/src/environments/environment.ts",
+              "with": "packages/blessed-contrib/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "blessed-contrib:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/blessed-contrib/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/packages/blessed-contrib"
+      ],
+      "options": {
+        "jestConfig": "packages/blessed-contrib/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
