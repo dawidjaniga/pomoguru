@@ -1741,7 +1741,7 @@
     url-loader "^4.1.1"
     webpack-merge "^5.8.0"
 
-"@nrwl/node@^13.9.5":
+"@nrwl/node@13.9.5":
   version "13.9.5"
   resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-13.9.5.tgz#d80b42f832b0fd659ebe1aa85cf51344a64762c5"
   integrity sha512-2Osp9IiYMJPLBQITum8x6R9PrL2lFhjOgPgGpmsydTv9qsVB/F40tQUP2irfeY/DIiQ7JHDPFwUyHJ28I6KacQ==
