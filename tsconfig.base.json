@@ -19,6 +19,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@pomoguru/browser-application": [
+        "packages/browser-application/src/index.ts"
+      ],
       "@pomoguru/client": [
         "packages/client/src"
       ],
