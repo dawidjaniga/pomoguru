@@ -5,7 +5,9 @@
   "targets": {
     "build": {
       "executor": "@nrwl/next:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "root": "packages/next",
@@ -50,7 +52,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/next"],
+      "outputs": [
+        "coverage/packages/next"
+      ],
       "options": {
         "jestConfig": "packages/next/jest.config.js",
         "passWithNoTests": true
@@ -58,9 +62,13 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["packages/next/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/next/**/*.{ts,tsx,js,jsx}"
+        ]
       }
     }
   },

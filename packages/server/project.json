@@ -5,7 +5,9 @@
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/packages/server",
         "main": "packages/server/src/main.ts",
@@ -46,14 +48,20 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["packages/server/**/*.ts"]
+        "lintFilePatterns": [
+          "packages/server/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/server"],
+      "outputs": [
+        "coverage/packages/server"
+      ],
       "options": {
         "jestConfig": "packages/server/jest.config.js",
         "passWithNoTests": true
