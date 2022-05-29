@@ -16,12 +16,10 @@ const Wrapper = styled(Layout.Header)`
 export default function HeaderComponent () {
   const { loaded, data } = useUser()
 
-  console.log(loaded, data)
-
   return (
     <Wrapper>
       <Menu />
-      {loaded && data.id ? (
+      {loaded && data.authenticated ? (
         <User fullName={data.email} avatarUrl={data.avatarUrl} />
       ) : (
         <Link href='/login'>Login</Link>

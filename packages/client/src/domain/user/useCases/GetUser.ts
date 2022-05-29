@@ -6,16 +6,22 @@ import { Publisher } from '../../../objects/publisher'
 import { User } from '../entities/user'
 
 export type GetUserInput = void
-export type GetUserOutput =
-  | {
-      authenticated: boolean
-    }
-  | {
-      authenticated: true
-      id: string
-      email: string
-      avatarUrl: string
-    }
+export type GetUserOutput = {
+  authenticated: boolean
+  id?: string
+  email?: string
+  avatarUrl?: string
+}
+// export type GetUserOutput =
+//   | {
+//       authenticated: boolean
+//     }
+//   | {
+//       authenticated: true
+//       id: string
+//       email: string
+//       avatarUrl: string
+//     }
 
 export class GetUserUseCase implements UseCase<GetUserInput, GetUserOutput> {
   public isReactive = true
@@ -39,7 +45,9 @@ export class GetUserUseCase implements UseCase<GetUserInput, GetUserOutput> {
       this.user.id = user.id
       this.user.email = user.email
       this.user.avatarUrl = user.avatarUrl
-      this.publisher.publish('updated', await this.execute())
+      const result = await this.execute()
+      console.log('attachevents get user', result)
+      this.publisher.publish('updated', result)
     })
   }
 
@@ -53,8 +61,14 @@ export class GetUserUseCase implements UseCase<GetUserInput, GetUserOutput> {
       }
     } else {
       return {
-        authenticated: false
+        authenticated: false,
+        id: '',
+        email: '',
+        avatarUrl: ''
       }
+      // return {
+      //   authenticated: false
+      // }
     }
   }
 }

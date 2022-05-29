@@ -46,7 +46,14 @@ export function useTimers () {
 
 export function useUser () {
   const [loaded, setLoaded] = useState(false)
-  const [data, setData] = useState<GetUserOutput>()
+  // @TODO: #improvement Get initial state from use case. SSR breaks when
+  // there is null returned
+  const [data, setData] = useState<GetUserOutput>({
+    authenticated: false,
+    id: '',
+    email: '',
+    avatarUrl: ''
+  })
   const [error, setError] = useState(null)
 
   useEffect(() => {
