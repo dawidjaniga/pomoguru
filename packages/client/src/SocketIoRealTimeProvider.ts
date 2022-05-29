@@ -74,7 +74,7 @@ export class SocketIoRealTimeProvider extends Publisher {
     })
   }
 
-  startUserWork () {
+  startPomodoro () {
     this.userSocket?.emit('startWork', Date.now())
   }
 

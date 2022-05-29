@@ -43,7 +43,10 @@ export class PomoguruClient {
         this.objects['pomodoro'],
         this.objects['breakTimer']
       ),
-      'timer.startPomodoro': new StartPomodoroUseCase(this.objects['pomodoro']),
+      'timer.startPomodoro': new StartPomodoroUseCase(
+        this.realTimeProvider,
+        this.objects['pomodoro']
+      ),
       'timer.pausePomodoro': new PausePomodoroUseCase(this.objects['pomodoro']),
       'timer.skipPomodoro': new SkipPomodoroUseCase(this.objects['pomodoro']),
       'timer.skipBreak': new SkipBreakUseCase(
@@ -86,9 +89,14 @@ export class PomoguruClient {
     this.objects['breakTimer'].subscribe('finished', async () => {
       this.useCases['timer.finishBreak'].execute()
     })
+
+    this.realTimeProvider.subscribe('remoteStartedTimer', () => {
+      console.log('remoste tiemr started')
+    })
   }
 
   startPomodoro () {
+    console.log('pomoguru client startPomodoro')
     this.useCases['timer.startPomodoro'].execute()
   }
 
