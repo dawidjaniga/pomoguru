@@ -2,20 +2,13 @@ import Timer from '../valueObjects/timer'
 
 import { SoundService } from '../interfaces/SoundService'
 import { SystemNotificationService } from '../interfaces/SystemNotificationService'
-import { GetUserUseCase, GetUserOutput } from '../domain/user/useCases/GetUser'
-import { SkipPomodoroUseCase } from '../domain/timer/useCase/SkipPomodoro'
-import { PausePomodoroUseCase } from '../domain/timer/useCase/PausePomodoro'
-import { FinishBreakUseCase } from '../domain/timer/useCase/FinishBreak'
-import { FinishPomodoroUseCase } from '../domain/timer/useCase/FinishPomodoro'
-import { StartPomodoroUseCase } from '../domain/timer/useCase/StartPomodoro'
-import {
-  GetTimerOutput,
-  GetTimersUseCase
-} from '../domain/timer/useCase/GetTimers'
-import { SkipBreakUseCase } from '../domain/timer/useCase/SkipBreak'
-import { LoginGoogleUseCase } from '../domain/user/useCases/LoginGoogle'
+
 import { SocketIoRealTimeProvider } from '../SocketIoRealTimeProvider'
 import { User } from '../domain/user/entities/user'
+import { UseCaseManger } from './useCaseManger'
+
+import { GetUserOutput } from '../domain/user/useCases/GetUser'
+import { GetTimerOutput } from '../domain/timer/useCase/GetTimers'
 
 // @TODO: Extract to Settings Object
 const pomodoroDuration = 25 * 60
@@ -30,45 +23,17 @@ export class PomoguruClient {
     private soundService: SoundService,
     private systemNotificationService: SystemNotificationService
   ) {
-    this.realTimeProvider = new SocketIoRealTimeProvider()
-
     this.createObjects()
-    this.createUseCases()
-    this.attachEvents()
-  }
 
-  private createUseCases () {
-    this.useCases = {
-      'timer.getTimers': new GetTimersUseCase(
-        this.objects['pomodoro'],
-        this.objects['breakTimer']
-      ),
-      'timer.startPomodoro': new StartPomodoroUseCase(
-        this.realTimeProvider,
-        this.objects['pomodoro']
-      ),
-      'timer.pausePomodoro': new PausePomodoroUseCase(this.objects['pomodoro']),
-      'timer.skipPomodoro': new SkipPomodoroUseCase(this.objects['pomodoro']),
-      'timer.skipBreak': new SkipBreakUseCase(
-        this.objects['pomodoro'],
-        this.objects['breakTimer']
-      ),
-      'timer.finishPomodoro': new FinishPomodoroUseCase(
-        this.soundService,
-        this.systemNotificationService,
-        this.objects['pomodoro']
-      ),
-      'timer.finishBreak': new FinishBreakUseCase(
-        this.soundService,
-        this.systemNotificationService,
-        this.objects['breakTimer']
-      ),
-      'user.getUser': new GetUserUseCase(
-        this.realTimeProvider,
-        this.objects['user']
-      ),
-      'user.loginGoogle': new LoginGoogleUseCase()
-    }
+    this.realTimeProvider = new SocketIoRealTimeProvider()
+    this.useCases = new UseCaseManger(
+      this.objects,
+      this.soundService,
+      this.realTimeProvider,
+      this.systemNotificationService
+    ).useCases
+
+    this.attachEvents()
   }
 
   createObjects () {
