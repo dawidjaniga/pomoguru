@@ -1,14 +1,12 @@
-import { breakTimerToken, pomodoroToken } from './../setup'
-import Container from 'typedi'
+import Timer from '../../../valueObjects/timer'
 import { UseCase } from '../../../interfaces/UseCase'
 
 export class SkipBreakUseCase implements UseCase {
-  async execute () {
-    const breakTimer = Container.get(breakTimerToken)
-    const pomodoro = Container.get(pomodoroToken)
+  constructor (private pomodoro: Timer, private breakTimer: Timer) {}
 
-    breakTimer.stop()
-    pomodoro.start()
+  async execute () {
+    this.breakTimer.stop()
+    this.pomodoro.start()
 
     // this.realTimeProvider.userSkipBreak()
   }

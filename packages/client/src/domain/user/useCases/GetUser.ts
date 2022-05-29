@@ -1,9 +1,9 @@
+import { SocketIoRealTimeProvider } from './../../../SocketIoRealTimeProvider'
 import Container from 'typedi'
 import { UseCase } from '../../../interfaces/UseCase'
 
 import { Publisher } from '../../../objects/publisher'
 import { User } from '../entities/user'
-import { realTimeProviderToken } from '@pomoguru/client'
 import { userToken } from '../setup'
 
 export type GetUserInput = void
@@ -22,20 +22,18 @@ export type GetUserOutput =
 export class GetUserUseCase extends Publisher
   implements UseCase<GetUserInput, GetUserOutput> {
   public isReactive = true
-  private user: User
 
-  constructor () {
+  constructor (
+    private realTimeProvider: SocketIoRealTimeProvider,
+    private user: User
+  ) {
     super()
-
-    this.user = Container.get(userToken)
 
     this.attachEvents()
   }
 
   async attachEvents () {
-    const realTimeProvider = Container.get(realTimeProviderToken)
-
-    realTimeProvider.subscribe('user:authorized', user => {
+    this.realTimeProvider.subscribe('user:authorized', user => {
       console.log('get user use case', user)
       this.user.id = user.id
       this.user.email = user.email

@@ -1,9 +1,16 @@
 import 'reflect-metadata'
-import { useCaseProvider } from './core/setup'
+
+export { SystemNotificationService } from './interfaces/SystemNotificationService'
+export { SoundService } from './interfaces/SoundService'
+
+import { PomoguruClient } from './core/pomoguruClient'
+// import { useCaseProvider } from './core/setup'
 
 // Public @pomoguru/client API
-type UseCaseNames = keyof typeof useCaseProvider
-export { useCaseProvider, UseCaseNames }
+// type UseCaseNames = keyof typeof useCaseProvider
+// export { useCaseProvider, UseCaseNames }
 
-export * from './react'
-export * from './login/google'
+export { PomoguruClient }
+
+// export * from './react'
+// export * from './login/google'

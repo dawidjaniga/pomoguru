@@ -1,5 +1,4 @@
-import { pomodoroToken } from './../setup'
-import Container from 'typedi'
+import Timer from '../../../valueObjects/timer'
 import { UseCase } from '../../../interfaces/UseCase'
 
 export type PausePomodoroInput = void
@@ -7,9 +6,9 @@ export type PausePomodoroOutput = void
 
 export class PausePomodoroUseCase
   implements UseCase<PausePomodoroInput, PausePomodoroOutput> {
-  async execute () {
-    const pomodoro = Container.get(pomodoroToken)
+  constructor (private pomodoro: Timer) {}
 
-    pomodoro.pause()
+  async execute () {
+    this.pomodoro.pause()
   }
 }

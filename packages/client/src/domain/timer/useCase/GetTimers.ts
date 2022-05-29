@@ -1,10 +1,11 @@
-import { pomodoroToken, breakTimerToken } from './../setup'
-import Container from 'typedi'
+import Timer from '../../../valueObjects/timer'
+
 import { UseCase } from '../../../interfaces/UseCase'
 import format from 'date-fns/format'
+
 import { Publisher } from '../../../objects/publisher'
-import Timer from '../../../valueObjects/timer'
-import { Phase } from '../../../objects/model'
+
+export type Phase = 'idle' | 'work' | 'paused' | 'break'
 
 export type GetTimerInput = void
 
@@ -14,38 +15,35 @@ export type GetTimerOutput = {
   phase: Phase
 }
 
-export class GetTimersUseCase extends Publisher
+export class GetTimersUseCase
   implements UseCase<GetTimerInput, GetTimerOutput> {
-  name = 'timer.getTimers'
-
   public isReactive = true
 
-  private pomodoro: Timer
-  private breakTimer: Timer
+  private publisher: Publisher = new Publisher()
 
-  constructor () {
-    super()
-
-    this.pomodoro = Container.get(pomodoroToken)
-    this.breakTimer = Container.get(breakTimerToken)
-
-    this.pomodoro.subscribe('updated', () => {
-      this.publish('updated')
+  constructor (private pomodoro: Timer, private breakTimer: Timer) {
+    this.pomodoro.subscribe('updated', async () => {
+      this.publisher.publish('updated', await this.execute())
     })
 
-    this.breakTimer.subscribe('updated', () => {
-      this.publish('updated')
+    this.breakTimer.subscribe('updated', async () => {
+      this.publisher.publish('updated', await this.execute())
     })
   }
 
   async execute () {
-    const timer = this.pomodoro.active ? this.pomodoro : this.breakTimer
+    const timer = this.getTimer()
 
     return {
-      timeLeft: format(new Date(timer.timeLeftMs), 'mm:ss'),
       progress: timer.progress,
+      timeLeft: format(new Date(timer.timeLeftMs), 'mm:ss'),
       phase: this.getPhase()
     }
+  }
+
+  async subscribe (event: string, subscriber: (data: GetTimerOutput) => void) {
+    this.publisher.subscribe(event, subscriber)
+    subscriber(await this.execute())
   }
 
   getPhase () {
@@ -60,5 +58,16 @@ export class GetTimersUseCase extends Publisher
     }
 
     return phase
+  }
+
+  getTimer () {
+    const phaseToTimer: Record<Phase, Timer> = {
+      idle: this.pomodoro,
+      work: this.pomodoro,
+      break: this.breakTimer,
+      paused: this.breakTimer
+    }
+
+    return phaseToTimer[this.getPhase()]
   }
 }

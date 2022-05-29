@@ -1,23 +1,21 @@
-import { pomodoroToken } from './../setup'
-import Container, { Service } from 'typedi'
+import Timer from '../../../valueObjects/timer'
 import { UseCase } from '../../../interfaces/UseCase'
 
-import {
-  soundServiceToken,
-  systemNotificationServiceToken
-} from '@pomoguru/client'
+import { SoundService } from '../../../interfaces/SoundService'
+import { SystemNotificationService } from '../../..//interfaces/SystemNotificationService'
 
-@Service()
 export class FinishBreakUseCase implements UseCase {
+  constructor (
+    private soundService: SoundService,
+    private systemNotificationService: SystemNotificationService,
+    private pomodoro: Timer
+  ) {}
+
   async execute () {
-    const soundService = Container.get(soundServiceToken)
-    const notificationService = Container.get(systemNotificationServiceToken)
-    const pomodoro = Container.get(pomodoroToken)
-
-    soundService.playBreakEndSound()
+    this.soundService.playBreakEndSound()
     // @TODO: Maybe add Translation service?
-    notificationService.showNotification('Focus time')
+    this.systemNotificationService.showNotification('Focus time')
 
-    pomodoro.start()
+    this.pomodoro.start()
   }
 }

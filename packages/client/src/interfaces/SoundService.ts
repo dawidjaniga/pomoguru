@@ -1,4 +1,4 @@
-export interface SoundSerivce {
+export interface SoundService {
   playWorkEndSound(): void
   playBreakEndSound(): void
 }

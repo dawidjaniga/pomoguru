@@ -8,6 +8,7 @@
     "client": "packages/client",
     "next": "packages/next",
     "next-e2e": "packages/next-e2e",
+    "node-application": "packages/node-application",
     "server": "packages/server",
     "vue": "packages/vue",
     "vue-e2e": "packages/vue-e2e"
