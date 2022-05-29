@@ -2,6 +2,7 @@ import { PomoguruClient, GetTimerOutput, GetUserOutput } from '@pomoguru/client'
 import { BrowserNotificationService } from './../services/BrowserNotification'
 import { BrowserSoundService } from '../services/BrowserSoundService'
 
+// @TODO: Common Interface
 export class BrowserApplication {
   private client: PomoguruClient
 

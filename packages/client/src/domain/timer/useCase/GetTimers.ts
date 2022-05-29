@@ -32,21 +32,22 @@ export class GetTimersUseCase
   }
 
   async execute () {
-    const timer = this.getTimer()
+    const timer = this.timer
 
     return {
       progress: timer.progress,
       timeLeft: format(new Date(timer.timeLeftMs), 'mm:ss'),
-      phase: this.getPhase()
+      phase: this.phase
     }
   }
 
+  // unsubscribe
   async subscribe (event: string, subscriber: (data: GetTimerOutput) => void) {
     this.publisher.subscribe(event, subscriber)
     subscriber(await this.execute())
   }
 
-  getPhase () {
+  get phase () {
     let phase: Phase = 'idle'
 
     if (this.pomodoro.active) {
@@ -60,7 +61,7 @@ export class GetTimersUseCase
     return phase
   }
 
-  getTimer () {
+  get timer () {
     const phaseToTimer: Record<Phase, Timer> = {
       idle: this.pomodoro,
       work: this.pomodoro,
@@ -68,6 +69,6 @@ export class GetTimersUseCase
       paused: this.pomodoro
     }
 
-    return phaseToTimer[this.getPhase()]
+    return phaseToTimer[this.phase]
   }
 }
