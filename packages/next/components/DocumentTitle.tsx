@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { model, Phase } from '@pomoguru/client'
+import { Phase } from '@pomoguru/client'
 
 const phaseMap: Record<Phase, string> = {
   idle: 'start',
@@ -15,11 +15,11 @@ function setTitle () {
 
 export default function DocumentTitle () {
   useEffect(() => {
-    setTitle()
-
-    model.subscribe('timeLeft:changed', () => {
-      setTitle()
-    })
+    // @TODO: #implement
+    // setTitle()
+    // model.subscribe('timeLeft:changed', () => {
+    //   setTitle()
+    // })
   }, [])
 
   return null

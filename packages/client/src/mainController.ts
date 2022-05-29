@@ -1,6 +1,5 @@
 import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
 import { Subject } from './objects/observer'
-import { Model } from './objects/model'
 import { SystemNotificationService } from './interfaces/SystemNotificationService'
 import debugModule from 'debug'
 
@@ -16,7 +15,6 @@ const apiUrl = process.env['NX_POMOGURU_API_URL']
 
 export class MainController extends Subject {
   constructor (
-    public model: Model,
     public realTimeProvider: SocketIoRealTimeProvider,
     public notificationService: SystemNotificationService
   ) {
@@ -24,10 +22,6 @@ export class MainController extends Subject {
 
     if (typeof window !== 'undefined') {
       this.getUser()
-      this.model.set(
-        'notificationsAllowed',
-        Notification.permission === 'granted'
-      )
     }
   }
 
@@ -47,35 +41,22 @@ export class MainController extends Subject {
   // @TODO: Remove
   async getUser () {
     try {
-      this.realTimeProvider.subscribe('user:authorized', user => {
-        debug('user authorized', user)
-
-        this.model.set('user', {
-          userId: user.id,
-          email: user.email,
-          avatarUrl: user.avatarUrl
-        })
-      })
-
       // this.realTimeProvider.subscribe(
       //   'remoteStartedTimer',
       //   (occuredAt: number) => {
       //     this.remoteStartWork(occuredAt)
       //   }
       // )
-
       // this.realTimeProvider.subscribe('pomodoroPaused', () => {
       //   if (this.model.get('phase') !== 'paused') {
       //     this.pausePomodoro()
       //   }
       // })
-
       // this.realTimeProvider.subscribe('breakSkipped', () => {
       //   if (this.model.get('phase') !== 'break') {
       //     this.skipBreak()
       //   }
       // })
-
       // this.realTimeProvider.subscribe('workCanceled', () => {
       //   if (this.model.get('phase') === 'paused') {
       //     this.cancelWork()

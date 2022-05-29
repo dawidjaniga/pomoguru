@@ -1,4 +1,3 @@
-import { useCaseProvider } from '@pomoguru/client'
 declare global {
   const google: typeof import('google-one-tap')
 }
@@ -36,6 +35,7 @@ export function renderLoginButton (selector: string) {
   async function handleCredentialResponse (
     response: google.CredentialResponse
   ) {
-    await useCaseProvider.get('user.loginGoogle').execute(response.credential)
+    // @TODO: use app
+    // await useCaseProvider.get('user.loginGoogle').execute(response.credential)
   }
 }

@@ -1,6 +1,6 @@
 import { Howl } from 'howler'
 import { Service } from 'typedi'
-import { SoundSerivce } from '../interfaces/SoundService'
+import { SoundService } from '@pomoguru/client'
 
 // @TODO: How to properly host sound files?
 const breakEndSound = new Howl({
@@ -13,7 +13,7 @@ const workEndSound = new Howl({
 })
 
 @Service()
-export class BrowserSoundService implements SoundSerivce {
+export class BrowserSoundService implements SoundService {
   playWorkEndSound () {
     workEndSound.play()
   }

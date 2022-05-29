@@ -1,44 +1,45 @@
 import { SocketIoRealTimeProvider } from './../../../SocketIoRealTimeProvider'
-import Container from 'typedi'
+
 import { UseCase } from '../../../interfaces/UseCase'
 
 import { Publisher } from '../../../objects/publisher'
 import { User } from '../entities/user'
-import { userToken } from '../setup'
 
 export type GetUserInput = void
-
 export type GetUserOutput =
   | {
       authenticated: boolean
     }
   | {
-      authenticated: boolean
+      authenticated: true
       id: string
       email: string
       avatarUrl: string
     }
 
-export class GetUserUseCase extends Publisher
-  implements UseCase<GetUserInput, GetUserOutput> {
+export class GetUserUseCase implements UseCase<GetUserInput, GetUserOutput> {
   public isReactive = true
+  private publisher: Publisher = new Publisher()
 
   constructor (
     private realTimeProvider: SocketIoRealTimeProvider,
     private user: User
   ) {
-    super()
-
     this.attachEvents()
   }
 
+  async subscribe (event: string, subscriber: (data: GetUserOutput) => void) {
+    this.publisher.subscribe(event, subscriber)
+    subscriber(await this.execute())
+  }
+
   async attachEvents () {
-    this.realTimeProvider.subscribe('user:authorized', user => {
+    this.realTimeProvider.subscribe('user:authorized', async user => {
       console.log('get user use case', user)
       this.user.id = user.id
       this.user.email = user.email
       this.user.avatarUrl = user.avatarUrl
-      this.publish('updated')
+      this.publisher.publish('updated', await this.execute())
     })
   }
 

@@ -11,6 +11,8 @@ import { PomoguruClient } from './core/pomoguruClient'
 // export { useCaseProvider, UseCaseNames }
 
 export { PomoguruClient }
+export { Phase, GetTimerOutput } from './domain/timer/useCase/GetTimers'
+export { GetUserOutput } from './domain/user/useCases/GetUser'
 
 // export * from './react'
 // export * from './login/google'

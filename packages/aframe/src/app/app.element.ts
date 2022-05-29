@@ -1,4 +1,7 @@
-import { useCaseProvider } from '@pomoguru/client'
+import { BrowserApplication } from '@pomoguru/browser-application'
+
+export const app = new BrowserApplication()
+
 import './app.element.scss'
 import 'aframe'
 import { ANode } from 'aframe'
@@ -10,7 +13,8 @@ class AframeApp {
   constructor () {
     this.createScene()
     this.createEnvironment()
-    this.createButtons()
+    this.createStartButton()
+    this.createPauseButton()
     this.createTimer()
     this.createAvatar()
     this.createFloor()
@@ -24,10 +28,9 @@ class AframeApp {
     document.body.appendChild(this.sceneEl)
   }
 
-  createButtons () {
+  createStartButton () {
     const startPomodoroEl = document.createElement('a-box')
     startPomodoroEl.setAttribute('color', 'green')
-    startPomodoroEl.setAttribute('position', '-4 1 -10')
     startPomodoroEl.setAttribute('scale', '2 2 2')
     startPomodoroEl.setAttribute(
       'animation',
@@ -36,9 +39,25 @@ class AframeApp {
 
     startPomodoroEl.addEventListener('click', function () {
       console.log('start timer clicked')
-      useCaseProvider.get('timer.startPomodoro').execute()
+      app.startPomodoro()
     })
     this.sceneEl.appendChild(startPomodoroEl)
+  }
+
+  createPauseButton () {
+    const element = document.createElement('a-box')
+    element.setAttribute('color', 'yellow')
+    element.setAttribute('position', '-4 1 -13')
+    element.setAttribute('scale', '2 2 2')
+    element.setAttribute(
+      'animation',
+      'property: position; from: -4 -1 -10; to: -4 1 -13; dur: 2500; easing: easeInCirc'
+    )
+
+    element.addEventListener('click', function () {
+      app.pausePomodoro()
+    })
+    this.sceneEl.appendChild(element)
   }
 
   async createTimer () {
@@ -52,13 +71,9 @@ class AframeApp {
     )
     this.sceneEl.appendChild(timerEl)
     const maxTimerWidth = 20
-    const getTimersUseCase = useCaseProvider.get('timer.getTimers')
-
-    // @ts-ignore
-    const { timeLeft } = await getTimersUseCase.execute()
 
     const timeLeftEl = document.createElement('a-text')
-    timeLeftEl.setAttribute('value', timeLeft)
+    // timeLeftEl.setAttribute('value', timeLeft)
     timeLeftEl.setAttribute('scale', '11.61044 13.14882 11.61044')
     timeLeftEl.setAttribute('position', '-1.53731 4.9242 -24.16562')
     timeLeftEl.setAttribute(
@@ -67,10 +82,8 @@ class AframeApp {
     )
     this.sceneEl.appendChild(timeLeftEl)
 
-    // @ts-ignore
-    getTimersUseCase.subscribe('updated', async () => {
-      // @ts-ignore
-      const { timeLeft, progress } = await getTimersUseCase.execute()
+    app.subscribeToGetTimers(timers => {
+      const { timeLeft, progress } = timers
 
       timeLeftEl.setAttribute('value', timeLeft)
 
@@ -80,16 +93,16 @@ class AframeApp {
   }
 
   createAvatar () {
-    const getUserUseCase = useCaseProvider.get('user.getUser')
     const element = document.createElement('a-image')
     element.setAttribute('position', '0 1 -10')
     this.sceneEl.appendChild(element)
 
-    //@ts-ignore
-    getUserUseCase.subscribe('updated', async () => {
-      //@ts-ignore
-      const { avatarUrl } = await getUserUseCase.execute()
-      element.setAttribute('src', avatarUrl)
+    app.subscribeToGetUser(user => {
+      if (user.authenticated) {
+        // @ts-ignore
+        const { avatarUrl } = user
+        element.setAttribute('src', avatarUrl)
+      }
     })
   }
 

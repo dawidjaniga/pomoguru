@@ -6,15 +6,18 @@ const debug = debugModule('pomoguru:client:publisher')
 // @TODO: Extract
 const isDevelopment = true
 
+type Unsubscriber = () => void
 export class Publisher {
   private _subscribers: Record<string, Subscriber[]> = {}
 
-  subscribe (event: string, subscriber: Subscriber): void {
+  subscribe (event: string, subscriber: Subscriber): Unsubscriber {
     if (!this._subscribers[event]) {
       this._subscribers[event] = []
     }
 
     this._subscribers[event].push(subscriber)
+
+    return () => this.unsubscribe(event, subscriber)
   }
 
   unsubscribe (event: string, subscriber: Subscriber): void {

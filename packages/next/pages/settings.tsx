@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Button from '../components/Button'
 import Layout from '../components/Layout'
-import { controller, useNotificationsAllowed } from '@pomoguru/client'
+// import { controller, useNotificationsAllowed } from '@pomoguru/client'
 
 const Content = styled.div`
   text-align: center;
@@ -9,7 +9,8 @@ const Content = styled.div`
 `
 
 export default function SettingsPage () {
-  const notificationsAllowed = useNotificationsAllowed()
+  const notificationsAllowed = false
+  // const notificationsAllowed = useNotificationsAllowed()
   // @TODO: Extract to client
   const redirectUri = 'https://localhost:4200/slack'
 
@@ -19,7 +20,8 @@ export default function SettingsPage () {
         {notificationsAllowed ? (
           'Notifications are allowed'
         ) : (
-          <Button onClick={() => controller.allowNotifications()}>
+          // <Button onClick={() => controller.allowNotifications()}>
+          <Button onClick={() => console.log('use app methods')}>
             Allow notifications
           </Button>
         )}

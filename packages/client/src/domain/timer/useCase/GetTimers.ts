@@ -65,7 +65,7 @@ export class GetTimersUseCase
       idle: this.pomodoro,
       work: this.pomodoro,
       break: this.breakTimer,
-      paused: this.breakTimer
+      paused: this.pomodoro
     }
 
     return phaseToTimer[this.getPhase()]

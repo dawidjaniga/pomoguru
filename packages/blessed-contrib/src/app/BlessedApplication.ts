@@ -1,7 +1,7 @@
 import { NodeApplication } from '@pomoguru/node-application'
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
-import { Phase } from 'packages/client/src/domain/timer/useCase/GetTimers'
+import { Phase } from '@pomoguru/client'
 
 export class BlessedApp {
   private app: NodeApplication

@@ -2,7 +2,7 @@ import Timer from '../valueObjects/timer'
 
 import { SoundService } from '../interfaces/SoundService'
 import { SystemNotificationService } from '../interfaces/SystemNotificationService'
-import { GetUserUseCase } from '../domain/user/useCases/GetUser'
+import { GetUserUseCase, GetUserOutput } from '../domain/user/useCases/GetUser'
 import { SkipPomodoroUseCase } from '../domain/timer/useCase/SkipPomodoro'
 import { PausePomodoroUseCase } from '../domain/timer/useCase/PausePomodoro'
 import { FinishBreakUseCase } from '../domain/timer/useCase/FinishBreak'
@@ -90,10 +90,25 @@ export class PomoguruClient {
 
   startPomodoro () {
     this.useCases['timer.startPomodoro'].execute()
-    // this.soundService.playBreakEndSound()
+  }
+
+  pausePomodoro () {
+    this.useCases['timer.pausePomodoro'].execute()
+  }
+
+  skipPomodoro () {
+    this.useCases['timer.skipPomodoro'].execute()
+  }
+
+  skipBreak () {
+    this.useCases['timer.skipPomodoro'].execute()
   }
 
   subscribeToGetTimers (cb: (timers: GetTimerOutput) => void) {
     this.useCases['timer.getTimers'].subscribe('updated', cb)
+  }
+
+  subscribeToGetUser (cb: (user: GetUserOutput) => void) {
+    this.useCases['user.getUser'].subscribe('updated', cb)
   }
 }

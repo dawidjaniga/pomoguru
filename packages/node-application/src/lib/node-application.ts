@@ -1,7 +1,6 @@
-import { PomoguruClient } from '../../../client/src/core/pomoguruClient'
+import { PomoguruClient, GetTimerOutput } from '@pomoguru/client'
 import { NodeSoundService } from '../services/SoundService'
 import { NodeNotificationService } from '../services/SystemNotification'
-import { GetTimerOutput } from 'packages/client/src/domain/timer/useCase/GetTimers'
 
 export class NodeApplication {
   private client: PomoguruClient

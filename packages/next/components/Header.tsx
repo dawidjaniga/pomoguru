@@ -3,8 +3,9 @@ import Menu from './Menu'
 import { Layout } from 'antd'
 import User from './User'
 import Link from 'next/link'
-import { useUser } from '@pomoguru/client'
+
 import styled from 'styled-components'
+import { useUser } from '../glue'
 
 const Wrapper = styled(Layout.Header)`
   display: flex;
@@ -13,13 +14,15 @@ const Wrapper = styled(Layout.Header)`
 `
 
 export default function HeaderComponent () {
-  const user = useUser()
+  const { loaded, data } = useUser()
+
+  console.log(loaded, data)
 
   return (
     <Wrapper>
       <Menu />
-      {user ? (
-        <User fullName={user.fullName} avatarUrl={user.avatarUrl} />
+      {loaded && data.id ? (
+        <User fullName={data.email} avatarUrl={data.avatarUrl} />
       ) : (
         <Link href='/login'>Login</Link>
       )}

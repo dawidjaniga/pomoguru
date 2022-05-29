@@ -1,11 +1,11 @@
 import React from 'react'
-import { useCase } from '@pomoguru/client'
 
 import { Progress } from 'antd'
 
 import { ProgressProps } from 'antd/lib/progress'
 import { Phase } from '@pomoguru/client'
 import styled from 'styled-components'
+import { useTimers } from '../../../glue'
 
 const phaseMap: Record<Phase, ProgressProps['status']> = {
   idle: 'exception',
@@ -22,17 +22,8 @@ const Wrapper = styled.div`
   }
 `
 
-// function useCombinedTimers () {
-//   const pomodoroTimer = useCase('timer.getTimer')
-//   const breakTimer = useCase('timer.getBreakTimer')
-
-//   return {
-//     ...pomodoroTimer,
-//     ...breakTimer
-//   }
-// }
 export default function TimeLeft () {
-  const { loaded, data, error } = useCase('timer.getTimers')
+  const { loaded, data, error } = useTimers()
 
   if (loaded) {
     if (error) {

@@ -1,5 +1,5 @@
 import { Service } from 'typedi'
-import { SystemNotificationService } from '../interfaces/SystemNotificationService'
+import { SystemNotificationService } from '../../../client/src/interfaces/SystemNotificationService'
 
 @Service()
 export class BrowserNotificationService implements SystemNotificationService {
