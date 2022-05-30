@@ -9,6 +9,7 @@ import { UseCaseManger } from './useCaseManger'
 
 import { GetUserOutput } from '../domain/user/useCases/GetUser'
 import { GetTimerOutput } from '../domain/timer/useCase/GetTimers'
+import { PomoguruApi } from '../services/pomoguruApi'
 
 // @TODO: Extract to Settings Object
 const pomodoroDuration = 25 * 60
@@ -17,6 +18,7 @@ const breakDuration = 5 * 60
 export class PomoguruClient {
   private useCases: Record<string, any> = {}
   private objects: Record<string, any> = {}
+  private pomoguruApi: PomoguruApi
   private realTimeProvider: SocketIoRealTimeProvider
 
   constructor (
@@ -25,9 +27,13 @@ export class PomoguruClient {
   ) {
     this.createObjects()
 
+    this.pomoguruApi = new PomoguruApi(
+      process.env['NX_POMOGURU_API_URL'] as string
+    )
     this.realTimeProvider = new SocketIoRealTimeProvider()
     this.useCases = new UseCaseManger(
       this.objects,
+      this.pomoguruApi,
       this.soundService,
       this.realTimeProvider,
       this.systemNotificationService

@@ -1,5 +1,7 @@
+import { PomoguruApi } from 'packages/client/src/services/pomoguruApi'
 import { SystemNotificationService } from '@pomoguru/client'
 import { SocketIoRealTimeProvider } from './../SocketIoRealTimeProvider'
+
 import { GetUserUseCase } from '../domain/user/useCases/GetUser'
 import { SkipPomodoroUseCase } from '../domain/timer/useCase/SkipPomodoro'
 import { PausePomodoroUseCase } from '../domain/timer/useCase/PausePomodoro'
@@ -17,6 +19,7 @@ export class UseCaseManger {
 
   constructor (
     objects: Record<string, any>,
+    pomoguruApi: PomoguruApi,
     soundService: SoundService,
     realTimeProvider: SocketIoRealTimeProvider,
     systemNotificationService: SystemNotificationService
@@ -47,8 +50,8 @@ export class UseCaseManger {
         objects['breakTimer']
       ),
       'user.getUser': new GetUserUseCase(realTimeProvider, objects['user']),
-      'user.loginGoogle': new LoginGoogleUseCase(),
-      'user.authorizeSlack': new AuthorizeSlackUseCase()
+      'user.loginGoogle': new LoginGoogleUseCase(pomoguruApi),
+      'user.authorizeSlack': new AuthorizeSlackUseCase(pomoguruApi)
     }
   }
 }

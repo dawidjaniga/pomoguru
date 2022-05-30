@@ -1,30 +1,14 @@
 import { UseCase } from '../../../interfaces/UseCase'
+import { PomoguruApi } from '../../../services/pomoguruApi'
 
 export type LoginGoogleInput = string
 export type LoginGoogleOutput = void
 
 export class LoginGoogleUseCase
   implements UseCase<LoginGoogleInput, LoginGoogleOutput> {
-  /*
-    @TODO: #improvement
-    Require passing jwtToken - other useCases types break after the change
-    */
-  async execute (jwtToken?: string) {
-    /*
-    @TODO: #improvement
-    Extract to API Service
-    */
-    const apiUrl = process.env['NX_POMOGURU_API_URL']
+  constructor (private pomoguruApi: PomoguruApi) {}
 
-    await fetch(apiUrl + '/login/google', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        jwtToken
-      })
-    })
+  async execute (jwtToken: string) {
+    this.pomoguruApi.loginGoogle(jwtToken)
   }
 }

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import Layout from '../components/Layout'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { app } from '../app'
 
 const Content = styled.div`
@@ -13,20 +13,27 @@ const Content = styled.div`
 export default function SlackPage () {
   const { query } = useRouter()
   const { code } = query
+  const [error, setError] = useState<Error>()
 
   useEffect(() => {
     if (typeof code === 'string') {
-      app.authorizeSlack(code)
-    } else {
-      // @TODO: Use Application notifications
-      console.error('Slack authorization: incorrect code', code)
+      try {
+        // @TODO: How to catch error properly?
+        app.authorizeSlack(code)
+      } catch (e) {
+        setError(e)
+      }
     }
   }, [code])
 
   return (
     <Layout>
       <Content>
-        <h1>Success! Slack installed</h1>
+        {error ? (
+          'There was a problem with Slack auth:' + error.toString()
+        ) : (
+          <h1>Success! Slack installed</h1>
+        )}
       </Content>
     </Layout>
   )
