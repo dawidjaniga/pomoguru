@@ -84,4 +84,8 @@ export class PomoguruClient {
   subscribeToGetUser (cb: (user: GetUserOutput) => void) {
     this.useCases['user.getUser'].subscribe('updated', cb)
   }
+
+  loginGoogle (token: string) {
+    this.useCases['user.loginGoogle'].execute(token)
+  }
 }

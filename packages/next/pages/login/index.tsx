@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Typography } from 'antd'
 
+import { app } from '../../app'
 import Layout from '../../components/Layout'
-import { renderLoginButton } from '@pomoguru/client'
 
 const Wrapper = styled.section`
   max-width: 400px;
@@ -12,7 +12,7 @@ const Wrapper = styled.section`
 
 export default function LoginPage () {
   useEffect(() => {
-    renderLoginButton('#google-login')
+    app.renderGoogleLoginButton('#google-login')
   }, [])
 
   return (

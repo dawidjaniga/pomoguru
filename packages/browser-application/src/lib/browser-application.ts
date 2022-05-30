@@ -1,6 +1,7 @@
 import { PomoguruClient, GetTimerOutput, GetUserOutput } from '@pomoguru/client'
 import { BrowserNotificationService } from './../services/BrowserNotification'
 import { BrowserSoundService } from '../services/BrowserSoundService'
+import { GoogleLogin } from './../services/GoogleLogin'
 
 // @TODO: Common Interface
 export class BrowserApplication {
@@ -36,5 +37,11 @@ export class BrowserApplication {
 
   subscribeToGetUser (cb: (user: GetUserOutput) => void) {
     this.client.subscribeToGetUser(cb)
+  }
+
+  renderGoogleLoginButton (selector: string) {
+    GoogleLogin.renderLoginButton(selector, (token: string) =>
+      this.client.loginGoogle(token)
+    )
   }
 }
