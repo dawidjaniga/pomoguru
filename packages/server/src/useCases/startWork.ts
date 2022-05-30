@@ -7,6 +7,7 @@ import { UserId } from '@server/types'
 import { ApplicationError } from '@server/types/errors'
 import { Slack } from '@server/app/services/Slack'
 import addMinutes from 'date-fns/addMinutes'
+import format from 'date-fns/format'
 
 export type StartWorkInput = {
   userId: UserId
@@ -37,8 +38,8 @@ export class StartWorkUseCase
     const userToken = await slackTokenRepo.get({ userId })
     await Slack.changeStatus(
       {
-        text: 'Focusing',
-        emoji: ':zap:',
+        text: 'Focusing until ' + format(pomodoroEndTime, 'HH:mm'),
+        emoji: ':pomoguru:',
         expireTime: pomodoroEndTime
       },
       userToken.token

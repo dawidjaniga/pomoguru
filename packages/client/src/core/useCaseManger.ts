@@ -10,6 +10,7 @@ import { GetTimersUseCase } from '../domain/timer/useCase/GetTimers'
 import { SkipBreakUseCase } from '../domain/timer/useCase/SkipBreak'
 import { LoginGoogleUseCase } from '../domain/user/useCases/LoginGoogle'
 import { SoundService } from '../interfaces/SoundService'
+import { AuthorizeSlackUseCase } from '../domain/user/useCases/AuthorizeSlack'
 
 export class UseCaseManger {
   public useCases: Record<string, any> = {}
@@ -46,7 +47,8 @@ export class UseCaseManger {
         objects['breakTimer']
       ),
       'user.getUser': new GetUserUseCase(realTimeProvider, objects['user']),
-      'user.loginGoogle': new LoginGoogleUseCase()
+      'user.loginGoogle': new LoginGoogleUseCase(),
+      'user.authorizeSlack': new AuthorizeSlackUseCase()
     }
   }
 }

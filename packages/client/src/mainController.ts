@@ -11,8 +11,6 @@ export type UserResponse = {
   avatarUrl: string
 }
 
-const apiUrl = process.env['NX_POMOGURU_API_URL']
-
 export class MainController extends Subject {
   constructor (
     public realTimeProvider: SocketIoRealTimeProvider,
@@ -23,19 +21,6 @@ export class MainController extends Subject {
     if (typeof window !== 'undefined') {
       this.getUser()
     }
-  }
-
-  async authorizeSlack (code: string) {
-    await fetch(apiUrl + '/slack/authorize', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        code
-      })
-    })
   }
 
   // @TODO: Remove

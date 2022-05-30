@@ -88,4 +88,8 @@ export class PomoguruClient {
   loginGoogle (token: string) {
     this.useCases['user.loginGoogle'].execute(token)
   }
+
+  authorizeSlack (token: string) {
+    this.useCases['user.authorizeSlack'].execute(token)
+  }
 }

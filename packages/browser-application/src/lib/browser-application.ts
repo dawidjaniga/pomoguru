@@ -44,4 +44,8 @@ export class BrowserApplication {
       this.client.loginGoogle(token)
     )
   }
+
+  authorizeSlack (code: string) {
+    this.client.authorizeSlack(code)
+  }
 }
