@@ -17,8 +17,6 @@ export type GetTimerOutput = {
 
 export class GetTimersUseCase
   implements UseCase<GetTimerInput, GetTimerOutput> {
-  public isReactive = true
-
   private publisher: Publisher = new Publisher()
 
   constructor (private pomodoro: Timer, private breakTimer: Timer) {

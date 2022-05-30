@@ -12,19 +12,8 @@ export type GetUserOutput = {
   email?: string
   avatarUrl?: string
 }
-// export type GetUserOutput =
-//   | {
-//       authenticated: boolean
-//     }
-//   | {
-//       authenticated: true
-//       id: string
-//       email: string
-//       avatarUrl: string
-//     }
 
 export class GetUserUseCase implements UseCase<GetUserInput, GetUserOutput> {
-  public isReactive = true
   private publisher: Publisher = new Publisher()
 
   constructor (
