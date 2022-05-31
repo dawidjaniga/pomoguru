@@ -16,5 +16,6 @@ export class FinishPomodoroUseCase implements UseCase {
     this.systemNotificationService.showNotification('Break Time')
 
     this.breakTimer.start()
+    console.log('break timer', this.breakTimer)
   }
 }

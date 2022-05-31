@@ -38,7 +38,6 @@ class AframeApp {
     )
 
     startPomodoroEl.addEventListener('click', function () {
-      console.log('start timer clicked')
       app.startPomodoro()
     })
     this.sceneEl.appendChild(startPomodoroEl)

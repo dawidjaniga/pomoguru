@@ -11,9 +11,11 @@ import { GetUserOutput } from '../domain/user/useCases/GetUser'
 import { GetTimerOutput } from '../domain/timer/useCase/GetTimers'
 import { PomoguruApi } from '../services/pomoguruApi'
 
-// @TODO: Extract to Settings Object
-const pomodoroDuration = 25 * 60
-const breakDuration = 5 * 60
+// @TODO: Extract to Settings Object. Check where those are used.
+// export const pomodoroDuration = 5
+// export const breakDuration = 5
+export const pomodoroDuration = 25 * 60
+export const breakDuration = 5 * 60
 
 export class PomoguruClient {
   private useCases: Record<string, any> = {}
@@ -54,6 +56,7 @@ export class PomoguruClient {
 
   attachEvents () {
     this.objects['pomodoro'].subscribe('finished', async () => {
+      console.log('pomodoro finished')
       this.useCases['timer.finishPomodoro'].execute()
     })
 
@@ -61,19 +64,24 @@ export class PomoguruClient {
       this.useCases['timer.finishBreak'].execute()
     })
 
-    this.realTimeProvider.subscribe('pomodoro:started', () => {
-      console.log('remoste tiemr started')
+    this.realTimeProvider.subscribe('pomodoroStarted', () => {
       this.useCases['timer.remoteStartPomodoro'].execute()
     })
 
-    this.realTimeProvider.subscribe('pomodoro:paused', () => {
-      console.log('paused remote timer')
+    this.realTimeProvider.subscribe('pomodoroPaused', () => {
       this.useCases['timer.remotePausePomodoro'].execute()
+    })
+
+    this.realTimeProvider.subscribe('pomodoroSkipped', () => {
+      this.useCases['timer.remoteSkipPomodoro'].execute()
+    })
+
+    this.realTimeProvider.subscribe('breakSkipped', () => {
+      this.useCases['timer.remoteSkipBreak'].execute()
     })
   }
 
   startPomodoro () {
-    console.log('pomoguru client startPomodoro')
     this.useCases['timer.startPomodoro'].execute()
   }
 
@@ -86,7 +94,7 @@ export class PomoguruClient {
   }
 
   skipBreak () {
-    this.useCases['timer.skipPomodoro'].execute()
+    this.useCases['timer.skipBreak'].execute()
   }
 
   subscribeToGetTimers (cb: (timers: GetTimerOutput) => void) {

@@ -1,15 +1,16 @@
 import Timer from '../../../valueObjects/timer'
 import { UseCase } from '../../../interfaces/UseCase'
+import { pomodoroDuration } from '../../../core/pomoguruClient'
 
 export type SkipPomodoroInput = void
 export type SkipPomodoroOutput = void
 
-export class SkipPomodoroUseCase
+export class RemoteSkipPomodoroUseCase
   implements UseCase<SkipPomodoroInput, SkipPomodoroOutput> {
   constructor (private pomodoro: Timer) {}
 
   async execute () {
-    const pomodoroDuration = 1500
+    // @TODO: Use Settings after extraction
 
     this.pomodoro.stop()
     this.pomodoro.duration = pomodoroDuration

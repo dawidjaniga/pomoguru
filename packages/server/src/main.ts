@@ -279,11 +279,11 @@ const start = async () => {
 
           await useCase.execute({ userId })
 
-          debug('Timer started')
+          debug('Pomodoro started')
 
-          userNamespace.to(userRoom).emit('pomodoro:started', occuredAt)
+          socket.broadcast.to(userRoom).emit('pomodoroStarted', occuredAt)
         } catch (e) {
-          console.error('Start Timer error: ' + e)
+          console.error('Start Pomodoro error: ' + e)
         }
       })
 
@@ -291,7 +291,7 @@ const start = async () => {
         try {
           debug('pause pomodoro')
 
-          userNamespace.to(userRoom).emit('pomodoro:paused', occuredAt)
+          socket.broadcast.to(userRoom).emit('pomodoroPaused', occuredAt)
         } catch (e) {
           console.error('Pause Pomodoro error: ' + e)
         }

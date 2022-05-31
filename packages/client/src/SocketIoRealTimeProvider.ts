@@ -52,14 +52,14 @@ export class SocketIoRealTimeProvider extends Publisher {
         debug('user connected', this.userSocket)
       })
 
-      this.userSocket.on('pomodoro:started', (occuredAt: number) => {
-        debug('pomodoro:paused')
-        this.publish('pomodoro:started', occuredAt)
+      this.userSocket.on('pomodoroStarted', (occuredAt: number) => {
+        debug('pomodoroStarted')
+        this.publish('pomodoroStarted', occuredAt)
       })
 
-      this.userSocket.on('pomodoro:paused', () => {
-        debug('pomodoro:paused')
-        this.publish('pomodoro:paused')
+      this.userSocket.on('pomodoroPaused', () => {
+        debug('pomodoroPaused')
+        this.publish('pomodoroPaused')
       })
       this.userSocket.on('breakSkipped', () => {
         this.publish('breakSkipped')
@@ -84,11 +84,11 @@ export class SocketIoRealTimeProvider extends Publisher {
     this.userSocket?.emit('pausePomodoro', Date.now())
   }
 
-  userSkipBreak () {
-    this.userSocket?.emit('skipBreak', {})
+  skipPomodoro () {
+    this.userSocket?.emit('skipPomodoro', Date.now())
   }
 
-  userCancelWork () {
-    this.userSocket?.emit('cancelWork', {})
+  skipBreak () {
+    this.userSocket?.emit('skipBreak', Date.now())
   }
 }

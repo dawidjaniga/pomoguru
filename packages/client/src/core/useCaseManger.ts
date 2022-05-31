@@ -1,3 +1,5 @@
+import { RemoteSkipBreakUseCase } from './../domain/timer/remote/SkipBreak'
+import { RemoteSkipPomodoroUseCase } from './../domain/timer/remote/SkipPomodoro'
 import { PomoguruApi } from 'packages/client/src/services/pomoguruApi'
 import { SystemNotificationService } from '@pomoguru/client'
 import { SocketIoRealTimeProvider } from './../SocketIoRealTimeProvider'
@@ -14,6 +16,7 @@ import { LoginGoogleUseCase } from '../domain/user/useCases/LoginGoogle'
 import { SoundService } from '../interfaces/SoundService'
 import { AuthorizeSlackUseCase } from '../domain/user/useCases/AuthorizeSlack'
 import { RemoteStartPomodoroUseCase } from '../domain/timer/remote/StartPomodoro'
+import { RemotePausePomodoroUseCase } from '../domain/timer/remote/PausePomodoro'
 
 export class UseCaseManger {
   public useCases: Record<string, any> = {}
@@ -41,23 +44,34 @@ export class UseCaseManger {
         realTimeProvider,
         objects['pomodoro']
       ),
-      'timer.remotePausePomodoro': new RemoteStartPomodoroUseCase(
+      'timer.remotePausePomodoro': new RemotePausePomodoroUseCase(
         objects['pomodoro']
       ),
-      'timer.skipPomodoro': new SkipPomodoroUseCase(objects['pomodoro']),
+      'timer.skipPomodoro': new SkipPomodoroUseCase(
+        realTimeProvider,
+        objects['pomodoro']
+      ),
+      'timer.remoteSkipPomodoro': new RemoteSkipPomodoroUseCase(
+        objects['pomodoro']
+      ),
       'timer.skipBreak': new SkipBreakUseCase(
+        realTimeProvider,
+        objects['pomodoro'],
+        objects['breakTimer']
+      ),
+      'timer.remoteSkipBreak': new RemoteSkipBreakUseCase(
         objects['pomodoro'],
         objects['breakTimer']
       ),
       'timer.finishPomodoro': new FinishPomodoroUseCase(
         soundService,
         systemNotificationService,
-        objects['pomodoro']
+        objects['breakTimer']
       ),
       'timer.finishBreak': new FinishBreakUseCase(
         soundService,
         systemNotificationService,
-        objects['breakTimer']
+        objects['pomodoro']
       ),
       'user.getUser': new GetUserUseCase(realTimeProvider, objects['user']),
       'user.loginGoogle': new LoginGoogleUseCase(pomoguruApi),
