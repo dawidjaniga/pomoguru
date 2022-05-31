@@ -72,7 +72,7 @@ class AframeApp {
     const maxTimerWidth = 20
 
     const timeLeftEl = document.createElement('a-text')
-    // timeLeftEl.setAttribute('value', timeLeft)
+
     timeLeftEl.setAttribute('scale', '11.61044 13.14882 11.61044')
     timeLeftEl.setAttribute('position', '-1.53731 4.9242 -24.16562')
     timeLeftEl.setAttribute(
