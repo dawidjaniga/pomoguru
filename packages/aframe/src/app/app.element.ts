@@ -32,10 +32,12 @@ class AframeApp {
     const startPomodoroEl = document.createElement('a-box')
     startPomodoroEl.setAttribute('color', 'green')
     startPomodoroEl.setAttribute('scale', '2 2 2')
-    startPomodoroEl.setAttribute(
-      'animation',
-      'property: position; from: -4 -1 -10; to: -4 1 -10; dur: 2000; easing: easeInCirc'
-    )
+    startPomodoroEl.setAttribute('position', '-4 1 -10')
+
+    // startPomodoroEl.setAttribute(
+    //   'animation',
+    //   'property: position; from: -4 -1 -10; to: -4 1 -10; dur: 2000; easing: easeInCirc'
+    // )
 
     startPomodoroEl.addEventListener('click', function () {
       app.startPomodoro()
@@ -48,10 +50,10 @@ class AframeApp {
     element.setAttribute('color', 'yellow')
     element.setAttribute('position', '-4 1 -13')
     element.setAttribute('scale', '2 2 2')
-    element.setAttribute(
-      'animation',
-      'property: position; from: -4 -1 -10; to: -4 1 -13; dur: 2500; easing: easeInCirc'
-    )
+    // element.setAttribute(
+    //   'animation',
+    //   'property: position; from: -4 -1 -10; to: -4 1 -13; dur: 2500; easing: easeInCirc'
+    // )
 
     element.addEventListener('click', function () {
       app.pausePomodoro()
@@ -64,10 +66,10 @@ class AframeApp {
     timerEl.setAttribute('color', 'red')
     timerEl.setAttribute('position', '0 1 -20')
     timerEl.setAttribute('scale', '2 0 2')
-    timerEl.setAttribute(
-      'animation',
-      'property: position; from: 0 -1 -20; to: 0 1 -20; dur: 1000; delay: 500; easing: easeInCirc'
-    )
+    // timerEl.setAttribute(
+    //   'animation',
+    //   'property: position; from: 0 -1 -20; to: 0 1 -20; dur: 1000; delay: 500; easing: easeInCirc'
+    // )
     this.sceneEl.appendChild(timerEl)
     const maxTimerWidth = 20
 
@@ -75,10 +77,10 @@ class AframeApp {
 
     timeLeftEl.setAttribute('scale', '11.61044 13.14882 11.61044')
     timeLeftEl.setAttribute('position', '-1.53731 4.9242 -24.16562')
-    timeLeftEl.setAttribute(
-      'animation',
-      'property: position; from: -1.53731 -4.9242 -24.16562; to: -1.53731 4.9242 -24.16562; dur: 2400; delay: 200; easing: easeInCirc'
-    )
+    // timeLeftEl.setAttribute(
+    //   'animation',
+    //   'property: position; from: -1.53731 -4.9242 -24.16562; to: -1.53731 4.9242 -24.16562; dur: 2400; delay: 200; easing: easeInCirc'
+    // )
     this.sceneEl.appendChild(timeLeftEl)
 
     app.subscribeToGetTimers(timers => {

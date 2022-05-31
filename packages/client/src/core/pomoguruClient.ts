@@ -10,6 +10,7 @@ import { UseCaseManger } from './useCaseManger'
 import { GetUserOutput } from '../domain/user/useCases/GetUser'
 import { GetTimerOutput } from '../domain/timer/useCase/GetTimers'
 import { PomoguruApi } from '../services/pomoguruApi'
+import { EventSynchronizer } from '../objects/eventSynchronizer'
 
 // @TODO: Extract to Settings Object. Check where those are used.
 // export const pomodoroDuration = 5
@@ -64,8 +65,10 @@ export class PomoguruClient {
       this.useCases['timer.finishBreak'].execute()
     })
 
-    this.realTimeProvider.subscribe('pomodoroStarted', () => {
-      this.useCases['timer.remoteStartPomodoro'].execute()
+    this.realTimeProvider.subscribe('pomodoroStarted', (createdAt: number) => {
+      EventSynchronizer.syncToCurrentSecond(createdAt, delay => {
+        this.useCases['timer.remoteStartPomodoro'].execute(delay)
+      })
     })
 
     this.realTimeProvider.subscribe('pomodoroPaused', () => {
