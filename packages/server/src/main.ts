@@ -54,6 +54,7 @@ server.register(cookie, {
   }
 })
 
+// @TODO: How to decouple fastify and socket.io?
 server.register(fastifyIO, {
   cors: {
     origin: allowerdOrigins,

@@ -6,6 +6,7 @@
     "blessed-contrib": "packages/blessed-contrib",
     "browser-application": "packages/browser-application",
     "client": "packages/client",
+    "core": "packages/core",
     "next": "packages/next",
     "next-e2e": "packages/next-e2e",
     "node-application": "packages/node-application",
