@@ -1,7 +1,7 @@
-import '@server/setup'
-import { IUserRepository } from '@server/interfaces/user'
+import './setup'
+import { IUserRepository } from './interfaces/user'
 import { Container } from 'typedi'
-import cookie from 'fastify-cookie'
+import cookie from '@fastify/cookie'
 
 import { ApplicationError } from './types/errors'
 import { StartWorkUseCase } from './useCases/startWork'

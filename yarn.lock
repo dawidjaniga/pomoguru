@@ -1205,6 +1205,22 @@
   dependencies:
     ajv "^6.12.6"
 
+"@fastify/cookie@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@fastify/cookie/-/cookie-6.0.0.tgz#ba0418c8d26c105e6b069c42fe9ee7a1c22f75c9"
+  integrity sha512-Luy3Po3dOJmqAuPCiPcWsX0tV5+C3AOnULSdlsGjNGOvyE7jqzysp8kT9ICfsUvove+TeUMgTWl1y9XS3ZPPMg==
+  dependencies:
+    cookie-signature "^1.1.0"
+    fastify-plugin "^3.0.1"
+
+"@fastify/cors@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-7.0.0.tgz#c67c5a5909498b696bb19578e903f36037ac6f32"
+  integrity sha512-nlo6ScwagBNJacAZD3KX90xjWLIoV0vN9QqoX1wUE9ZeZMdvkVkMZCGlxEtr00NshV0X5wDge4w5rwox7rRzSg==
+  dependencies:
+    fastify-plugin "^3.0.0"
+    vary "^1.1.2"
+
 "@fastify/error@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@fastify/error/-/error-2.0.0.tgz#a9f94af56eb934f0ab1ce4ef9f0ced6ebf2319dc"
@@ -6578,7 +6594,7 @@ debug@^3.1.0, debug@^3.1.1, debug@^3.2.6, debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
-"debug@github:ngokevin/debug#noTimestamp":
+debug@ngokevin/debug#noTimestamp:
   version "2.2.0"
   resolved "https://codeload.github.com/ngokevin/debug/tar.gz/ef5f8e66d49ce8bc64c6f282c15f8b7164409e3a"
 
@@ -6869,7 +6885,7 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-"document-register-element@github:dmarcos/document-register-element#8ccc532b7f3744be954574caf3072a5fd260ca90":
+document-register-element@dmarcos/document-register-element#8ccc532b7f3744be954574caf3072a5fd260ca90:
   version "0.5.4"
   resolved "https://codeload.github.com/dmarcos/document-register-element/tar.gz/8ccc532b7f3744be954574caf3072a5fd260ca90"
 
@@ -8084,7 +8100,7 @@ fast-text-encoding@^1.0.0:
     cookie-signature "^1.1.0"
     fastify-plugin "^3.0.1"
 
-fastify-cookie@^5.5.0:
+fastify-cookie@^5.7.0:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/fastify-cookie/-/fastify-cookie-5.7.0.tgz#b4c1ce61b5250f2f1915505ae53ec54cd21d6fe2"
   integrity sha512-l9UDkHysfOBdyA2rNkr1DQqe6xFdT3NuT60W+o7ramvuyyIc9kv6VmrhpLeEx29EftVJR9lRpW4Pg8T+RDNBLw==
@@ -16870,7 +16886,7 @@ thread-loader@^2.1.3:
     loader-utils "^1.1.0"
     neo-async "^2.6.0"
 
-"three-bmfont-text@github:dmarcos/three-bmfont-text#21d017046216e318362c48abd1a48bddfb6e0733":
+three-bmfont-text@dmarcos/three-bmfont-text#21d017046216e318362c48abd1a48bddfb6e0733:
   version "2.4.0"
   resolved "https://codeload.github.com/dmarcos/three-bmfont-text/tar.gz/21d017046216e318362c48abd1a48bddfb6e0733"
   dependencies:
