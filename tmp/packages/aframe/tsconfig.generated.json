@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@pomoguru/browser-application": [
+        "packages/browser-application/src/index.ts"
+      ],
+      "@pomoguru/client": [
+        "dist/packages/client"
+      ],
+      "@pomoguru/node-application": [
+        "packages/node-application/src/index.ts"
+      ],
+      "@server/*": [
+        "packages/server/src/*"
+      ]
+    }
+  },
+  "extends": "../../../packages/aframe/tsconfig.app.json"
+}

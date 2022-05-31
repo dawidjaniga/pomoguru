@@ -61,8 +61,14 @@ export class PomoguruClient {
       this.useCases['timer.finishBreak'].execute()
     })
 
-    this.realTimeProvider.subscribe('remoteStartedTimer', () => {
+    this.realTimeProvider.subscribe('pomodoro:started', () => {
       console.log('remoste tiemr started')
+      this.useCases['timer.remoteStartPomodoro'].execute()
+    })
+
+    this.realTimeProvider.subscribe('pomodoro:paused', () => {
+      console.log('paused remote timer')
+      this.useCases['timer.remotePausePomodoro'].execute()
     })
   }
 

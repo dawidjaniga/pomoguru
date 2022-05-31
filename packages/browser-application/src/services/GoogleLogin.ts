@@ -13,7 +13,9 @@ export class GoogleLogin {
     selector: string,
     onSuccess: (token: string) => void
   ) {
-    const script = document.createElement('script')
+    const script = (<unknown>(
+      document.createElement('script')
+    )) as HTMLScriptElement
     script.src = 'https://accounts.google.com/gsi/client'
     script.async = true
     script.defer = true

@@ -13,6 +13,7 @@ import { SkipBreakUseCase } from '../domain/timer/useCase/SkipBreak'
 import { LoginGoogleUseCase } from '../domain/user/useCases/LoginGoogle'
 import { SoundService } from '../interfaces/SoundService'
 import { AuthorizeSlackUseCase } from '../domain/user/useCases/AuthorizeSlack'
+import { RemoteStartPomodoroUseCase } from '../domain/timer/remote/StartPomodoro'
 
 export class UseCaseManger {
   public useCases: Record<string, any> = {}
@@ -33,7 +34,16 @@ export class UseCaseManger {
         realTimeProvider,
         objects['pomodoro']
       ),
-      'timer.pausePomodoro': new PausePomodoroUseCase(objects['pomodoro']),
+      'timer.remoteStartPomodoro': new RemoteStartPomodoroUseCase(
+        objects['pomodoro']
+      ),
+      'timer.pausePomodoro': new PausePomodoroUseCase(
+        realTimeProvider,
+        objects['pomodoro']
+      ),
+      'timer.remotePausePomodoro': new RemoteStartPomodoroUseCase(
+        objects['pomodoro']
+      ),
       'timer.skipPomodoro': new SkipPomodoroUseCase(objects['pomodoro']),
       'timer.skipBreak': new SkipBreakUseCase(
         objects['pomodoro'],

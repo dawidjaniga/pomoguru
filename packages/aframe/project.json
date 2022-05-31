@@ -6,12 +6,11 @@
   "targets": {
     "build": {
       "executor": "@nrwl/web:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "buildLibsFromSource": false,
+        "watch": true,
         "outputPath": "dist/packages/aframe",
         "compiler": "babel",
         "index": "packages/aframe/src/index.html",
@@ -23,9 +22,7 @@
           "packages/aframe/src/favicon.ico",
           "packages/aframe/src/assets"
         ],
-        "styles": [
-          "packages/aframe/src/styles.scss"
-        ],
+        "styles": ["packages/aframe/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -72,20 +69,14 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/aframe/**/*.ts"
-        ]
+        "lintFilePatterns": ["packages/aframe/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/packages/aframe"
-      ],
+      "outputs": ["coverage/packages/aframe"],
       "options": {
         "jestConfig": "packages/aframe/jest.config.js",
         "passWithNoTests": true

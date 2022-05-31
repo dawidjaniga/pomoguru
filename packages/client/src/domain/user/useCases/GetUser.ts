@@ -30,13 +30,11 @@ export class GetUserUseCase implements UseCase<GetUserInput, GetUserOutput> {
 
   async attachEvents () {
     this.realTimeProvider.subscribe('user:authorized', async user => {
-      console.log('get user use case', user)
       this.user.id = user.id
       this.user.email = user.email
       this.user.avatarUrl = user.avatarUrl
-      const result = await this.execute()
-      console.log('attachevents get user', result)
-      this.publisher.publish('updated', result)
+
+      this.publisher.publish('updated', await this.execute())
     })
   }
 
@@ -55,9 +53,6 @@ export class GetUserUseCase implements UseCase<GetUserInput, GetUserOutput> {
         email: '',
         avatarUrl: ''
       }
-      // return {
-      //   authenticated: false
-      // }
     }
   }
 }

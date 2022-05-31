@@ -270,7 +270,7 @@ const start = async () => {
         debug('received event on user namespace', event, args)
       })
 
-      socket.on('startWork', async (occuredAt: number) => {
+      socket.on('startPomodoro', async (occuredAt: number) => {
         try {
           const userId = socket.data.userId
           debug('socket user', socket.data)
@@ -280,17 +280,17 @@ const start = async () => {
 
           debug('Timer started')
 
-          userNamespace.to(userRoom).emit('remoteStartedTimer', occuredAt)
+          userNamespace.to(userRoom).emit('pomodoro:started', occuredAt)
         } catch (e) {
           console.error('Start Timer error: ' + e)
         }
       })
 
-      socket.on('pausePomodoro', async () => {
+      socket.on('pausePomodoro', async (occuredAt: number) => {
         try {
           debug('pause pomodoro')
 
-          userNamespace.to(userRoom).emit('pomodoroPaused', 'pomodoroPaused')
+          userNamespace.to(userRoom).emit('pomodoro:paused', occuredAt)
         } catch (e) {
           console.error('Pause Pomodoro error: ' + e)
         }

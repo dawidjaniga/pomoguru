@@ -1,9 +1,5 @@
-import { SocketIoRealTimeProvider } from './SocketIoRealTimeProvider'
 import { Subject } from './objects/observer'
 import { SystemNotificationService } from './interfaces/SystemNotificationService'
-import debugModule from 'debug'
-
-const debug = debugModule('pomoguru:client:mainController')
 
 export type UserResponse = {
   id: string
@@ -12,44 +8,8 @@ export type UserResponse = {
 }
 
 export class MainController extends Subject {
-  constructor (
-    public realTimeProvider: SocketIoRealTimeProvider,
-    public notificationService: SystemNotificationService
-  ) {
+  constructor (public notificationService: SystemNotificationService) {
     super()
-
-    if (typeof window !== 'undefined') {
-      this.getUser()
-    }
-  }
-
-  // @TODO: Remove
-  async getUser () {
-    try {
-      // this.realTimeProvider.subscribe(
-      //   'remoteStartedTimer',
-      //   (occuredAt: number) => {
-      //     this.remoteStartWork(occuredAt)
-      //   }
-      // )
-      // this.realTimeProvider.subscribe('pomodoroPaused', () => {
-      //   if (this.model.get('phase') !== 'paused') {
-      //     this.pausePomodoro()
-      //   }
-      // })
-      // this.realTimeProvider.subscribe('breakSkipped', () => {
-      //   if (this.model.get('phase') !== 'break') {
-      //     this.skipBreak()
-      //   }
-      // })
-      // this.realTimeProvider.subscribe('workCanceled', () => {
-      //   if (this.model.get('phase') === 'paused') {
-      //     this.cancelWork()
-      //   }
-      // })
-    } catch (e) {
-      console.error('getUser error', e)
-    }
   }
 
   // remoteStartWork (occuredAt: number) {
