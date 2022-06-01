@@ -41,6 +41,10 @@ export default class Timer extends Publisher {
     return this._elapsedInS
   }
 
+  set elapsed (seconds: number) {
+    this._elapsedInS = seconds
+  }
+
   get timeLeft (): number {
     return this.duration - this.elapsed
   }

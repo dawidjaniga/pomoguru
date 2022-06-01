@@ -102,6 +102,10 @@ export class Application {
     this.useCases['timer.skipBreak'].execute()
   }
 
+  fastForward () {
+    this.useCases['timer.fastForward'].execute()
+  }
+
   subscribeToGetTimers (cb: (timers: GetTimerOutput) => void) {
     this.useCases['timer.getTimers'].subscribe('updated', cb)
   }

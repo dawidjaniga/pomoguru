@@ -17,6 +17,7 @@ import { SoundService } from '../interfaces/SoundService'
 import { AuthorizeSlackUseCase } from '../domain/user/useCases/AuthorizeSlack'
 import { RemoteStartPomodoroUseCase } from '../domain/timer/remote/StartPomodoro'
 import { RemotePausePomodoroUseCase } from '../domain/timer/remote/PausePomodoro'
+import { FastForwardUseCase } from '../domain/timer/useCase/FastForward'
 
 export class UseCaseManger {
   public useCases: Record<string, any> = {}
@@ -72,6 +73,10 @@ export class UseCaseManger {
         soundService,
         systemNotificationService,
         objects['pomodoro']
+      ),
+      'timer.fastForward': new FastForwardUseCase(
+        objects['pomodoro'],
+        objects['breakTimer']
       ),
       'user.getUser': new GetUserUseCase(realTimeProvider, objects['user']),
       'user.loginGoogle': new LoginGoogleUseCase(pomoguruApi),
