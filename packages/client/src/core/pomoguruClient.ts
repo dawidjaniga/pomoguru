@@ -57,7 +57,6 @@ export class PomoguruClient {
 
   attachEvents () {
     this.objects['pomodoro'].subscribe('finished', async () => {
-      console.log('pomodoro finished')
       this.useCases['timer.finishPomodoro'].execute()
     })
 
@@ -66,12 +65,14 @@ export class PomoguruClient {
     })
 
     this.realTimeProvider.subscribe('pomodoroStarted', (createdAt: number) => {
+      console.log('pomodoro started')
       EventSynchronizer.syncToCurrentSecond(createdAt, delay => {
         this.useCases['timer.remoteStartPomodoro'].execute(delay)
       })
     })
 
     this.realTimeProvider.subscribe('pomodoroPaused', () => {
+      console.log('pomodoro paused')
       this.useCases['timer.remotePausePomodoro'].execute()
     })
 

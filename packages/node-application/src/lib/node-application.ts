@@ -10,11 +10,9 @@ export class NodeApplication {
       new NodeSoundService(),
       new NodeNotificationService()
     )
-    console.log('whkonu node works hooouuura!')
   }
 
   startPomodoro () {
-    console.log('start pomodoro')
     this.client.startPomodoro()
   }
 
