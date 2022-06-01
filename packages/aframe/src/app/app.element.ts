@@ -1,6 +1,6 @@
-import { BrowserApplication } from '@pomoguru/browser-application'
+import { createBrowserApplication } from '@pomoguru/browser-application'
 
-export const app = new BrowserApplication()
+export const app = createBrowserApplication()
 
 import './app.element.scss'
 import 'aframe'
@@ -16,7 +16,7 @@ class AframeApp {
     this.createStartButton()
     this.createPauseButton()
     this.createTimer()
-    this.createAvatar()
+    // this.createAvatar()
     this.createFloor()
 
     console.log('A-Frame Application initialized')
@@ -100,7 +100,6 @@ class AframeApp {
 
     app.subscribeToGetUser(user => {
       if (user.authenticated) {
-        // @ts-ignore
         const { avatarUrl } = user
         element.setAttribute('src', avatarUrl)
       }
@@ -120,7 +119,10 @@ class AframeApp {
 
   createEnvironment () {
     const environment = document.createElement('a-entity')
-    environment.setAttribute('environment', 'preset: goldmine')
+    environment.setAttribute(
+      'environment',
+      'preset: goldmine; dressingColor: #bbdf32'
+    )
     this.sceneEl.appendChild(environment)
   }
 }
