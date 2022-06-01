@@ -1,3 +1,4 @@
+import { UseCaseManger } from './useCaseManger'
 import Timer from '../valueObjects/timer'
 
 import { SoundService } from '../interfaces/SoundService'
@@ -5,12 +6,12 @@ import { SystemNotificationService } from '../interfaces/SystemNotificationServi
 
 import { SocketIoRealTimeProvider } from '../SocketIoRealTimeProvider'
 import { User } from '../domain/user/entities/user'
-import { UseCaseManger } from './useCaseManger'
 
+import { EventSynchronizer } from '../objects/eventSynchronizer'
 import { GetUserOutput } from '../domain/user/useCases/GetUser'
 import { GetTimerOutput } from '../domain/timer/useCase/GetTimers'
 import { PomoguruApi } from '../services/pomoguruApi'
-import { EventSynchronizer } from '../objects/eventSynchronizer'
+import { GoogleLogin } from '../services/GoogleLogin'
 
 // @TODO: Extract to Settings Object. Check where those are used.
 // export const pomodoroDuration = 5
@@ -18,7 +19,7 @@ import { EventSynchronizer } from '../objects/eventSynchronizer'
 export const pomodoroDuration = 25 * 60
 export const breakDuration = 5 * 60
 
-export class PomoguruClient {
+export class Application {
   private useCases: Record<string, any> = {}
   private objects: Record<string, any> = {}
   private pomoguruApi: PomoguruApi
@@ -111,6 +112,12 @@ export class PomoguruClient {
 
   loginGoogle (token: string) {
     this.useCases['user.loginGoogle'].execute(token)
+  }
+
+  renderGoogleLoginButton (selector: string) {
+    GoogleLogin.renderLoginButton(selector, (token: string) =>
+      this.loginGoogle(token)
+    )
   }
 
   authorizeSlack (token: string) {

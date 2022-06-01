@@ -1,10 +1,9 @@
-import { NodeApplication } from '@pomoguru/node-application'
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
-import { Phase } from '@pomoguru/client'
+import { Application, Phase } from '@pomoguru/client'
 
 export class BlessedApp {
-  private app: NodeApplication
+  private app: Application
   private screen: blessed.Widgets.Screen
 
   private grid: contrib.grid
@@ -13,7 +12,7 @@ export class BlessedApp {
   private timer: contrib.Widgets.DonutElement
   private buttons: contrib.Widgets.LineElement
 
-  constructor (app: NodeApplication) {
+  constructor (app: Application) {
     this.app = app
     this.screen = blessed.screen()
     this.grid = new contrib.grid({ rows: 12, cols: 12, screen: this.screen })

@@ -1,6 +1,6 @@
 import Timer from '../../../valueObjects/timer'
 import { UseCase } from '../../../interfaces/UseCase'
-import { pomodoroDuration } from '../../../core/pomoguruClient'
+import { pomodoroDuration } from '../../../core/application'
 
 export type SkipPomodoroInput = void
 export type SkipPomodoroOutput = void

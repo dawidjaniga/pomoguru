@@ -2,7 +2,7 @@ declare global {
   const google: typeof import('google-one-tap')
 }
 
-const clientId = process.env['NX_GOOGLE_CLIENT_ID']
+const clientId = process.env['NX_GOOGLE_CLIENT_ID'] as string
 
 if (!clientId) {
   throw Error('Google Client ID not specified')

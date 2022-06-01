@@ -1,3 +1,3 @@
-import { BrowserApplication } from '@pomoguru/browser-application'
+import { createBrowserApplication } from '@pomoguru/browser-application'
 
-export const app = new BrowserApplication()
+export const app = createBrowserApplication()
