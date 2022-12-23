@@ -39,7 +39,7 @@
     "google-auth-library": "^7.12.0",
     "howler": "^2.2.3",
     "inversify": "^6.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.2.8",
     "nanoid": "^3.1.30",
     "next": "latest",
